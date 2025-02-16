@@ -117,9 +117,12 @@ export const getAppData = async () => {
 	return data;
 };
 
-export const getQuestion = async (id: string) => {
+export const getQuestion = async (id: string, force?: boolean) => {
 	const localQuestion = await database.questions.get(id);
-	if (localQuestion === undefined) {
+	if (force) {
+		console.log("forcing update")
+	}
+	if (force || localQuestion === undefined) {
 		const remoteQuestion = await supabase()
 			.from("questions")
 			.select()
