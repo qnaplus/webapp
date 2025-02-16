@@ -6,7 +6,7 @@
     <a href="https://github.com/qnaplus/webapp/stargazers">
         <img src="https://img.shields.io/github/stars/qnaplus/webapp?color=577BB5&labelColor=1A1B26&style=for-the-badge">
     </a>
-    <a href="../LICENSE.md">
+    <a href="../LICENSE">
         <img src="https://img.shields.io/github/license/qnaplus/webapp?color=C0CAF5&labelColor=1A1B26&style=for-the-badge">
     </a>
 </div>
