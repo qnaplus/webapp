@@ -4,6 +4,9 @@ import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import { useRegisterSW } from "virtual:pwa-register/vue"
+
+useRegisterSW({ immediate: true });
 
 const preset = definePreset(Aura, {
 	semantic: {
