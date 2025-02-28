@@ -67,7 +67,7 @@ createApp(App)
 			preset,
 			options: {
 				prefix: "p",
-				darkModeSelector: "system",
+				darkModeSelector: ".dark",
 			},
 		},
 	})
