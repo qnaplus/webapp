@@ -1,9 +1,8 @@
 import type { Question } from "@qnaplus/scraper";
 import Dexie, { type EntityTable } from "dexie";
-import { supabase } from "./supabase";
-import { elapsedHours } from "./util/date";
 
 const DATA_PRIMARY_KEY = "0";
+const DEFAULT_VERSION = "moandkrill";
 
 export interface QnaplusAppData {
 	id: string;
@@ -13,7 +12,7 @@ export interface QnaplusAppData {
 
 export interface QnaplusMetadata {
 	id: string;
-	lastUpdated: number;
+	version: string;
 }
 
 interface QnaplusDatabase extends Dexie {
@@ -32,24 +31,12 @@ database.version(1).stores({
 	appdata: "id",
 });
 
-const updateQuestions = async (db: QnaplusDatabase) => {
-	const response = await fetch(import.meta.env.VITE_DATA_URL);
-	if (response.status !== 200) {
-		console.error(response.status, response.statusText);
-		return; // TODO: handle
-	}
-	const questions = (await response.json()) as Question[];
-	await db.questions.bulkPut(questions);
-};
-
-const updateMetadata = async (
-	db: QnaplusDatabase,
-): Promise<QnaplusMetadata> => {
-	const lastUpdated = Date.now();
-	const data = { id: DATA_PRIMARY_KEY, lastUpdated };
-	await db.metadata.put(data);
-	return data;
-};
+database.version(2).upgrade((tx) => {
+	tx.table("metadata").toCollection().modify(metadata => {
+		metadata.version = DEFAULT_VERSION;
+		delete metadata.lastUpdated;
+	})
+})
 
 const updateAppData = async (db: QnaplusDatabase) => {
 	const questions = await db.questions.toArray();
@@ -66,46 +53,43 @@ const updateAppData = async (db: QnaplusDatabase) => {
 	await db.appdata.put({ id: DATA_PRIMARY_KEY, seasons, programs });
 };
 
-const updateDatabase = async (db: QnaplusDatabase) => {
-	const metadata = await getMetadata(db);
-	const UPDATE_INTERVAL_HOURS = Number.parseInt(
-		import.meta.env.VITE_UPDATE_INTERVAL_HOURS,
-	);
-	const outdated =
-		elapsedHours(new Date(metadata.lastUpdated), new Date()) >=
-		UPDATE_INTERVAL_HOURS;
+type UpdateResponse = {
+	version: string;
+	questions: Question[];
+}
 
-	const questionsCount = await db.questions.count();
-	if (questionsCount === 0 || outdated) {
-		if (outdated) {
-			console.info("Database outdated, updating.");
-		} else {
-			console.info("No data in database, populating");
-		}
-		await updateMetadata(db);
-		await updateQuestions(db);
-		await updateAppData(db);
-	} else {
-		console.info("Database up to date.");
+const update = async (db: QnaplusDatabase) => {
+	const metadata = await getMetadata(db);
+	const response = await fetch(`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`)
+	if (response.status === 500) {
+		console.error(response.status, response.statusText);
+		return;
 	}
+	if (response.status === 304) {
+		return;
+	}
+	const { version, questions } = (await response.json()) as UpdateResponse;
+	await db.questions.bulkPut(questions);
+	await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
+	await updateAppData(db);
 };
 
 export const setupDatabase = async () => {
 	return new Promise<void>((resolve, reject) => {
 		database.open().catch((e) => reject(e));
 		database.on("ready", async (db) => {
-			await updateDatabase(db as QnaplusDatabase);
+			await update(db as QnaplusDatabase);
 			resolve();
 		});
 	});
 };
 
-export const getMetadata = async (db: QnaplusDatabase) => {
-	const maybeMetadata = await database.metadata.get(DATA_PRIMARY_KEY);
-	if (maybeMetadata !== undefined) {
-		return maybeMetadata;
+export const getMetadata = async (db: QnaplusDatabase): Promise<QnaplusMetadata> => {
+	const metadata = await db.metadata.get(DATA_PRIMARY_KEY);
+	if (metadata !== undefined) {
+		return metadata;
 	}
-	return updateMetadata(db);
+	return { id: DATA_PRIMARY_KEY, version: "_" }
 };
 
 export const getAppData = async () => {
@@ -117,24 +101,7 @@ export const getAppData = async () => {
 	return data;
 };
 
-export const getQuestion = async (id: string, force?: boolean) => {
+export const getQuestion = async (id: string) => {
 	const localQuestion = await database.questions.get(id);
-	if (force) {
-		console.log("forcing update")
-	}
-	if (force || localQuestion === undefined) {
-		const remoteQuestion = await supabase()
-			.from("questions")
-			.select()
-			.eq("id", id)
-			.limit(1)
-			.single<Question>();
-		if (remoteQuestion.error) {
-			console.error(remoteQuestion.status, remoteQuestion.statusText);
-			return undefined;
-		}
-		await database.questions.put(remoteQuestion.data);
-		return remoteQuestion.data;
-	}
 	return localQuestion;
 };

@@ -9,24 +9,21 @@ import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
 import {
-	resolveQuestionComponent,
-	resolveQuestionComponentProps,
+  resolveQuestionComponent,
+  resolveQuestionComponentProps,
 } from "../composable/componentMap";
 import { getQuestion } from "../database";
 import { doPrecheck } from "../precheck";
 import Root from "./Root.vue";
-import { useRoute } from 'vue-router';
 
 const props = defineProps<{
 	id: string;
 }>();
 
-const route = useRoute();
 const archived = ref<boolean | null | undefined>(undefined);
-const force = route.query.force !== undefined;
 
 const loading = ref(true);
-const question = await getQuestion(props.id, force).finally(() => {
+const question = await getQuestion(props.id).finally(() => {
 	setTimeout(() => {
 		loading.value = false;
 	}, 500);
