@@ -2,7 +2,7 @@ import type { Question } from "@qnaplus/scraper";
 import Dexie, { type EntityTable } from "dexie";
 
 const DATA_PRIMARY_KEY = "0";
-const DEFAULT_VERSION = "moandkrill";
+const DEFAULT_VERSION = "_";
 
 export interface QnaplusAppData {
 	id: string;
@@ -53,22 +53,30 @@ const updateAppData = async (db: QnaplusDatabase) => {
 	await db.appdata.put({ id: DATA_PRIMARY_KEY, seasons, programs });
 };
 
-type UpdateResponse = {
+type UpdateResponseOutdated = {
+	outdated: true;
 	version: string;
 	questions: Question[];
 }
 
+type UpdateResponseUpToDate = {
+	outdated: false;
+}
+
+type UpdateResponse = UpdateResponseOutdated | UpdateResponseUpToDate;
+
 const update = async (db: QnaplusDatabase) => {
 	const metadata = await getMetadata(db);
-	const response = await fetch(`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`)
+	const response = await fetch(`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`);
 	if (response.status === 500) {
 		console.error(response.status, response.statusText);
 		return;
 	}
-	if (response.status === 304) {
+	const updateResponse = (await response.json()) as UpdateResponse;
+	if (!updateResponse.outdated) {
 		return;
 	}
-	const { version, questions } = (await response.json()) as UpdateResponse;
+	const { questions, version } = updateResponse;
 	await db.questions.bulkPut(questions);
 	await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
 	await updateAppData(db);
@@ -89,7 +97,7 @@ export const getMetadata = async (db: QnaplusDatabase): Promise<QnaplusMetadata>
 	if (metadata !== undefined) {
 		return metadata;
 	}
-	return { id: DATA_PRIMARY_KEY, version: "_" }
+	return { id: DATA_PRIMARY_KEY, version: DEFAULT_VERSION }
 };
 
 export const getAppData = async () => {
