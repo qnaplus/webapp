@@ -35,8 +35,10 @@ database.version(2).upgrade((tx) => {
     console.info("Upgrading database to version 2");
 	tx.table("metadata").toCollection().modify(metadata => {
 		metadata.version = DEFAULT_VERSION;
+		// biome-ignore lint/performance/noDelete: <explanation>
 		delete metadata.lastUpdated;
-	})
+	});
+	tx.table("questions").clear();
 })
 
 const updateAppData = async (db: QnaplusDatabase) => {

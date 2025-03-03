@@ -62,7 +62,7 @@ const answerChildren = answerDom.children as ParserNode[];
 <template>
   <Root>
     <Suspense suspensible>
-      <div class="prose dark:prose-invert prose-slate max-w-none p-4">
+      <div class="prose prose-invert prose-slate max-w-none p-4">
         <div class="flex flex-col items-center justify-center" v-if="!loading && question === undefined">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>
