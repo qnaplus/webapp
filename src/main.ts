@@ -8,9 +8,9 @@ import { useRegisterSW } from "virtual:pwa-register/vue"
 
 useRegisterSW({ immediate: true });
 
-const primary = import.meta.env.PROD
-	? "blue"
-	: "teal";
+const primary = import.meta.env.MODE === "development"
+	? "teal"
+	: "blue";
 
 const preset = definePreset(Aura, {
 	semantic: {
