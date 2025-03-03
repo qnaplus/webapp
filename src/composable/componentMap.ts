@@ -14,7 +14,13 @@ import Paragraph from "../components/question/Paragraph.vue";
 import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
 
-export const resolveQuestionComponent = (node: ParserNode) => {
+export interface ResolvedComponent {
+	content: ReturnType<typeof resolveQuestionComponentContent>;
+	props: ReturnType<typeof resolveQuestionComponentProps>;
+	size: ReturnType<typeof resolveQuestionComponentSize>;
+}
+
+export const resolveQuestionComponentContent = (node: ParserNode) => {
 	switch (true) {
 		case isTag(node) && node.name === "img":
 			return Image;
@@ -57,3 +63,27 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	}
 	return {};
 };
+
+export const resolveQuestionComponentSize = (node: ParserNode): number => {
+	if (isTag(node) && node.name === "img") {
+		return 250;
+	}
+	if (
+		isTag(node) &&
+		["em", "p", "strong", "blockquote", "ol", "li", "a"].includes(node.name)
+	) {
+		return node.children.reduce<number>((size, child) => size + resolveQuestionComponentSize(child), 0);
+	}
+	if (isText(node)) {
+		return node.data.split(" ").length;
+	}
+	return 0;
+}
+
+export const resolveQuestionComponent = (node: ParserNode): ResolvedComponent => {
+	return {
+		content: resolveQuestionComponentContent(node),
+		props: resolveQuestionComponentProps(node),
+		size: resolveQuestionComponentSize(node)
+	}
+}

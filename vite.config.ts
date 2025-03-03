@@ -1,6 +1,7 @@
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -9,6 +10,7 @@ export default defineConfig(({ mode }) => {
 		publicDir: `public/${mode}`,
 		plugins: [
 			vue(),
+			tailwindcss(),
 			VitePWA({
 				registerType: "autoUpdate",
 				injectRegister: "inline",

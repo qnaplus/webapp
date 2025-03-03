@@ -1,9 +1,8 @@
 import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
-import { v4 } from "uuid";
 import { supabase } from "./supabase";
 
 export const doPrecheck = async (id: string): Promise<boolean | null> => {
-	const room = v4();
+	const room = self.crypto.randomUUID();
 
 	console.log("sending precheck request");
 	const exists = await new Promise<boolean | null>((resolve) => {

@@ -48,5 +48,5 @@ startup();
 </template>
 
 <style>
-@import "styles";
+@import "./styles.css";
 </style>

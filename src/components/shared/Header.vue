@@ -29,14 +29,18 @@ const appname = import.meta.env.VITE_APP_NAME;
         <a href="/" class="text-color ml-2 font-semibold">{{ appname }}</a>
         <div class="flex gap-2">
             <Button as="a" href="https://github.com/Battlesquid/qnaplus" target="_blank" class="header-btn"
-                icon="pi pi-github" aria-label="Github" outlined text />
-            <Button class="header-btn" icon="pi pi-cog" aria-label="Settings" outlined text />
-            <Button class="header-btn" icon="pi pi-info-circle" aria-label="About" outlined text />
+            icon="pi pi-discord" aria-label="Discord Server" text />
+            <Button as="a" href="https://github.com/qnaplus" target="_blank" class="header-btn"
+                icon="pi pi-github" aria-label="Github" text />
+            <Button class="header-btn" icon="pi pi-cog" aria-label="Settings" text />
+            <Button class="header-btn" icon="pi pi-info-circle" aria-label="About" text />
         </div>
     </div>
 </template>
 
 <style scoped>
+@reference "../../styles.css";
+
 .header-sticky {
     position: fixed;
     top: 0;

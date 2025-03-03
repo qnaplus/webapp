@@ -9,7 +9,7 @@ import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
 import {
-  resolveQuestionComponent,
+  resolveQuestionComponentContent,
   resolveQuestionComponentProps,
 } from "../composable/componentMap";
 import { getQuestion } from "../database";
@@ -17,43 +17,43 @@ import { doPrecheck } from "../precheck";
 import Root from "./Root.vue";
 
 const props = defineProps<{
-	id: string;
+  id: string;
 }>();
 
 const archived = ref<boolean | null | undefined>(undefined);
 
 const loading = ref(true);
 const question = await getQuestion(props.id).finally(() => {
-	setTimeout(() => {
-		loading.value = false;
-	}, 500);
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
 });
 
 const getStatus = async () => {
-	if (question === undefined) {
-		return;
-	}
-	archived.value = await doPrecheck(question.id);
+  if (question === undefined) {
+    return;
+  }
+  archived.value = await doPrecheck(question.id);
 };
 
 if (question !== undefined) {
-	getStatus();
+  getStatus();
 }
 
 const sanitizeOptions: sanitize.IOptions = {
-	allowedTags: sanitize.defaults.allowedTags.concat("img"),
+  allowedTags: sanitize.defaults.allowedTags.concat("img"),
 };
 
 const sanitizedQuestionHTML = sanitize(
-	question?.questionRaw ?? "",
-	sanitizeOptions,
+  question?.questionRaw ?? "",
+  sanitizeOptions,
 );
 const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
 const questionChildren = questionDom.children as ParserNode[];
 
 const sanitizedAnswerHTML = sanitize(
-	question?.answerRaw ?? "",
-	sanitizeOptions,
+  question?.answerRaw ?? "",
+  sanitizeOptions,
 );
 const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
 const answerChildren = answerDom.children as ParserNode[];
@@ -62,7 +62,7 @@ const answerChildren = answerDom.children as ParserNode[];
 <template>
   <Root>
     <Suspense suspensible>
-      <div class="prose prose-invert prose-slate max-w-none p-4">
+      <div class="prose prose-invert prose-slate break-words max-w-none p-4">
         <div class="flex flex-col items-center justify-center" v-if="!loading && question === undefined">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>
@@ -84,21 +84,20 @@ const answerChildren = answerDom.children as ParserNode[];
           <div>
             <h3>Question</h3>
             <div class="text-surface-300">
-              <component :is="resolveQuestionComponent(child)" v-bind="resolveQuestionComponentProps(child)"
+              <component :is="resolveQuestionComponentContent(child)" v-bind="resolveQuestionComponentProps(child)"
                 v-for="child in questionChildren" />
             </div>
           </div>
-          <div>
-            <div v-if="question.answered" class="text-surface-300">
-              <h3>Answer</h3>
-              <div>
-                <component :is="resolveQuestionComponent(child)" v-bind="resolveQuestionComponentProps(child)"
-                  v-for="child in answerChildren" />
-              </div>
+          <div v-if="question.answered"
+            class="p-4 bg-linear-to-t from-green-600/30 from-0% to-transparent to-100% text-surface-300">
+            <h3>Answer</h3>
+            <div>
+              <component :is="resolveQuestionComponentContent(child)" v-bind="resolveQuestionComponentProps(child)"
+                v-for="child in answerChildren" />
             </div>
           </div>
           <Divider />
-          <div class="flex justify-between">
+          <div class="flex footer gap-3">
             <QuestionTags :tags="question.tags" :program="question.program" />
             <a class="text-muted-color" :href="question.url" target="_blank">View on RobotEvents <i
                 class=" ml-1 pi pi-external-link"></i></a>
@@ -119,5 +118,18 @@ const answerChildren = answerDom.children as ParserNode[];
   border: 1px solid #34774d;
   padding: 1px 20px;
   border-radius: 8px;
+}
+
+@media screen and (max-width: 1199px) {
+  .footer {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>
