@@ -32,6 +32,7 @@ database.version(1).stores({
 });
 
 database.version(2).upgrade((tx) => {
+    console.info("Upgrading database to version 2");
 	tx.table("metadata").toCollection().modify(metadata => {
 		metadata.version = DEFAULT_VERSION;
 		delete metadata.lastUpdated;
