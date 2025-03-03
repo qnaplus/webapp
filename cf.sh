@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$CF_PAGES_BRANCH" == "dev" ]; then
-    yarn build --mode development
+    pnpm build --mode development
 else
-    yarn build
+    pnpm build
 fi
