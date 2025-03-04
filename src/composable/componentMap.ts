@@ -15,12 +15,12 @@ import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
 
 export interface ResolvedComponent {
-	content: ReturnType<typeof resolveQuestionComponentContent>;
+	node: ReturnType<typeof resolveQuestionComponentNode>;
 	props: ReturnType<typeof resolveQuestionComponentProps>;
 	size: ReturnType<typeof resolveQuestionComponentSize>;
 }
 
-export const resolveQuestionComponentContent = (node: ParserNode) => {
+export const resolveQuestionComponentNode = (node: ParserNode) => {
 	switch (true) {
 		case isTag(node) && node.name === "img":
 			return Image;
@@ -82,7 +82,7 @@ export const resolveQuestionComponentSize = (node: ParserNode): number => {
 
 export const resolveQuestionComponent = (node: ParserNode): ResolvedComponent => {
 	return {
-		content: resolveQuestionComponentContent(node),
+		node: resolveQuestionComponentNode(node),
 		props: resolveQuestionComponentProps(node),
 		size: resolveQuestionComponentSize(node)
 	}

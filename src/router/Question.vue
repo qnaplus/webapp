@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Node as ParserNode } from "domhandler";
 import * as htmlparser2 from "htmlparser2";
 import Divider from "primevue/divider";
 import Message from "primevue/message";
@@ -9,8 +8,7 @@ import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
 import {
-  resolveQuestionComponentContent,
-  resolveQuestionComponentProps,
+  resolveQuestionComponent
 } from "../composable/componentMap";
 import { getQuestion } from "../database";
 import { doPrecheck } from "../precheck";
@@ -21,53 +19,59 @@ const props = defineProps<{
 }>();
 
 const archived = ref<boolean | null | undefined>(undefined);
-
 const loading = ref(true);
-const question = await getQuestion(props.id).finally(() => {
+
+const loadContent = async () => {
+  const question = await getQuestion(props.id);
+  if (question === undefined) {
+    return { question: null, questionContent: null, answerContent: null };
+  }
   setTimeout(() => {
     loading.value = false;
-  }, 500);
-});
+  }, 500)
 
-const getStatus = async () => {
-  if (question === undefined) {
-    return;
-  }
-  archived.value = await doPrecheck(question.id);
-};
+  doPrecheck(question.id)
+    .then(result => {
+      archived.value = result
+    });
 
-if (question !== undefined) {
-  getStatus();
+  const sanitizeOptions: sanitize.IOptions = {
+    allowedTags: sanitize.defaults.allowedTags.concat("img"),
+  };
+
+  const cleanQuestionHTML = sanitize(
+    question.questionRaw,
+    sanitizeOptions,
+  );
+  const questionContent = htmlparser2
+    .parseDocument(cleanQuestionHTML)
+    .children
+    .map(resolveQuestionComponent)
+
+  const cleanAnswerHTML = sanitize(
+    question.answerRaw ?? "",
+    sanitizeOptions,
+  );
+  const answerContent = htmlparser2.parseDocument(cleanAnswerHTML)
+    .children
+    .map(resolveQuestionComponent)
+
+  return { question, questionContent, answerContent };
 }
 
-const sanitizeOptions: sanitize.IOptions = {
-  allowedTags: sanitize.defaults.allowedTags.concat("img"),
-};
+const { question, questionContent, answerContent } = await loadContent();
 
-const sanitizedQuestionHTML = sanitize(
-  question?.questionRaw ?? "",
-  sanitizeOptions,
-);
-const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
-const questionChildren = questionDom.children as ParserNode[];
-
-const sanitizedAnswerHTML = sanitize(
-  question?.answerRaw ?? "",
-  sanitizeOptions,
-);
-const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
-const answerChildren = answerDom.children as ParserNode[];
 </script>
 
 <template>
   <Root>
     <Suspense suspensible>
       <div class="prose prose-invert prose-slate break-words max-w-none p-4">
-        <div class="flex flex-col items-center justify-center" v-if="!loading && question === undefined">
+        <div class="flex flex-col items-center justify-center" v-if="!loading && question === null">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>
         </div>
-        <div v-if="!loading && question !== undefined">
+        <div v-if="!loading && question !== null">
           <Message v-if="archived" severity="warn" :closable="false">Archived: Question is no longer available on the
             Q&A.
           </Message>
@@ -84,16 +88,14 @@ const answerChildren = answerDom.children as ParserNode[];
           <div>
             <h3>Question</h3>
             <div class="text-surface-300">
-              <component :is="resolveQuestionComponentContent(child)" v-bind="resolveQuestionComponentProps(child)"
-                v-for="child in questionChildren" />
+              <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
             </div>
           </div>
           <div v-if="question.answered"
             class="p-4 bg-linear-to-t from-green-600/30 from-0% to-transparent to-100% text-surface-300">
             <h3>Answer</h3>
             <div>
-              <component :is="resolveQuestionComponentContent(child)" v-bind="resolveQuestionComponentProps(child)"
-                v-for="child in answerChildren" />
+              <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />
             </div>
           </div>
           <Divider />
