@@ -52,7 +52,8 @@ const loadContent = async () => {
     question.answerRaw ?? "",
     sanitizeOptions,
   );
-  const answerContent = htmlparser2.parseDocument(cleanAnswerHTML)
+  const answerContent = htmlparser2
+    .parseDocument(cleanAnswerHTML)
     .children
     .map(resolveQuestionComponent)
 

@@ -68,15 +68,12 @@ const removeSelectedAdvancedOption = (index: number) => {
                 <Tabs value="0">
                     <TabList>
                         <Tab class="flex gap-3" value="0">Filter
-                            <Badge :value="filterOptions.appliedFilterCount.value" />
+                            <Badge class="ml-2" :value="filterOptions.appliedFilterCount.value" />
                         </Tab>
                         <Tab value="1">Sort</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel value="0">
-                            <template #header>
-                                <Badge class="ml-2" :value="filterOptions.appliedFilterCount.value" />
-                            </template>
                             <div class="flex flex-col gap-3">
                                 <div class="flex flex-wrap gap-3">
 
@@ -160,7 +157,7 @@ const removeSelectedAdvancedOption = (index: number) => {
                                     </InputGroup>
                                 </div>
                                 <div>
-                                    <Button @click="filterOptions.clearFilters()"><b>Clear Filters</b></Button>
+                                    <Button @click="filterOptions.clearFilters()"><b>Reset Filters</b></Button>
                                 </div>
                             </div>
                         </TabPanel>
