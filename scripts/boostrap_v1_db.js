@@ -17,7 +17,10 @@ const openDatabase = () => {
 const bootstrapDatabase = async () => {
 	const db = await openDatabase();
 
-	const transaction = db.transaction(["questions", "metadata", "appdata"], "readwrite");
+	const transaction = db.transaction(
+		["questions", "metadata", "appdata"],
+		"readwrite",
+	);
 	const questionsStore = transaction.objectStore("questions");
 	const metadataStore = transaction.objectStore("metadata");
 	const appdataStore = transaction.objectStore("appdata");
@@ -32,7 +35,12 @@ const bootstrapDatabase = async () => {
 	});
 
 	await new Promise((resolve, reject) => {
-		const request = questionsStore.put({ id: "0", season: "2021-01", program: "Program A", question: "Question 1" })
+		const request = questionsStore.put({
+			id: "0",
+			season: "2021-01",
+			program: "Program A",
+			question: "Question 1",
+		});
 		request.onsuccess = () => resolve();
 		request.onerror = () => reject(request.error);
 	});
@@ -54,4 +62,4 @@ const bootstrapDatabase = async () => {
 
 bootstrapDatabase().catch((e) => {
 	console.error("Failed to bootstrap database:", e);
-})
+});

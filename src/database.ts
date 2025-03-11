@@ -32,14 +32,16 @@ database.version(1).stores({
 });
 
 database.version(2).upgrade((tx) => {
-    console.info("Upgrading database to version 2");
-	tx.table("metadata").toCollection().modify(metadata => {
-		metadata.version = DEFAULT_VERSION;
-		// biome-ignore lint/performance/noDelete: it's literally just one row lol
-		delete metadata.lastUpdated;
-	});
+	console.info("Upgrading database to version 2");
+	tx.table("metadata")
+		.toCollection()
+		.modify((metadata) => {
+			metadata.version = DEFAULT_VERSION;
+			// biome-ignore lint/performance/noDelete: it's literally just one row lol
+			delete metadata.lastUpdated;
+		});
 	tx.table("questions").clear();
-})
+});
 
 const updateAppData = async (db: QnaplusDatabase) => {
 	const questions = await db.questions.toArray();
@@ -60,17 +62,19 @@ type UpdateResponseOutdated = {
 	outdated: true;
 	version: string;
 	questions: Question[];
-}
+};
 
 type UpdateResponseUpToDate = {
 	outdated: false;
-}
+};
 
 type UpdateResponse = UpdateResponseOutdated | UpdateResponseUpToDate;
 
 const update = async (db: QnaplusDatabase) => {
 	const metadata = await getMetadata(db);
-	const response = await fetch(`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`);
+	const response = await fetch(
+		`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`,
+	);
 	if (response.status === 500) {
 		console.error(response.status, response.statusText);
 		return;
@@ -95,12 +99,14 @@ export const setupDatabase = async () => {
 	});
 };
 
-export const getMetadata = async (db: QnaplusDatabase): Promise<QnaplusMetadata> => {
+export const getMetadata = async (
+	db: QnaplusDatabase,
+): Promise<QnaplusMetadata> => {
 	const metadata = await db.metadata.get(DATA_PRIMARY_KEY);
 	if (metadata !== undefined) {
 		return metadata;
 	}
-	return { id: DATA_PRIMARY_KEY, version: DEFAULT_VERSION }
+	return { id: DATA_PRIMARY_KEY, version: DEFAULT_VERSION };
 };
 
 export const getAppData = async () => {

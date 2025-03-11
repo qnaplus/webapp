@@ -1,16 +1,14 @@
+import { useRegisterSW } from "virtual:pwa-register/vue";
 import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { useRegisterSW } from "virtual:pwa-register/vue"
 
 useRegisterSW({ immediate: true });
 
-const primary = import.meta.env.MODE === "development"
-	? "teal"
-	: "blue";
+const primary = import.meta.env.MODE === "development" ? "teal" : "blue";
 
 const preset = definePreset(Aura, {
 	semantic: {

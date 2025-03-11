@@ -14,12 +14,14 @@ import InputGroupAddon from "primevue/inputgroupaddon";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
+import Select from "primevue/select";
 import SelectButton from "primevue/selectbutton";
 import Tab from "primevue/tab";
 import TabList from "primevue/tablist";
 import TabPanel from "primevue/tabpanel";
 import TabPanels from "primevue/tabpanels";
 import Tabs from "primevue/tabs";
+import ToggleSwitch from "primevue/toggleswitch";
 import { computed } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import type { Option } from "../../composable";
@@ -33,8 +35,6 @@ import {
 	sortOptionsList,
 	sortOrderList,
 } from "../../composable/useSort";
-import ToggleSwitch from "primevue/toggleswitch";
-import Select from "primevue/select";
 
 const props = defineProps<{
 	filterOptions: SearchFilterOptions;

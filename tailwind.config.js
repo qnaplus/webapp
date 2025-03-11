@@ -4,5 +4,9 @@ export default {
 	theme: {
 		extend: {},
 	},
-	plugins: [require("tailwindcss-primeui"), require("@tailwindcss/typography"), require("tailwind-gradient-mask-image")],
+	plugins: [
+		require("tailwindcss-primeui"),
+		require("@tailwindcss/typography"),
+		require("tailwind-gradient-mask-image"),
+	],
 };

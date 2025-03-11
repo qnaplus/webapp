@@ -7,61 +7,49 @@ import sanitize from "sanitize-html";
 import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
-import {
-  resolveQuestionComponent
-} from "../composable/componentMap";
+import { resolveQuestionComponent } from "../composable/componentMap";
 import { getQuestion } from "../database";
 import { doPrecheck } from "../precheck";
 import Root from "./Root.vue";
 
 const props = defineProps<{
-  id: string;
+	id: string;
 }>();
 
 const archived = ref<boolean | null | undefined>(undefined);
 const loading = ref(true);
 
 const loadContent = async () => {
-  const question = await getQuestion(props.id);
-  if (question === undefined) {
-    return { question: null, questionContent: null, answerContent: null };
-  }
-  setTimeout(() => {
-    loading.value = false;
-  }, 500)
+	const question = await getQuestion(props.id);
+	if (question === undefined) {
+		return { question: null, questionContent: null, answerContent: null };
+	}
+	setTimeout(() => {
+		loading.value = false;
+	}, 500);
 
-  doPrecheck(question.id)
-    .then(result => {
-      archived.value = result
-    });
+	doPrecheck(question.id).then((result) => {
+		archived.value = result;
+	});
 
-  const sanitizeOptions: sanitize.IOptions = {
-    allowedTags: sanitize.defaults.allowedTags.concat("img"),
-  };
+	const sanitizeOptions: sanitize.IOptions = {
+		allowedTags: sanitize.defaults.allowedTags.concat("img"),
+	};
 
-  const cleanQuestionHTML = sanitize(
-    question.questionRaw,
-    sanitizeOptions,
-  );
-  const questionContent = htmlparser2
-    .parseDocument(cleanQuestionHTML)
-    .children
-    .map(resolveQuestionComponent)
+	const cleanQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
+	const questionContent = htmlparser2
+		.parseDocument(cleanQuestionHTML)
+		.children.map(resolveQuestionComponent);
 
-  const cleanAnswerHTML = sanitize(
-    question.answerRaw ?? "",
-    sanitizeOptions,
-  );
-  const answerContent = htmlparser2
-    .parseDocument(cleanAnswerHTML)
-    .children
-    .map(resolveQuestionComponent)
+	const cleanAnswerHTML = sanitize(question.answerRaw ?? "", sanitizeOptions);
+	const answerContent = htmlparser2
+		.parseDocument(cleanAnswerHTML)
+		.children.map(resolveQuestionComponent);
 
-  return { question, questionContent, answerContent };
-}
+	return { question, questionContent, answerContent };
+};
 
 const { question, questionContent, answerContent } = await loadContent();
-
 </script>
 
 <template>
