@@ -6,30 +6,29 @@
 	"scripts": {
 		"dev": "vue-tsc && vite",
 		"build": "vite build",
+		"build:dev": "pnpm build --mode development",
 		"preview": "vite preview",
 		"neat": "biome check .",
 		"neat:fix": "biome check . --write",
 		"clean": "rimraf dist .turbo",
 		"clean:modules": "rimraf node_modules",
-		"clean:full": "yarn clean && yarn clean:modules"
+		"clean:full": "pnpm clean && pnpm clean:modules"
 	},
 	"dependencies": {
-		"@primevue/themes": "^4.0.0",
+		"@primeuix/themes": "^1.0.0",
 		"@supabase/supabase-js": "^2.48.1",
+		"@tailwindcss/vite": "^4.0.9",
 		"@vueuse/core": "^10.9.0",
-		"@vueuse/integrations": "^10.8.0",
 		"@vueuse/rxjs": "^10.11.0",
-		"deep-equal": "^2.2.3",
 		"dexie": "^4.0.7",
 		"htmlparser2": "^9.1.0",
 		"minisearch": "^6.3.0",
-		"primeflex": "^3.3.1",
 		"primeicons": "^6.0.1",
-		"primevue": "^4.0.0",
+		"primevue": "^4.3.1",
 		"rxjs": "^7.8.1",
 		"sanitize-html": "^2.13.0",
-		"tailwindcss-primeui": "^0.3.4",
-		"uuid": "^11.0.5",
+		"tailwindcss": "^4.0.9",
+		"tailwindcss-primeui": "^0.5.1",
 		"virtua": "^0.28.0",
 		"vue": "^3.4.15",
 		"vue-draggable-plus": "^0.5.0",
@@ -39,17 +38,13 @@
 		"@biomejs/biome": "1.9.4",
 		"@qnaplus/scraper": "^2.0.2",
 		"@tailwindcss/typography": "^0.5.15",
-		"@types/deep-equal": "^1.0.4",
 		"@types/sanitize-html": "^2.11.0",
 		"@vite-pwa/assets-generator": "^0.2.4",
 		"@vitejs/plugin-vue": "^5.0.4",
 		"autoprefixer": "^10.4.19",
 		"domhandler": "^5.0.3",
-		"postcss": "^8.4.39",
-		"primeclt": "^0.1.5",
 		"rimraf": "^6.0.1",
 		"sass": "^1.71.1",
-		"tailwindcss": "^3.4.6",
 		"typescript": "^5.2.2",
 		"vite": "^5.2.10",
 		"vite-plugin-pwa": "^0.21.1",
@@ -63,7 +58,17 @@
 	},
 	"volta": {
 		"node": "22.13.1",
-		"yarn": "1.22.22"
+		"pnpm": "10.5.2"
 	},
-	"packageManager": "yarn@1.22.22"
+	"packageManager": "pnpm@10.5.2",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"@parcel/watcher",
+			"esbuild",
+			"sharp",
+			"vue-demi",
+			"workerd"
+		]
+	}
 }

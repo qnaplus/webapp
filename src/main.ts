@@ -1,27 +1,29 @@
-import { definePreset } from "@primevue/themes";
-import Aura from "@primevue/themes/aura";
+import { useRegisterSW } from "virtual:pwa-register/vue";
+import { definePreset } from "@primeuix/themes";
+import Aura from "@primeuix/themes/aura";
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { useRegisterSW } from "virtual:pwa-register/vue"
 
 useRegisterSW({ immediate: true });
+
+const primary = import.meta.env.MODE === "development" ? "teal" : "blue";
 
 const preset = definePreset(Aura, {
 	semantic: {
 		primary: {
-			50: "{blue.50}",
-			100: "{blue.100}",
-			200: "{blue.200}",
-			300: "{blue.300}",
-			400: "{blue.400}",
-			500: "{blue.500}",
-			600: "{blue.600}",
-			700: "{blue.700}",
-			800: "{blue.800}",
-			900: "{blue.900}",
-			950: "{blue.950}",
+			50: `{${primary}.50}`,
+			100: `{${primary}.100}`,
+			200: `{${primary}.200}`,
+			300: `{${primary}.300}`,
+			400: `{${primary}.400}`,
+			500: `{${primary}.500}`,
+			600: `{${primary}.600}`,
+			700: `{${primary}.700}`,
+			800: `{${primary}.800}`,
+			900: `{${primary}.900}`,
+			950: `{${primary}.950}`,
 		},
 		colorScheme: {
 			light: {
@@ -67,7 +69,7 @@ createApp(App)
 			preset,
 			options: {
 				prefix: "p",
-				darkModeSelector: "system",
+				darkModeSelector: ".dark",
 			},
 		},
 	})

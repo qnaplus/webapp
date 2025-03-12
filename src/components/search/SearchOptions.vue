@@ -8,20 +8,20 @@ import Badge from "primevue/badge";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
 import Divider from "primevue/divider";
-import Dropdown from "primevue/dropdown";
 import IconField from "primevue/iconfield";
 import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import InputIcon from "primevue/inputicon";
-import InputSwitch from "primevue/inputswitch";
 import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
+import Select from "primevue/select";
 import SelectButton from "primevue/selectbutton";
 import Tab from "primevue/tab";
 import TabList from "primevue/tablist";
 import TabPanel from "primevue/tabpanel";
 import TabPanels from "primevue/tabpanels";
 import Tabs from "primevue/tabs";
+import ToggleSwitch from "primevue/toggleswitch";
 import { computed } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import type { Option } from "../../composable";
@@ -68,15 +68,12 @@ const removeSelectedAdvancedOption = (index: number) => {
                 <Tabs value="0">
                     <TabList>
                         <Tab class="flex gap-3" value="0">Filter
-                            <Badge :value="filterOptions.appliedFilterCount.value" />
+                            <Badge class="ml-2" :value="filterOptions.appliedFilterCount.value" />
                         </Tab>
                         <Tab value="1">Sort</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel value="0">
-                            <template #header>
-                                <Badge class="ml-2" :value="filterOptions.appliedFilterCount.value" />
-                            </template>
                             <div class="flex flex-col gap-3">
                                 <div class="flex flex-wrap gap-3">
 
@@ -160,7 +157,7 @@ const removeSelectedAdvancedOption = (index: number) => {
                                     </InputGroup>
                                 </div>
                                 <div>
-                                    <Button @click="filterOptions.clearFilters()"><b>Clear Filters</b></Button>
+                                    <Button @click="filterOptions.clearFilters()"><b>Reset Filters</b></Button>
                                 </div>
                             </div>
                         </TabPanel>
@@ -172,19 +169,19 @@ const removeSelectedAdvancedOption = (index: number) => {
                                 <div class="flex justify-end">
                                     <div class="flex items-center gap-3">
                                         <label for="advanced_toggle">Advanced Sorting</label>
-                                        <InputSwitch v-model="sortOptions.advancedEnabled" input-id="advanced_toggle" />
+                                        <ToggleSwitch v-model="sortOptions.advancedEnabled" input-id="advanced_toggle" />
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-3" v-if="!sortOptions.advancedEnabled">
                                     <div class="flex-1 m-0">
                                         <label for="basic_sort_option">Sort By</label>
-                                        <Dropdown class="w-full" input-id="basic_sort_option"
+                                        <Select class="w-full" input-id="basic_sort_option"
                                             v-model="sortOptions.basic.sort" :options="sortOptionsList"
                                             option-label="name" />
                                     </div>
                                     <div class="flex-1 m-0">
                                         <label for="basic_sort_order">Order</label>
-                                        <Dropdown class="w-full" input-id="basic_sort_order"
+                                        <Select class="w-full" input-id="basic_sort_order"
                                             v-model="sortOptions.basic.asc" :options="sortOrderList"
                                             option-label="name" />
                                     </div>
@@ -192,7 +189,7 @@ const removeSelectedAdvancedOption = (index: number) => {
                                 <div class="flex flex-col gap-3" v-else>
                                     <div class="flex-1">
                                         <label for="sort_option">Sort Option</label>
-                                        <Dropdown class="w-full" input-id="sort_option"
+                                        <Select class="w-full" input-id="sort_option"
                                             :options="remainingAdvancedOptions" option-label="name"
                                             @update:model-value="updateSelectedAdvancedOption" />
                                     </div>
@@ -207,7 +204,7 @@ const removeSelectedAdvancedOption = (index: number) => {
                                                 <div class="flex flex-1 items-center gap-3">
                                                     <div class="flex flex-1 items-center gap-3 m-0">
                                                         <label :for="'advanced_sort_order_' + option.name">Order</label>
-                                                        <Dropdown class="flex-1"
+                                                        <Select class="flex-1"
                                                             :input-id="'advanced_sort_order_' + option.name"
                                                             v-model="sortOptions.advanced[index].asc"
                                                             :options="sortOrderList" option-label="name" />

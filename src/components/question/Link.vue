@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Node as ParserNode } from "domhandler";
 import {
-	resolveQuestionComponent,
+	resolveQuestionComponentNode,
 	resolveQuestionComponentProps,
 } from "../../composable/componentMap";
 
@@ -13,7 +13,7 @@ defineProps<{
 
 <template>
     <a :href="href">
-        <component :is="resolveQuestionComponent(child)" v-bind="resolveQuestionComponentProps(child)"
+        <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
     </a>
 </template>
