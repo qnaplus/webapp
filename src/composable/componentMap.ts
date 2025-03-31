@@ -13,6 +13,8 @@ import OrderedList from "../components/question/OrderedList.vue";
 import Paragraph from "../components/question/Paragraph.vue";
 import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
+import Code from "../components/question/Code.vue";
+import Pre from "../components/question/Pre.vue";
 
 export interface ResolvedComponent {
 	node: ReturnType<typeof resolveQuestionComponentNode>;
@@ -40,6 +42,10 @@ export const resolveQuestionComponentNode = (node: ParserNode) => {
 			return OrderedList;
 		case isTag(node) && node.name === "li":
 			return ListItem;
+		case isTag(node) && node.name === "code":
+			return Code;
+		case isTag(node) && node.name === "pre":
+			return Pre;
 		case node instanceof TextNode:
 			return Text;
 	}
@@ -51,12 +57,15 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	}
 	if (
 		isTag(node) &&
-		["em", "p", "strong", "blockquote", "ol", "li"].includes(node.name)
+		["em", "p", "strong", "blockquote", "li", "pre", "code"].includes(node.name)
 	) {
 		return { children: node.children };
 	}
 	if (isTag(node) && node.name === "a") {
 		return { href: node.attribs.href, children: node.children };
+	}
+	if (isTag(node) && node.name === "ol") {
+		return { start: Number.parseInt(node.attribs.start ?? "1"), children: node.children };
 	}
 	if (isText(node)) {
 		return { text: node.data };
