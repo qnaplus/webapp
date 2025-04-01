@@ -61,7 +61,7 @@ const { question, questionContent, answerContent } = await loadContent();
         </div>
         <div v-if="!loading && question !== null">
           <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
-            qnaplus is an unofficial third-party application. <a :href="question.url">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
+            qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
           </Message>
           <h2 class="mb-1">{{ question.title }}</h2>
           <question-details :question="question" />
