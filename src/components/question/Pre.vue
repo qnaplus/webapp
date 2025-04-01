@@ -7,13 +7,15 @@ import {
 
 defineProps<{
 	children: ParserNode[];
-    start?: number;
 }>();
 </script>
 
 <template>
-    <ol :start="start">
+    <pre>
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </ol>
+    </pre>
 </template>
+
+<style scoped>
+</style>

@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
 			tailwindcss(),
 			VitePWA({
 				registerType: "autoUpdate",
-				injectRegister: "inline",
+				injectRegister: "auto",
 				manifest: {
 					id: "battlesquid.qnaplus",
 					name: "qnaplus",

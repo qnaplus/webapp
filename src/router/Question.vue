@@ -9,14 +9,12 @@ import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
 import { resolveQuestionComponent } from "../composable/componentMap";
 import { getQuestion } from "../database";
-import { doPrecheck } from "../precheck";
 import Root from "./Root.vue";
 
 const props = defineProps<{
 	id: string;
 }>();
 
-const archived = ref<boolean | null | undefined>(undefined);
 const loading = ref(true);
 
 const loadContent = async () => {
@@ -28,12 +26,13 @@ const loadContent = async () => {
 		loading.value = false;
 	}, 500);
 
-	doPrecheck(question.id).then((result) => {
-		archived.value = result;
-	});
-
+  const allowedAttributes = {
+    ...sanitize.defaults.allowedAttributes,
+    ol: ["start"]
+  }
 	const sanitizeOptions: sanitize.IOptions = {
 		allowedTags: sanitize.defaults.allowedTags.concat("img"),
+    allowedAttributes
 	};
 
 	const cleanQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
@@ -61,27 +60,19 @@ const { question, questionContent, answerContent } = await loadContent();
           <h4>Couldn't find a question here.</h4>
         </div>
         <div v-if="!loading && question !== null">
-          <Message v-if="archived" severity="warn" :closable="false">Archived: Question is no longer available on the
-            Q&A.
+          <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
+            qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
           </Message>
-          <Message v-if="archived === null" severity="warn" :closable="false">Unable to check if Q&A exists.
-          </Message>
-          <div v-if="archived === undefined" class="flex justify-end items-center gap-2 p-2">
-            <ProgressSpinner style="width: 20px; height: 20px; margin: 0;" strokeWidth="4" fill="transparent"
-              animationDuration="0.5s" />
-            <span class="text-muted-color">Checking Question Status...</span>
-          </div>
           <h2 class="mb-1">{{ question.title }}</h2>
           <question-details :question="question" />
           <Divider />
-          <div>
+          <div class="px-5 pb-3">
             <h3>Question</h3>
             <div class="text-surface-300">
               <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
             </div>
           </div>
-          <div v-if="question.answered"
-            class="p-4 bg-linear-to-t from-green-600/30 from-0% to-transparent to-100% text-surface-300">
+          <div v-if="question.answered" class="border border-green-700 rounded-md px-5">
             <h3>Answer</h3>
             <div>
               <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />

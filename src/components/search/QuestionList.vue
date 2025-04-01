@@ -4,12 +4,12 @@ import { WindowVirtualizer } from "virtua/vue";
 import QuestionCard from "./QuestionCard.vue";
 
 defineProps<{
-	questions: Question[];
+    questions: Question[];
 }>();
 </script>
 
 <template>
-    <WindowVirtualizer :data="questions" #default="question">
+    <WindowVirtualizer :data="questions" #default="{ item: question }">
         <QuestionCard :key="question.id" :id="question.id" :title="question.title" :question="question.question"
             :answered="question.answered" :author="question.author" :asked-timestamp-ms="question.askedTimestampMs"
             :program="question.program" :answered-timestamp-ms="question.answeredTimestampMs" :url="question.url"
