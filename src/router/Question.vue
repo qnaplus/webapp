@@ -60,8 +60,8 @@ const { question, questionContent, answerContent } = await loadContent();
           <h4>Couldn't find a question here.</h4>
         </div>
         <div v-if="!loading && question !== null">
-          <Message severity="info" size="small" icon="pi pi-info-circle" variant="outlined" :closable="false">
-            qnaplus is a third-party application not affiliated with RobotEvents. Visit the Q&A on RobotEvents to get the most up-to-date information.
+          <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
+            qnaplus is an unofficial third-party application. <a :href="question.url">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
           </Message>
           <h2 class="mb-1">{{ question.title }}</h2>
           <question-details :question="question" />
