@@ -8,6 +8,7 @@ import {
 } from "vue";
 import { type SortFunction, multisortrules } from "../util/sorting";
 import type { Option } from "./types";
+import type { UseSearchResult } from "./useSearch";
 
 export enum SortOptions {
 	Season = 0,
@@ -90,7 +91,7 @@ export const sortOptionsList = [
 	},
 ];
 
-export const useSort = (questions: MaybeRefOrGetter<Question[]>) => {
+export const useSort = (questions: MaybeRefOrGetter<UseSearchResult[]>) => {
 	const getDefaultSearchSortOptions = (): SearchSortOptions => {
 		return {
 			basic: {

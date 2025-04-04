@@ -15,12 +15,17 @@ import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
 import Code from "../components/question/Code.vue";
 import Pre from "../components/question/Pre.vue";
+import UnorderedList from "../components/question/UnorderedList.vue";
+import Mark from "../components/question/Mark.vue";
+import Header from "../components/question/Header.vue";
 
 export interface ResolvedComponent {
 	node: ReturnType<typeof resolveQuestionComponentNode>;
 	props: ReturnType<typeof resolveQuestionComponentProps>;
 	size: ReturnType<typeof resolveQuestionComponentSize>;
 }
+
+const HEADER_REGEX = /h[1-6]/
 
 export const resolveQuestionComponentNode = (node: ParserNode) => {
 	switch (true) {
@@ -40,12 +45,18 @@ export const resolveQuestionComponentNode = (node: ParserNode) => {
 			return Blockquote;
 		case isTag(node) && node.name === "ol":
 			return OrderedList;
+		case isTag(node) && node.name === "ul":
+			return UnorderedList;
 		case isTag(node) && node.name === "li":
 			return ListItem;
 		case isTag(node) && node.name === "code":
 			return Code;
 		case isTag(node) && node.name === "pre":
 			return Pre;
+		case isTag(node) && node.name === "mark":
+			return Mark;
+		case isTag(node) && HEADER_REGEX.test(node.name):
+			return Header;
 		case node instanceof TextNode:
 			return Text;
 	}
@@ -57,9 +68,12 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	}
 	if (
 		isTag(node) &&
-		["em", "p", "strong", "blockquote", "li", "pre", "code"].includes(node.name)
+		["em", "p", "strong", "blockquote", "li", "pre", "code", "ul", "mark"].includes(node.name)
 	) {
 		return { children: node.children };
+	}
+	if (isTag(node) && HEADER_REGEX.test(node.name)) {
+		return { header: node.name, children: node.children };
 	}
 	if (isTag(node) && node.name === "a") {
 		return { href: node.attribs.href, children: node.children };
@@ -79,8 +93,14 @@ export const resolveQuestionComponentSize = (node: ParserNode): number => {
 	}
 	if (
 		isTag(node) &&
-		["em", "p", "strong", "blockquote", "ol", "li", "a"].includes(node.name)
+		["em", "p", "strong", "blockquote", "ol", "li", "a", "pre", "code", "ul", "mark"].includes(node.name)
 	) {
+		return node.children.reduce<number>(
+			(size, child) => size + resolveQuestionComponentSize(child),
+			0,
+		);
+	}
+	if (isTag(node) && HEADER_REGEX.test(node.name)) {
 		return node.children.reduce<number>(
 			(size, child) => size + resolveQuestionComponentSize(child),
 			0,

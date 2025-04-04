@@ -10,10 +10,14 @@ import {
 } from "vue";
 import { isEmpty } from "../util/strings";
 
-type QuestionSearchResult = Question & SearchResult;
+export type QuestionSearchResult = Question & SearchResult;
+
+export type UseSearchResult = Question | QuestionSearchResult;
+
+const HTML_TOKENIZER_REGEX = /(?:[\n\r\p{Z}\p{P}]|(?:<\/?\w+>))+/ug;
 
 const minisearch = new MiniSearch<Question>({
-    fields: ["title", "question", "answer"],
+    fields: ["title", "questionRaw", "answerRaw"],
     storeFields: [
         "id",
         "url",
@@ -32,9 +36,7 @@ const minisearch = new MiniSearch<Question>({
         "answered",
         "tags",
     ],
-    processTerm: (term, _fieldName) => {
-        return stemmer(term);
-    }
+    tokenize: (text) => text.split(HTML_TOKENIZER_REGEX).filter(t => !isEmpty(t))
 });
 
 let loaded = false;
@@ -57,15 +59,17 @@ export const useSearch = (
     query: MaybeRefOrGetter<string>,
     dbQuestions: Readonly<Ref<Question[]>>,
 ) => {
-    const questions = ref<Question[]>([]);
+    const questions = ref<UseSearchResult[]>([]);
 
     const search = () => {
         const value = toValue(query);
         if (isEmpty(value)) {
             questions.value = dbQuestions.value;
         } else {
-            const results = minisearch.search(value, { prefix: true }) as QuestionSearchResult[];
-            console.log(results);
+            const results = minisearch.search(value, {
+                processTerm: (term) => stemmer(term).toLowerCase(),
+                prefix: true
+            }) as QuestionSearchResult[];
             questions.value = results;
         }
     };

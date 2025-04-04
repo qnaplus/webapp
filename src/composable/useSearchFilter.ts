@@ -8,6 +8,7 @@ import {
 	watchEffect,
 } from "vue";
 import type { Option } from "./types";
+import type { UseSearchResult } from "./useSearch";
 
 export type SearchFilters = {
 	season: Option<Question["season"]>[];
@@ -101,7 +102,7 @@ const isEmptyFilterValue = (
 
 export type SearchFilterComposable = {
 	filters: SearchFilters;
-	filteredQuestions: Ref<Question[]>;
+	filteredQuestions: Ref<UseSearchResult[]>;
 	appliedFilterCount: Ref<number>;
 	clearFilters(): void;
 	seasons: Option<string>[];
@@ -119,7 +120,7 @@ export type FilterData = {
 };
 
 export const useSearchFilter = (
-	questions: MaybeRefOrGetter<Question[]>,
+	questions: MaybeRefOrGetter<UseSearchResult[]>,
 	filterData: FilterData,
 ): SearchFilterComposable => {
 	const seasons = filterData.seasons.map((season) => ({
@@ -153,7 +154,7 @@ export const useSearchFilter = (
 	};
 
 	const filters = reactive<SearchFilters>(getInitialFilterState());
-	const filteredQuestions = ref<Question[]>([]);
+	const filteredQuestions = ref<UseSearchResult[]>([]);
 	const appliedFilterCount = ref<number>(0);
 
 	const applyFilters = () => {

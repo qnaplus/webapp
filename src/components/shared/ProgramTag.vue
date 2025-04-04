@@ -11,18 +11,18 @@ const { program } = defineProps<{ program: string }>();
 
 <style lang="scss">
 .v5rc {
-    background-color: color-mix(in srgb, #f54242, transparent 84%) !important;
-    color: #f54242 !important;
+    background-color: color-mix(in srgb, #f84f4f, transparent 84%) !important;
+    color: #f84f4f !important;
 }
 
 .vurc {
-    background-color: color-mix(in srgb, #8a42f5, transparent 84%) !important;
-    color: #8a42f5 !important;
+    background-color: color-mix(in srgb, #9571ca, transparent 84%) !important;
+    color: #9571ca !important;
 }
 
 .viqrc {
-    background-color: color-mix(in srgb, #4290f5, transparent 84%) !important;
-    color: #4290f5 !important;
+    background-color: color-mix(in srgb, #4894f7, transparent 84%) !important;
+    color: #4894f7 !important;
 }
 
 .judging {
