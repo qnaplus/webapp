@@ -30,7 +30,7 @@ const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
     programs: appData?.value?.programs ?? [],
     seasons: appData?.value?.seasons ?? [],
 });
-const { highlightedQuestions } = useHints(query, filteredQuestions)
+const { highlightedQuestions } = useHints(filteredQuestions)
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
 </script>
 
@@ -43,7 +43,7 @@ const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
                 <SearchOptions :filter-options="filterOptions" :sort-options="sortOptions" />
             </div>
             <div class="h-full flex flex-col gap-3">
-                <QuestionList :questions="sortedQuestions" />
+                <QuestionList :query="query" :questions="sortedQuestions" />
                 <ScrollTop />
             </div>
         </div>

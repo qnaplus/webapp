@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import type { Question } from "@qnaplus/scraper";
 import { WindowVirtualizer } from "virtua/vue";
+import type { UseSearchResult } from "../../composable/useSearch";
 import QuestionCard from "./QuestionCard.vue";
 
 defineProps<{
-    questions: Question[];
+    questions: UseSearchResult[];
+    query: string;
 }>();
 </script>
 
 <template>
     <WindowVirtualizer :data="questions" #default="{ item: question }">
-        <QuestionCard :key="question.id" :id="question.id" :title="question.title" :question="question.question"
+        <QuestionCard :key="`${question.id}-${query}`" :id="question.id" :title="question.title" :question="question.question"
             :answered="question.answered" :author="question.author" :asked-timestamp-ms="question.askedTimestampMs"
             :program="question.program" :answered-timestamp-ms="question.answeredTimestampMs" :url="question.url"
             :tags="question.tags" :answer="question.answer" :asked-timestamp="question.askedTimestamp"

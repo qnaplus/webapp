@@ -6,10 +6,9 @@ export const getHints = (result: UseSearchResult) => {
         return result;
     }
     const highlighted = { ...result };
-    const wantedFields = ["title", "questionRaw", "answerRaw"];
     for (const term of result.terms) {
         for (const field of result.match[term]) {
-            if (!wantedFields.includes(field)) {
+            if (!["title", "questionRaw", "answerRaw"].includes(field)) {
                 continue;
             }
             if (field !== "title") {
@@ -21,7 +20,6 @@ export const getHints = (result: UseSearchResult) => {
 }
 
 export const useHints = (
-    _query: MaybeRefOrGetter<string>,
     results: MaybeRefOrGetter<UseSearchResult[]>
 ) => {
     const highlightedQuestions = ref<UseSearchResult[]>([]);
