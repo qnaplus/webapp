@@ -9,9 +9,8 @@ import QuestionTags from "../shared/QuestionTags.vue";
 
 const question = defineProps<Question>();
 const { questionContent, answerContent } = renderQuestion(question, {
-    limit: 75
+	limit: 75,
 });
-
 </script>
 
 <template>

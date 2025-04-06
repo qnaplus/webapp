@@ -14,23 +14,23 @@ import { useSearchFilter } from "../composable/useSearchFilter";
 import { useSort } from "../composable/useSort";
 import { type QnaplusAppData, database } from "../database";
 
-import Root from "./Root.vue";
 import { useHints } from "../composable/useHints";
+import Root from "./Root.vue";
 
 const query = ref("");
 const dbQuestions = useObservable<Question[], Question[]>(
-    from(liveQuery(() => database.questions.toArray())),
-    {
-        initialValue: [],
-    },
+	from(liveQuery(() => database.questions.toArray())),
+	{
+		initialValue: [],
+	},
 );
 const appData = inject<Ref<QnaplusAppData | undefined>>("appdata");
 const { questions } = useSearch(query, dbQuestions);
 const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
-    programs: appData?.value?.programs ?? [],
-    seasons: appData?.value?.seasons ?? [],
+	programs: appData?.value?.programs ?? [],
+	seasons: appData?.value?.seasons ?? [],
 });
-const { highlightedQuestions } = useHints(filteredQuestions)
+const { highlightedQuestions } = useHints(filteredQuestions);
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
 </script>
 

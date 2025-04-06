@@ -6,7 +6,7 @@ import {
 } from "../../composable/useComponentMap";
 
 defineProps<{
-    header: string;
+	header: string;
 	children: ParserNode[];
 }>();
 </script>

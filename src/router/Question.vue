@@ -10,21 +10,21 @@ import { getQuestion } from "../database";
 import Root from "./Root.vue";
 
 const props = defineProps<{
-  id: string;
+	id: string;
 }>();
 
 const loading = ref(true);
 
 const loadContent = async () => {
-  const question = await getQuestion(props.id);
-  if (question === undefined) {
-    return { question: null, questionContent: null, answerContent: null };
-  }
-  setTimeout(() => {
-    loading.value = false;
-  }, 500);
-  const { questionContent, answerContent } = renderQuestion(question);
-  return { question, questionContent, answerContent };
+	const question = await getQuestion(props.id);
+	if (question === undefined) {
+		return { question: null, questionContent: null, answerContent: null };
+	}
+	setTimeout(() => {
+		loading.value = false;
+	}, 500);
+	const { questionContent, answerContent } = renderQuestion(question);
+	return { question, questionContent, answerContent };
 };
 
 const { question, questionContent, answerContent } = await loadContent();

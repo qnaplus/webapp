@@ -7,7 +7,7 @@ import {
 
 defineProps<{
 	children: ParserNode[];
-    start?: number;
+	start?: number;
 }>();
 </script>
 

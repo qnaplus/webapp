@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import sanitize from 'sanitize-html';
-import * as htmlparser2 from "htmlparser2";
-import { Question } from '@qnaplus/scraper';
+import type { Question } from "@qnaplus/scraper";
 import type { Node as ParserNode } from "domhandler";
-import { ResolvedComponent, resolveQuestionComponent } from "../../composable/useComponentMap";
+import * as htmlparser2 from "htmlparser2";
+import sanitize from "sanitize-html";
+import {
+	type ResolvedComponent,
+	resolveQuestionComponent,
+} from "../../composable/useComponentMap";
 
 const props = defineProps<{
-  question: Question;
-  limit?: number;
-  size: "card" | "full";
+	question: Question;
+	limit?: number;
+	size: "card" | "full";
 }>();
 
 const question = props.question;
@@ -16,12 +19,12 @@ const limit = props.limit ?? Number.POSITIVE_INFINITY;
 const size = props.size;
 
 const allowedAttributes = {
-  ...sanitize.defaults.allowedAttributes,
-  ol: ["start"]
-}
+	...sanitize.defaults.allowedAttributes,
+	ol: ["start"],
+};
 const sanitizeOptions: sanitize.IOptions = {
-  allowedTags: sanitize.defaults.allowedTags.concat("img"),
-  allowedAttributes
+	allowedTags: sanitize.defaults.allowedTags.concat("img"),
+	allowedAttributes,
 };
 
 const sanitizedQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
@@ -36,27 +39,26 @@ let truncated = false;
 let questionSize = 0;
 const renderedQuestionChildren: ResolvedComponent[] = [];
 for (const node of questionChildren) {
-  if (questionSize >= limit) {
-    truncated = true;
-    break;
-  }
-  const component = resolveQuestionComponent(node);
-  renderedQuestionChildren.push(component);
-  questionSize += component.size;
+	if (questionSize >= limit) {
+		truncated = true;
+		break;
+	}
+	const component = resolveQuestionComponent(node);
+	renderedQuestionChildren.push(component);
+	questionSize += component.size;
 }
 
 let answerSize = 0;
 const renderedAnswerChildren: ResolvedComponent[] = [];
 for (const node of answerChildren) {
-  if (truncated || answerSize >= limit) {
-    truncated = true;
-    break;
-  }
-  const component = resolveQuestionComponent(node);
-  renderedAnswerChildren.push(component);
-  answerSize += component.size;
+	if (truncated || answerSize >= limit) {
+		truncated = true;
+		break;
+	}
+	const component = resolveQuestionComponent(node);
+	renderedAnswerChildren.push(component);
+	answerSize += component.size;
 }
-
 </script>
 
 <template>

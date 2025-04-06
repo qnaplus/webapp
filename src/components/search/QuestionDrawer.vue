@@ -1,11 +1,10 @@
 <script lang="ts">
-import { Question } from '@qnaplus/scraper';
-import Drawer from 'primevue/drawer';
-
+import type { Question } from "@qnaplus/scraper";
+import Drawer from "primevue/drawer";
 
 defineProps<{
-    visible: boolean;
-    question: Question;
+	visible: boolean;
+	question: Question;
 }>();
 </script>
 

@@ -1,30 +1,32 @@
+import type { Question } from "@qnaplus/scraper";
 import {
 	type Node as ParserNode,
 	Text as TextNode,
 	isTag,
 	isText,
 } from "domhandler";
+import * as htmlparser2 from "htmlparser2";
+import sanitize from "sanitize-html";
 import Blockquote from "../components/question/Blockquote.vue";
+import Code from "../components/question/Code.vue";
 import Emphasis from "../components/question/Emphasis.vue";
+import Header from "../components/question/Header.vue";
 import Image from "../components/question/Image.vue";
 import Link from "../components/question/Link.vue";
 import ListItem from "../components/question/ListItem.vue";
+import Mark from "../components/question/Mark.vue";
 import OrderedList from "../components/question/OrderedList.vue";
 import Paragraph from "../components/question/Paragraph.vue";
+import Pre from "../components/question/Pre.vue";
 import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
-import Code from "../components/question/Code.vue";
-import Pre from "../components/question/Pre.vue";
 import UnorderedList from "../components/question/UnorderedList.vue";
-import Mark from "../components/question/Mark.vue";
-import Header from "../components/question/Header.vue";
-import { Question } from "@qnaplus/scraper";
-import sanitize from "sanitize-html";
-import * as htmlparser2 from "htmlparser2";
 
-const HEADER_REGEX = /h[1-6]/
+const HEADER_REGEX = /h[1-6]/;
 
-export type QuestionComponentNode = ReturnType<typeof resolveQuestionComponentNode>;
+export type QuestionComponentNode = ReturnType<
+	typeof resolveQuestionComponentNode
+>;
 
 export const resolveQuestionComponentNode = (node: ParserNode) => {
 	switch (true) {
@@ -61,7 +63,9 @@ export const resolveQuestionComponentNode = (node: ParserNode) => {
 	}
 };
 
-export type QuestionComponentProps = ReturnType<typeof resolveQuestionComponentProps>;
+export type QuestionComponentProps = ReturnType<
+	typeof resolveQuestionComponentProps
+>;
 
 export const resolveQuestionComponentProps = (node: ParserNode) => {
 	if (isTag(node) && node.name === "img") {
@@ -69,7 +73,17 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	}
 	if (
 		isTag(node) &&
-		["em", "p", "strong", "blockquote", "li", "pre", "code", "ul", "mark"].includes(node.name)
+		[
+			"em",
+			"p",
+			"strong",
+			"blockquote",
+			"li",
+			"pre",
+			"code",
+			"ul",
+			"mark",
+		].includes(node.name)
 	) {
 		return { children: node.children };
 	}
@@ -80,7 +94,10 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 		return { href: node.attribs.href, children: node.children };
 	}
 	if (isTag(node) && node.name === "ol") {
-		return { start: Number.parseInt(node.attribs.start ?? "1"), children: node.children };
+		return {
+			start: Number.parseInt(node.attribs.start ?? "1"),
+			children: node.children,
+		};
 	}
 	if (isText(node)) {
 		return { text: node.data };
@@ -88,7 +105,9 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	return {};
 };
 
-export type QuestionComponentSize = ReturnType<typeof resolveQuestionComponentSize>;
+export type QuestionComponentSize = ReturnType<
+	typeof resolveQuestionComponentSize
+>;
 
 export const resolveQuestionComponentSize = (node: ParserNode): number => {
 	if (isTag(node) && node.name === "img") {
@@ -96,7 +115,19 @@ export const resolveQuestionComponentSize = (node: ParserNode): number => {
 	}
 	if (
 		isTag(node) &&
-		["em", "p", "strong", "blockquote", "ol", "li", "a", "pre", "code", "ul", "mark"].includes(node.name)
+		[
+			"em",
+			"p",
+			"strong",
+			"blockquote",
+			"ol",
+			"li",
+			"a",
+			"pre",
+			"code",
+			"ul",
+			"mark",
+		].includes(node.name)
 	) {
 		return node.children.reduce<number>(
 			(size, child) => size + resolveQuestionComponentSize(child),
@@ -135,23 +166,29 @@ export interface RenderQuestionOptions {
 	limit?: number;
 }
 
-export const renderQuestion = (question: Question, opts?: RenderQuestionOptions) => {
+export const renderQuestion = (
+	question: Question,
+	opts?: RenderQuestionOptions,
+) => {
 	const limit = opts?.limit ?? Number.POSITIVE_INFINITY;
 
 	const allowedAttributes = {
 		...sanitize.defaults.allowedAttributes,
-		ol: ["start"]
-	}
+		ol: ["start"],
+	};
 	const sanitizeOptions: sanitize.IOptions = {
 		allowedTags: sanitize.defaults.allowedTags.concat("img"),
-		allowedAttributes
+		allowedAttributes,
 	};
 
 	const sanitizedQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
 	const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
 	const questionChildren = questionDom.children as ParserNode[];
 
-	const sanitizedAnswerHTML = sanitize(question.answerRaw ?? "", sanitizeOptions);
+	const sanitizedAnswerHTML = sanitize(
+		question.answerRaw ?? "",
+		sanitizeOptions,
+	);
 	const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
 	const answerChildren = answerDom.children as ParserNode[];
 
@@ -181,4 +218,4 @@ export const renderQuestion = (question: Question, opts?: RenderQuestionOptions)
 	}
 
 	return { questionContent, answerContent };
-}
+};

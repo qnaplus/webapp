@@ -4,8 +4,8 @@ import type { UseSearchResult } from "../../composable/useSearch";
 import QuestionCard from "./QuestionCard.vue";
 
 defineProps<{
-    questions: UseSearchResult[];
-    query: string;
+	questions: UseSearchResult[];
+	query: string;
 }>();
 </script>
 
