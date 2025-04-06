@@ -1,51 +1,30 @@
 <script setup lang="ts">
-import * as htmlparser2 from "htmlparser2";
 import Divider from "primevue/divider";
 import Message from "primevue/message";
 import ProgressSpinner from "primevue/progressspinner";
-import sanitize from "sanitize-html";
 import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
-import { resolveQuestionComponent } from "../composable/componentMap";
+import { renderQuestion } from "../composable/useComponentMap";
 import { getQuestion } from "../database";
 import Root from "./Root.vue";
 
 const props = defineProps<{
-	id: string;
+  id: string;
 }>();
 
 const loading = ref(true);
 
 const loadContent = async () => {
-	const question = await getQuestion(props.id);
-	if (question === undefined) {
-		return { question: null, questionContent: null, answerContent: null };
-	}
-	setTimeout(() => {
-		loading.value = false;
-	}, 500);
-
-  const allowedAttributes = {
-    ...sanitize.defaults.allowedAttributes,
-    ol: ["start"]
+  const question = await getQuestion(props.id);
+  if (question === undefined) {
+    return { question: null, questionContent: null, answerContent: null };
   }
-	const sanitizeOptions: sanitize.IOptions = {
-		allowedTags: sanitize.defaults.allowedTags.concat("img"),
-    allowedAttributes
-	};
-
-	const cleanQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
-	const questionContent = htmlparser2
-		.parseDocument(cleanQuestionHTML)
-		.children.map(resolveQuestionComponent);
-
-	const cleanAnswerHTML = sanitize(question.answerRaw ?? "", sanitizeOptions);
-	const answerContent = htmlparser2
-		.parseDocument(cleanAnswerHTML)
-		.children.map(resolveQuestionComponent);
-
-	return { question, questionContent, answerContent };
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
+  const { questionContent, answerContent } = renderQuestion(question);
+  return { question, questionContent, answerContent };
 };
 
 const { question, questionContent, answerContent } = await loadContent();
@@ -61,7 +40,8 @@ const { question, questionContent, answerContent } = await loadContent();
         </div>
         <div v-if="!loading && question !== null">
           <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
-            qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
+            qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on
+              RobotEvents</a> to get the most up-to-date information.
           </Message>
           <h2 class="mb-1">{{ question.title }}</h2>
           <question-details :question="question" />

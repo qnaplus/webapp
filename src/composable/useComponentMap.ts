@@ -18,14 +18,13 @@ import Pre from "../components/question/Pre.vue";
 import UnorderedList from "../components/question/UnorderedList.vue";
 import Mark from "../components/question/Mark.vue";
 import Header from "../components/question/Header.vue";
-
-export interface ResolvedComponent {
-	node: ReturnType<typeof resolveQuestionComponentNode>;
-	props: ReturnType<typeof resolveQuestionComponentProps>;
-	size: ReturnType<typeof resolveQuestionComponentSize>;
-}
+import { Question } from "@qnaplus/scraper";
+import sanitize from "sanitize-html";
+import * as htmlparser2 from "htmlparser2";
 
 const HEADER_REGEX = /h[1-6]/
+
+export type QuestionComponentNode = ReturnType<typeof resolveQuestionComponentNode>;
 
 export const resolveQuestionComponentNode = (node: ParserNode) => {
 	switch (true) {
@@ -62,6 +61,8 @@ export const resolveQuestionComponentNode = (node: ParserNode) => {
 	}
 };
 
+export type QuestionComponentProps = ReturnType<typeof resolveQuestionComponentProps>;
+
 export const resolveQuestionComponentProps = (node: ParserNode) => {
 	if (isTag(node) && node.name === "img") {
 		return { src: node.attribs.src, height: 250, preview: true };
@@ -86,6 +87,8 @@ export const resolveQuestionComponentProps = (node: ParserNode) => {
 	}
 	return {};
 };
+
+export type QuestionComponentSize = ReturnType<typeof resolveQuestionComponentSize>;
 
 export const resolveQuestionComponentSize = (node: ParserNode): number => {
 	if (isTag(node) && node.name === "img") {
@@ -112,6 +115,12 @@ export const resolveQuestionComponentSize = (node: ParserNode): number => {
 	return 0;
 };
 
+export interface ResolvedComponent {
+	node: QuestionComponentNode;
+	props: QuestionComponentProps;
+	size: QuestionComponentSize;
+}
+
 export const resolveQuestionComponent = (
 	node: ParserNode,
 ): ResolvedComponent => {
@@ -121,3 +130,55 @@ export const resolveQuestionComponent = (
 		size: resolveQuestionComponentSize(node),
 	};
 };
+
+export interface RenderQuestionOptions {
+	limit?: number;
+}
+
+export const renderQuestion = (question: Question, opts?: RenderQuestionOptions) => {
+	const limit = opts?.limit ?? Number.POSITIVE_INFINITY;
+
+	const allowedAttributes = {
+		...sanitize.defaults.allowedAttributes,
+		ol: ["start"]
+	}
+	const sanitizeOptions: sanitize.IOptions = {
+		allowedTags: sanitize.defaults.allowedTags.concat("img"),
+		allowedAttributes
+	};
+
+	const sanitizedQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
+	const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
+	const questionChildren = questionDom.children as ParserNode[];
+
+	const sanitizedAnswerHTML = sanitize(question.answerRaw ?? "", sanitizeOptions);
+	const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
+	const answerChildren = answerDom.children as ParserNode[];
+
+	let truncated = false;
+	let questionSize = 0;
+	const questionContent: ResolvedComponent[] = [];
+	for (const node of questionChildren) {
+		if (questionSize >= limit) {
+			truncated = true;
+			break;
+		}
+		const component = resolveQuestionComponent(node);
+		questionContent.push(component);
+		questionSize += component.size;
+	}
+
+	let answerSize = 0;
+	const answerContent: ResolvedComponent[] = [];
+	for (const node of answerChildren) {
+		if (truncated || answerSize >= limit) {
+			truncated = true;
+			break;
+		}
+		const component = resolveQuestionComponent(node);
+		answerContent.push(component);
+		answerSize += component.size;
+	}
+
+	return { questionContent, answerContent };
+}

@@ -1,57 +1,17 @@
 <script setup lang="ts">
 import type { Question } from "@qnaplus/scraper";
-import type { Node as ParserNode } from "domhandler";
-import * as htmlparser2 from "htmlparser2";
 import Card from "primevue/card";
 import Divider from "primevue/divider";
-import sanitize from "sanitize-html";
 import { RouterLink } from "vue-router";
-import { resolveQuestionComponent } from "../../composable/componentMap";
+import { renderQuestion } from "../../composable/useComponentMap";
 import QuestionDetails from "../question/QuestionDetails.vue";
 import QuestionTags from "../shared/QuestionTags.vue";
 
 const question = defineProps<Question>();
+const { questionContent, answerContent } = renderQuestion(question, {
+    limit: 75
+});
 
-const MAX_CONTENT_SIZE = 75;
-
-const sanitizeOptions: sanitize.IOptions = {
-	allowedTags: sanitize.defaults.allowedTags.concat("img"),
-};
-
-const sanitizedQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
-const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
-const questionChildren = questionDom.children as ParserNode[];
-
-const sanitizedAnswerHTML = sanitize(question.answerRaw ?? "", sanitizeOptions);
-const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
-const answerChildren = answerDom.children as ParserNode[];
-
-let truncated = false;
-let questionSize = 0;
-const renderedQuestionChildren: ReturnType<typeof resolveQuestionComponent>[] =
-	[];
-for (const node of questionChildren) {
-	if (questionSize >= MAX_CONTENT_SIZE) {
-		truncated = true;
-		break;
-	}
-	const component = resolveQuestionComponent(node);
-	renderedQuestionChildren.push(component);
-	questionSize += component.size;
-}
-
-let answerSize = 0;
-const renderedAnswerChildren: ReturnType<typeof resolveQuestionComponent>[] =
-	[];
-for (const node of answerChildren) {
-	if (truncated || answerSize >= MAX_CONTENT_SIZE) {
-		truncated = true;
-		break;
-	}
-	const component = resolveQuestionComponent(node);
-	renderedAnswerChildren.push(component);
-	answerSize += component.size;
-}
 </script>
 
 <template>
@@ -74,13 +34,11 @@ for (const node of answerChildren) {
             <div class="flex flex-col gap-2">
                 <div>
                     <span class="font-bold">Question</span>
-                    <component :is="component.node" v-bind="component.props"
-                        v-for="component in renderedQuestionChildren" />
+                    <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
                 </div>
                 <div v-if="answered">
                     <span class="font-bold">Answer</span>
-                    <component :is="component.node" v-bind="component.props"
-                        v-for="component in renderedAnswerChildren" />
+                    <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />
                 </div>
             </div>
         </template>
