@@ -2,10 +2,14 @@
 import { WindowVirtualizer } from "virtua/vue";
 import type { UseSearchResult } from "../../composable/useSearch";
 import QuestionCard from "./QuestionCard.vue";
+import type { Question } from "@qnaplus/scraper";
 
 defineProps<{
 	questions: UseSearchResult[];
 	query: string;
+}>();
+defineEmits<{
+    "read-more": [question: Question];
 }>();
 </script>
 

@@ -16,6 +16,7 @@ import { type QnaplusAppData, database } from "../database";
 
 import { useHints } from "../composable/useHints";
 import Root from "./Root.vue";
+import QuestionDrawer from "../components/search/QuestionDrawer.vue";
 
 const query = ref("");
 const dbQuestions = useObservable<Question[], Question[]>(
@@ -32,6 +33,8 @@ const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
 });
 const { highlightedQuestions } = useHints(filteredQuestions);
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
+
+const selectedQuestion = ref<Question>();
 </script>
 
 <template>
@@ -43,9 +46,10 @@ const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
                 <SearchOptions :filter-options="filterOptions" :sort-options="sortOptions" />
             </div>
             <div class="h-full flex flex-col gap-3">
-                <QuestionList :query="query" :questions="sortedQuestions" />
+                <QuestionList @read-more="(q) => selectedQuestion = q" :query="query" :questions="sortedQuestions" />
                 <ScrollTop />
             </div>
+            <QuestionDrawer :question="selectedQuestion" />
         </div>
     </Root>
 </template>

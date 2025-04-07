@@ -167,9 +167,15 @@ export interface RenderQuestionOptions {
 }
 
 export const renderQuestion = (
-	question: Question,
+	question: Question | undefined,
 	opts?: RenderQuestionOptions,
 ) => {
+    if (question === undefined) {
+        return {
+            questionContent: [],
+            answerContent: []
+        }
+    }
 	const limit = opts?.limit ?? Number.POSITIVE_INFINITY;
 
 	const allowedAttributes = {

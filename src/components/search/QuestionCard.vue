@@ -2,10 +2,10 @@
 import type { Question } from "@qnaplus/scraper";
 import Card from "primevue/card";
 import Divider from "primevue/divider";
-import { RouterLink } from "vue-router";
 import { renderQuestion } from "../../composable/useComponentMap";
 import QuestionDetails from "../question/QuestionDetails.vue";
 import QuestionTags from "../shared/QuestionTags.vue";
+import Button from "primevue/button";
 
 const question = defineProps<Question>();
 const { questionContent, answerContent } = renderQuestion(question, {
@@ -24,7 +24,8 @@ const { questionContent, answerContent } = renderQuestion(question, {
         }
     }" class="prose prose-invert prose-slate max-w-none !bg-surface-900 border-1 border-surface-800 mb-3 !rounded-md">
         <template #title>
-            <router-link class="prose-a" :to="`/${id}`">{{ title }}</router-link>
+            {{ title }}
+            <!-- <router-link class="prose-a" :to="`/${id}`">{{ title }}</router-link> -->
         </template>
         <template #subtitle>
             <question-details :question="question" />
@@ -32,7 +33,6 @@ const { questionContent, answerContent } = renderQuestion(question, {
         <template #content>
             <div class="flex flex-col gap-2">
                 <div>
-                    <span class="font-bold">Question</span>
                     <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
                 </div>
                 <div v-if="answered">
@@ -42,6 +42,7 @@ const { questionContent, answerContent } = renderQuestion(question, {
             </div>
         </template>
         <template #footer>
+            <Button @click="$parent?.$emit('read-more', question)" label="Read More" variant="link" />
             <Divider />
             <QuestionTags :tags="question.tags" :program="question.program" />
         </template>
