@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
-import QuestionTags from "../components/shared/QuestionTags.vue";
 import { renderQuestion } from "../composable/useComponentMap";
 import { getQuestion } from "../database";
 import Root from "./Root.vue";
 import QuestionFooter from "../components/shared/QuestionFooter.vue";
+import LoadingQuestion from "../components/shared/LoadingQuestion.vue";
 
 const props = defineProps<{
   id: string;
@@ -58,10 +58,7 @@ const { question, questionContent, answerContent } = await loadContent();
           </div>
           <QuestionFooter :question="question" />
         </div>
-        <div v-else class="h-full flex flex-col items-center justify-center">
-          <ProgressSpinner style="width: 40px; height: 40px; margin: 0;" strokeWidth="6" fill="transparent"
-            animationDuration="0.5s" />
-        </div>
+        <LoadingQuestion v-else />
       </div>
     </Suspense>
   </Root>
