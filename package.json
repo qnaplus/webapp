@@ -36,6 +36,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@primevue/auto-import-resolver": "^4.3.3",
 		"@qnaplus/scraper": "^3.1.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/sanitize-html": "^2.15.0",
@@ -46,6 +47,7 @@
 		"rimraf": "^6.0.1",
 		"sass": "^1.86.1",
 		"typescript": "^5.2.2",
+		"unplugin-vue-components": "^28.4.1",
 		"vite": "^6.2.4",
 		"vite-plugin-pwa": "^1.0.0",
 		"vue-tsc": "^2.0.28",

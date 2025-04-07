@@ -5,7 +5,6 @@ import {
 	isTag,
 	isText,
 } from "domhandler";
-import * as htmlparser2 from "htmlparser2";
 import sanitize from "sanitize-html";
 import Blockquote from "../components/question/Blockquote.vue";
 import Code from "../components/question/Code.vue";
@@ -21,6 +20,7 @@ import Pre from "../components/question/Pre.vue";
 import Strong from "../components/question/Strong.vue";
 import Text from "../components/question/Text.vue";
 import UnorderedList from "../components/question/UnorderedList.vue";
+import { parseDocument } from "htmlparser2";
 
 const HEADER_REGEX = /h[1-6]/;
 
@@ -188,14 +188,14 @@ export const renderQuestion = (
 	};
 
 	const sanitizedQuestionHTML = sanitize(question.questionRaw, sanitizeOptions);
-	const questionDom = htmlparser2.parseDocument(sanitizedQuestionHTML);
+	const questionDom = parseDocument(sanitizedQuestionHTML);
 	const questionChildren = questionDom.children as ParserNode[];
 
 	const sanitizedAnswerHTML = sanitize(
 		question.answerRaw ?? "",
 		sanitizeOptions,
 	);
-	const answerDom = htmlparser2.parseDocument(sanitizedAnswerHTML);
+	const answerDom = parseDocument(sanitizedAnswerHTML);
 	const answerChildren = answerDom.children as ParserNode[];
 
 	let truncated = false;

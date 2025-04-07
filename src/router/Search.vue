@@ -2,7 +2,6 @@
 import type { Question } from "@qnaplus/scraper";
 import { useObservable } from "@vueuse/rxjs";
 import { liveQuery } from "dexie";
-import ScrollTop from "primevue/scrolltop";
 import { from } from "rxjs";
 import { type Ref, inject, ref } from "vue";
 import QuestionList from "../components/search/QuestionList.vue";
@@ -20,21 +19,21 @@ import QuestionDrawer from "../components/search/QuestionDrawer.vue";
 
 const query = ref("");
 const dbQuestions = useObservable<Question[], Question[]>(
-	from(liveQuery(() => database.questions.toArray())),
-	{
-		initialValue: [],
-	},
+    from(liveQuery(() => database.questions.toArray())),
+    {
+        initialValue: [],
+    },
 );
 const appData = inject<Ref<QnaplusAppData | undefined>>("appdata");
 const { questions } = useSearch(query, dbQuestions);
 const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
-	programs: appData?.value?.programs ?? [],
-	seasons: appData?.value?.seasons ?? [],
+    programs: appData?.value?.programs ?? [],
+    seasons: appData?.value?.seasons ?? [],
 });
 const { highlightedQuestions } = useHints(filteredQuestions);
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
 
-const selectedQuestion = ref<Question>();
+const selectedQuestion = ref<Question | undefined>(undefined);
 </script>
 
 <template>
@@ -49,7 +48,7 @@ const selectedQuestion = ref<Question>();
                 <QuestionList @read-more="(q) => selectedQuestion = q" :query="query" :questions="sortedQuestions" />
                 <ScrollTop />
             </div>
-            <QuestionDrawer :question="selectedQuestion" />
+            <QuestionDrawer @hide-drawer="() => selectedQuestion = undefined" :question="selectedQuestion" />
         </div>
     </Root>
 </template>

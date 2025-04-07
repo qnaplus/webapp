@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ProgressSpinner from "primevue/progressspinner";
 import { provide, ref } from "vue";
 import { loadMinisearch } from "./composable/useSearch";
 import {

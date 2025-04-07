@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Tag from "primevue/tag";
 import { capitalize } from "vue";
 
 const { program } = defineProps<{ program: string }>();

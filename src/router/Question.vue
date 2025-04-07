@@ -1,30 +1,28 @@
 <script setup lang="ts">
-import Divider from "primevue/divider";
-import Message from "primevue/message";
-import ProgressSpinner from "primevue/progressspinner";
 import { ref } from "vue";
 import QuestionDetails from "../components/question/QuestionDetails.vue";
 import QuestionTags from "../components/shared/QuestionTags.vue";
 import { renderQuestion } from "../composable/useComponentMap";
 import { getQuestion } from "../database";
 import Root from "./Root.vue";
+import QuestionFooter from "../components/shared/QuestionFooter.vue";
 
 const props = defineProps<{
-	id: string;
+  id: string;
 }>();
 
 const loading = ref(true);
 
 const loadContent = async () => {
-	const question = await getQuestion(props.id);
-	if (question === undefined) {
-		return { question: null, questionContent: null, answerContent: null };
-	}
-	setTimeout(() => {
-		loading.value = false;
-	}, 500);
-	const { questionContent, answerContent } = renderQuestion(question);
-	return { question, questionContent, answerContent };
+  const question = await getQuestion(props.id);
+  if (question === undefined) {
+    return { question: null, questionContent: null, answerContent: null };
+  }
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
+  const { questionContent, answerContent } = renderQuestion(question);
+  return { question, questionContent, answerContent };
 };
 
 const { question, questionContent, answerContent } = await loadContent();
@@ -58,12 +56,7 @@ const { question, questionContent, answerContent } = await loadContent();
               <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />
             </div>
           </div>
-          <Divider />
-          <div class="flex footer gap-3">
-            <QuestionTags :tags="question.tags" :program="question.program" />
-            <a class="text-muted-color" :href="question.url" target="_blank">View on RobotEvents <i
-                class=" ml-1 pi pi-external-link"></i></a>
-          </div>
+          <QuestionFooter :question="question" />
         </div>
         <div v-else class="h-full flex flex-col items-center justify-center">
           <ProgressSpinner style="width: 40px; height: 40px; margin: 0;" strokeWidth="6" fill="transparent"
@@ -80,18 +73,5 @@ const { question, questionContent, answerContent } = await loadContent();
   border: 1px solid #34774d;
   padding: 1px 20px;
   border-radius: 8px;
-}
-
-@media screen and (max-width: 1199px) {
-  .footer {
-    flex-direction: column;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .footer {
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }
 </style>

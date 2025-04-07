@@ -1,30 +1,7 @@
 <script setup lang="ts">
-import Accordion from "primevue/accordion";
-import AccordionContent from "primevue/accordioncontent";
-import AccordionHeader from "primevue/accordionheader";
-import AccordionPanel from "primevue/accordionpanel";
-import AutoComplete from "primevue/autocomplete";
-import Badge from "primevue/badge";
-import Button from "primevue/button";
-import DatePicker from "primevue/datepicker";
-import Divider from "primevue/divider";
-import IconField from "primevue/iconfield";
-import InputGroup from "primevue/inputgroup";
-import InputGroupAddon from "primevue/inputgroupaddon";
-import InputIcon from "primevue/inputicon";
-import InputText from "primevue/inputtext";
-import MultiSelect from "primevue/multiselect";
-import Select from "primevue/select";
-import SelectButton from "primevue/selectbutton";
-import Tab from "primevue/tab";
-import TabList from "primevue/tablist";
-import TabPanel from "primevue/tabpanel";
-import TabPanels from "primevue/tabpanels";
-import Tabs from "primevue/tabs";
-import ToggleSwitch from "primevue/toggleswitch";
 import { computed } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
-import type { Option } from "../../composable";
+import type { Option } from "../../composable/types";
 import {
 	type SearchFilterOptions,
 	questionStateOptions,

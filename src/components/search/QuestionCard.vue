@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import type { Question } from "@qnaplus/scraper";
-import Card from "primevue/card";
-import Divider from "primevue/divider";
 import { renderQuestion } from "../../composable/useComponentMap";
 import QuestionDetails from "../question/QuestionDetails.vue";
 import QuestionTags from "../shared/QuestionTags.vue";
-import Button from "primevue/button";
 
 const question = defineProps<Question>();
 const { questionContent, answerContent } = renderQuestion(question, {
 	limit: 75,
 });
+defineEmits<{
+    "read-more": [question: Question];
+}>();
 </script>
 
 <template>
@@ -25,7 +25,6 @@ const { questionContent, answerContent } = renderQuestion(question, {
     }" class="prose prose-invert prose-slate max-w-none !bg-surface-900 border-1 border-surface-800 mb-3 !rounded-md">
         <template #title>
             {{ title }}
-            <!-- <router-link class="prose-a" :to="`/${id}`">{{ title }}</router-link> -->
         </template>
         <template #subtitle>
             <question-details :question="question" />
@@ -42,7 +41,7 @@ const { questionContent, answerContent } = renderQuestion(question, {
             </div>
         </template>
         <template #footer>
-            <Button @click="$parent?.$emit('read-more', question)" label="Read More" variant="link" />
+            <Button @click="$emit('read-more', question)" label="Read More" severity="secondary" />
             <Divider />
             <QuestionTags :tags="question.tags" :program="question.program" />
         </template>

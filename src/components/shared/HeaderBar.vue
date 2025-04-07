@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useEventListener } from "@vueuse/core";
-import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 const header = ref<HTMLDivElement | null>(null);
 const filler = ref<HTMLDivElement | null>(null);
