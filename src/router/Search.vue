@@ -8,7 +8,7 @@ import QuestionList from "../components/search/QuestionList.vue";
 import QuestionListHeader from "../components/search/QuestionListHeader.vue";
 import SearchInput from "../components/search/SearchInput.vue";
 import SearchOptions from "../components/search/SearchOptions.vue";
-import { useSearch } from "../composable/useSearch";
+import { useKeywordSearch } from "../composable/useSearch";
 import { useSearchFilter } from "../composable/useSearchFilter";
 import { useSort } from "../composable/useSort";
 import { type QnaplusAppData, database } from "../database";
@@ -33,7 +33,7 @@ watch(dbQuestions, (q) => {
     }, 500);
 })
 const appData = inject<Ref<QnaplusAppData | undefined>>("appdata");
-const { questions } = useSearch(query, dbQuestions);
+const { questions } = useKeywordSearch(query, dbQuestions);
 const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
     programs: appData?.value?.programs ?? [],
     seasons: appData?.value?.seasons ?? [],

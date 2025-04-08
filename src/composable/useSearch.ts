@@ -17,7 +17,7 @@ export type UseSearchResult = Question | QuestionSearchResult;
 const HTML_TOKENIZER_REGEX = /(?:[\n\r\p{Z}\p{P}]|(?:<\/?\w+>))+/gu;
 
 const minisearch = new MiniSearch<Question>({
-    fields: ["title", "questionRaw", "answerRaw"],
+    fields: ["title", "author", "questionRaw", "answerRaw", "tags"],
     storeFields: [
         "id",
         "url",
@@ -56,7 +56,7 @@ export const loadMinisearch = async (questions: Question[]) => {
     }
 };
 
-export const useSearch = (
+export const useKeywordSearch = (
     query: MaybeRefOrGetter<string>,
     dbQuestions: Readonly<Ref<Question[] | undefined>>,
 ) => {
@@ -70,6 +70,7 @@ export const useSearch = (
             questions.value = dbQuestions.value;
         } else {
             const results = minisearch.search(value, {
+                fields: ["title", "questionRaw", "answerRaw"],
                 processTerm: (term) => stemmer(term).toLowerCase(),
                 prefix: true,
             }) as QuestionSearchResult[];
@@ -81,3 +82,28 @@ export const useSearch = (
 
     return { questions };
 };
+
+export const getAuthorSuggestions = (author: MaybeRefOrGetter<string | null>) => {
+    const value = toValue(author);
+    if (value === null) {
+        return [];
+    }
+    const results = minisearch.search(value, {
+        fields: ["author"],
+        prefix: true
+    }) as QuestionSearchResult[];
+    return [...new Set(results.map(r => r.author))];
+}
+
+export const getTagSuggestions = (tag: MaybeRefOrGetter<string | undefined>) => {
+    const value = toValue(tag);
+    if (value === undefined) {
+        return [];
+    }
+    const results = minisearch.search(value, {
+        fields: ["tags"],
+        prefix: true,
+    }) as QuestionSearchResult[];
+    console.log(new Set(results))
+    return [...new Set(results.flatMap(r => r.tags))];
+}

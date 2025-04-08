@@ -1,39 +1,54 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, toRef } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import type { Option } from "../../composable/types";
 import {
-	type SearchFilterOptions,
-	questionStateOptions,
+    type SearchFilterOptions,
+    questionStateOptions,
 } from "../../composable/useSearchFilter";
 import {
-	type SearchSortOptions,
-	type SortOptions,
-	sortOptionsList,
-	sortOrderList,
+    type SearchSortOptions,
+    type SortOptions,
+    sortOptionsList,
+    sortOrderList,
 } from "../../composable/useSort";
+import { getAuthorSuggestions, getTagSuggestions } from "../../composable/useSearch";
+import type { AutoCompleteCompleteEvent } from "primevue/autocomplete";
 
 const props = defineProps<{
-	filterOptions: SearchFilterOptions;
-	sortOptions: SearchSortOptions;
+    filterOptions: SearchFilterOptions;
+    sortOptions: SearchSortOptions;
 }>();
 
 const remainingAdvancedOptions = computed(() => {
-	return sortOptionsList.filter(
-		(sortOption) =>
-			!props.sortOptions.advanced.find(
-				(selectedSortOption) => sortOption.value === selectedSortOption.value,
-			),
-	);
+    return sortOptionsList.filter(
+        (sortOption) =>
+            !props.sortOptions.advanced.find(
+                (selectedSortOption) => sortOption.value === selectedSortOption.value,
+            ),
+    );
 });
 
 const updateSelectedAdvancedOption = (value: Option<SortOptions>) => {
-	props.sortOptions.advanced.push({ ...value, asc: sortOrderList[0] });
+    props.sortOptions.advanced.push({ ...value, asc: sortOrderList[0] });
 };
 
 const removeSelectedAdvancedOption = (index: number) => {
-	props.sortOptions.advanced.splice(index, 1);
+    props.sortOptions.advanced.splice(index, 1);
 };
+
+const authorSuggestions = ref<string[]>([]);
+const updateAuthorSuggestions = () => {
+    authorSuggestions.value = getAuthorSuggestions(props.filterOptions.filters.author);
+}
+
+
+const tagSuggestions = ref<string[]>([]);
+const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
+    tagSuggestions.value = getTagSuggestions(e.query);
+    console.log(tagSuggestions)
+}
+
 </script>
 
 <template>
@@ -74,8 +89,10 @@ const removeSelectedAdvancedOption = (index: number) => {
                                             <label for="author">Author</label>
                                             <IconField>
                                                 <InputIcon class="pi pi-user" />
-                                                <InputText id="author" class="w-full"
-                                                    v-model="filterOptions.filters.author" placeholder="Author" />
+                                                <AutoComplete id="author" class="w-full" input-class="w-full"
+                                                    v-model="filterOptions.filters.author"
+                                                    @complete="updateAuthorSuggestions" :suggestions="authorSuggestions"
+                                                    placeholder="Author" />
                                             </IconField>
                                         </div>
 
@@ -129,8 +146,10 @@ const removeSelectedAdvancedOption = (index: number) => {
                                         <InputGroupAddon>
                                             <i class="pi pi-tags" aria-label="Tags" />
                                         </InputGroupAddon>
-                                        <AutoComplete class="autocomplete-group" :typeahead="false" multiple input-id="tags"
-                                            v-model="filterOptions.filters.tags" aria-label="Tags" placeholder="Tags" />
+                                        <AutoComplete class="autocomplete-group" multiple input-id="tags"
+                                            v-model="filterOptions.filters.tags" aria-label="Tags"
+                                            @value-change="(v) => console.log(v)" @complete="updateTagSuggestions"
+                                            :suggestions="tagSuggestions" placeholder="Tags" />
                                     </InputGroup>
                                 </div>
                                 <div>
@@ -146,7 +165,8 @@ const removeSelectedAdvancedOption = (index: number) => {
                                 <div class="flex justify-end">
                                     <div class="flex items-center gap-3">
                                         <label for="advanced_toggle">Advanced Sorting</label>
-                                        <ToggleSwitch v-model="sortOptions.advancedEnabled" input-id="advanced_toggle" />
+                                        <ToggleSwitch v-model="sortOptions.advancedEnabled"
+                                            input-id="advanced_toggle" />
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-3" v-if="!sortOptions.advancedEnabled">
@@ -224,6 +244,7 @@ const removeSelectedAdvancedOption = (index: number) => {
 .sort-ghost {
     opacity: 0;
 }
+
 .border-1 {
     border-width: 1px;
 }
