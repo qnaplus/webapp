@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Question } from "@qnaplus/scraper";
 import { computed, ref, watchEffect } from "vue";
-import { renderQuestion } from "../../composable/useComponentMap";
+import { renderQuestion } from "../../rendering";
 import QuestionFooter from "../shared/QuestionFooter.vue";
 
 const { question } = defineProps<{

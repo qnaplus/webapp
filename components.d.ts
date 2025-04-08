@@ -43,7 +43,7 @@ declare module 'vue' {
     ProgramTag: typeof import('./src/components/shared/ProgramTag.vue')['default']
     ProgressSpinner: typeof import('primevue/progressspinner')['default']
     QuestionCard: typeof import('./src/components/search/QuestionCard.vue')['default']
-    QuestionDetails: typeof import('./src/components/question/QuestionDetails.vue')['default']
+    QuestionDetails: typeof import('./src/components/shared/QuestionDetails.vue')['default']
     QuestionDrawer: typeof import('./src/components/search/QuestionDrawer.vue')['default']
     QuestionFooter: typeof import('./src/components/shared/QuestionFooter.vue')['default']
     QuestionList: typeof import('./src/components/search/QuestionList.vue')['default']

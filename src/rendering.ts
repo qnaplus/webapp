@@ -6,20 +6,20 @@ import {
 	isText,
 } from "domhandler";
 import sanitize from "sanitize-html";
-import Blockquote from "../components/question/Blockquote.vue";
-import Code from "../components/question/Code.vue";
-import Emphasis from "../components/question/Emphasis.vue";
-import Header from "../components/question/Header.vue";
-import Image from "../components/question/Image.vue";
-import Link from "../components/question/Link.vue";
-import ListItem from "../components/question/ListItem.vue";
-import Mark from "../components/question/Mark.vue";
-import OrderedList from "../components/question/OrderedList.vue";
-import Paragraph from "../components/question/Paragraph.vue";
-import Pre from "../components/question/Pre.vue";
-import Strong from "../components/question/Strong.vue";
-import Text from "../components/question/Text.vue";
-import UnorderedList from "../components/question/UnorderedList.vue";
+import Blockquote from "./components/question/Blockquote.vue";
+import Code from "./components/question/Code.vue";
+import Emphasis from "./components/question/Emphasis.vue";
+import Header from "./components/question/Header.vue";
+import Image from "./components/question/Image.vue";
+import Link from "./components/question/Link.vue";
+import ListItem from "./components/question/ListItem.vue";
+import Mark from "./components/question/Mark.vue";
+import OrderedList from "./components/question/OrderedList.vue";
+import Paragraph from "./components/question/Paragraph.vue";
+import Pre from "./components/question/Pre.vue";
+import Strong from "./components/question/Strong.vue";
+import Text from "./components/question/Text.vue";
+import UnorderedList from "./components/question/UnorderedList.vue";
 import { parseDocument } from "htmlparser2";
 
 const HEADER_REGEX = /h[1-6]/;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import QuestionDetails from "../components/question/QuestionDetails.vue";
-import { renderQuestion } from "../composable/useComponentMap";
+import QuestionDetails from "../components/shared/QuestionDetails.vue";
+import { renderQuestion } from "../rendering";
 import { getQuestion } from "../database";
 import Root from "./Root.vue";
 import QuestionFooter from "../components/shared/QuestionFooter.vue";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Question } from "@qnaplus/scraper";
-import { renderQuestion } from "../../composable/useComponentMap";
-import QuestionDetails from "../question/QuestionDetails.vue";
+import { renderQuestion } from "../../rendering";
+import QuestionDetails from "../shared/QuestionDetails.vue";
 import QuestionTags from "../shared/QuestionTags.vue";
 
 const question = defineProps<Question>();
