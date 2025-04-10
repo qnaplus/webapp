@@ -15,8 +15,12 @@ export interface QnaplusMetadata {
 	version: string;
 }
 
+export interface EnhancedQuestion extends Question {
+	bookmarked: boolean;
+}
+
 interface QnaplusDatabase extends Dexie {
-	questions: EntityTable<Question, "id">;
+	questions: EntityTable<EnhancedQuestion, "id">;
 	metadata: EntityTable<QnaplusMetadata, "id">;
 	appdata: EntityTable<QnaplusAppData, "id">;
 }
@@ -41,6 +45,16 @@ database.version(2).upgrade((tx) => {
 			delete metadata.lastUpdated;
 		});
 	tx.table("questions").clear();
+});
+
+database.version(3).upgrade((tx) => {
+	console.info("Upgrading database to version 3");
+
+	tx.table("questions")
+		.toCollection()
+		.modify((question) => {
+			question.bookmarked = false;
+		});
 });
 
 const updateAppData = async (db: QnaplusDatabase) => {
@@ -84,7 +98,11 @@ const update = async (db: QnaplusDatabase) => {
 		return;
 	}
 	const { questions, version } = updateResponse;
-	await db.questions.bulkPut(questions);
+	const questionsWithBookmark: EnhancedQuestion[] = questions.map((q) => ({
+		...q,
+		bookmarked: false,
+	}));
+	await db.questions.bulkPut(questionsWithBookmark);
 	await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
 	await updateAppData(db);
 };
@@ -121,4 +139,11 @@ export const getAppData = async () => {
 export const getQuestion = async (id: string) => {
 	const localQuestion = await database.questions.get(id);
 	return localQuestion;
+};
+
+export const bookmarkQuestion = async (question: EnhancedQuestion) => {
+	const response = await database.questions.update(question.id, { bookmarked: !question.bookmarked });
+    if (response === 0) {
+        console.warn("Question wasn't updated")
+    }
 };

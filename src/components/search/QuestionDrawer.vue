@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Question } from "@qnaplus/scraper";
 import { computed, ref, watchEffect } from "vue";
 import { renderQuestion } from "../../rendering";
 import QuestionFooter from "../shared/QuestionFooter.vue";
+import type { EnhancedQuestion } from "../../database";
 
 const { question } = defineProps<{
-    question: Question | undefined;
+    question: EnhancedQuestion | undefined;
 }>();
 
 const visible = ref(false);

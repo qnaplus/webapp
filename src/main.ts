@@ -5,6 +5,7 @@ import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import Tooltip from "primevue/tooltip";
 
 useRegisterSW({ immediate: true });
 
@@ -73,5 +74,6 @@ createApp(App)
 			},
 		},
 	})
+    .directive("tooltip", Tooltip)
 	.use(router)
 	.mount("#app");

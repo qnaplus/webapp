@@ -52,6 +52,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollTop: typeof import('primevue/scrolltop')['default']
+    SearchableQuestions: typeof import('./src/components/shared/SearchableQuestions.vue')['default']
     SearchInput: typeof import('./src/components/search/SearchInput.vue')['default']
     SearchOptions: typeof import('./src/components/search/SearchOptions.vue')['default']
     Select: typeof import('primevue/select')['default']
@@ -67,5 +68,8 @@ declare module 'vue' {
     Text: typeof import('./src/components/question/Text.vue')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     UnorderedList: typeof import('./src/components/question/UnorderedList.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }
