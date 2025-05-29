@@ -52,7 +52,7 @@ const SORT_MAP: SortMap<Question> = {
 	[SortOptions.Author]: (a, b) => b.author.localeCompare(a.author),
 	[SortOptions.QuestionState]: (a, b) => +b.answered - +a.answered,
 	[SortOptions.AskDate]: (a, b) =>
-		(b.askedTimestampMs ?? 0) - (a.askedTimestampMs ?? 0),
+		Number.parseInt(b.id) - Number.parseInt(a.id),
 	[SortOptions.AnswerDate]: (a, b) =>
 		(b.answeredTimestampMs ?? 0) - (a.answeredTimestampMs ?? 0),
 };
