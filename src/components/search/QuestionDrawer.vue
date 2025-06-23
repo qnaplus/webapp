@@ -2,10 +2,10 @@
 import { computed, ref, watchEffect } from "vue";
 import { renderQuestion } from "../../rendering";
 import QuestionFooter from "../shared/QuestionFooter.vue";
-import type { EnhancedQuestion } from "../../database";
+import { Question } from "@qnaplus/scraper";
 
 const { question } = defineProps<{
-	question: EnhancedQuestion | undefined;
+	question: Question | undefined;
 }>();
 
 const visible = ref(false);

@@ -9,6 +9,7 @@ import {
 } from "vue";
 import type { Option } from "./types";
 import type { UseSearchResult } from "./useSearch";
+import { QuestionAdditions, QuestionAdditionsMap } from "../database";
 
 export type SearchFilters = {
 	season: Option<Question["season"]>[];
@@ -20,6 +21,7 @@ export type SearchFilters = {
 	answeredBefore: Date | null;
 	answeredAfter: Date | null;
 	tags: string[];
+	showBookmarks: boolean;
 };
 
 export enum QuestionStateValue {
@@ -38,6 +40,7 @@ type FilterMap = {
 	[K in keyof SearchFilters]: (
 		question: Question,
 		filters: SearchFilters,
+		additions?: QuestionAdditions
 	) => boolean;
 };
 
@@ -86,6 +89,9 @@ const FILTER_MAP: FilterMap = {
 	tags(q, f) {
 		return f.tags.every((t) => q.tags.includes(t));
 	},
+	showBookmarks(q, f, additions) {
+		return f.showBookmarks ? additions?.bookmarked === true : true;
+	}
 };
 
 const isEmptyFilterValue = (
@@ -121,6 +127,7 @@ export type FilterData = {
 
 export const useSearchFilter = (
 	questions: MaybeRefOrGetter<UseSearchResult[]>,
+	additions: MaybeRefOrGetter<QuestionAdditionsMap | undefined>,
 	filterData: FilterData,
 ): SearchFilterComposable => {
 	const seasons = filterData.seasons.map((season) => ({
@@ -132,7 +139,7 @@ export const useSearchFilter = (
 		value: program,
 	}));
 
-	const getInitialFilterState = () => {
+	const getInitialFilterState = (): SearchFilters => {
 		return {
 			season: [seasons[0]],
 			program: [],
@@ -146,6 +153,7 @@ export const useSearchFilter = (
 			answeredBefore: null,
 			answeredAfter: null,
 			tags: [],
+			showBookmarks: false
 		};
 	};
 
@@ -159,6 +167,7 @@ export const useSearchFilter = (
 
 	const applyFilters = () => {
 		const value = toValue(questions);
+		const additionsValue = toValue(additions);
 		const keys = Object.keys(filters) as Array<keyof SearchFilters>;
 		const applicableFilters = keys
 			.filter((k) => !isEmptyFilterValue(filters[k]))
@@ -167,7 +176,7 @@ export const useSearchFilter = (
 			applicableFilters.length -
 			+(filters.state.value === QuestionStateValue.All);
 		filteredQuestions.value = value.filter((q) =>
-			applicableFilters.every((f) => f(q, filters)),
+			applicableFilters.every((f) => f(q, filters, additionsValue?.[q.id])),
 		);
 	};
 

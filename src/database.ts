@@ -15,14 +15,18 @@ export interface QnaplusMetadata {
 	version: string;
 }
 
-export interface EnhancedQuestion extends Question {
+export interface QuestionAdditions {
+	id: Question["id"];
 	bookmarked: boolean;
 }
 
+export type QuestionAdditionsMap = Record<QuestionAdditions["id"], QuestionAdditions>;
+
 interface QnaplusDatabase extends Dexie {
-	questions: EntityTable<EnhancedQuestion, "id">;
+	questions: EntityTable<Question, "id">;
 	metadata: EntityTable<QnaplusMetadata, "id">;
 	appdata: EntityTable<QnaplusAppData, "id">;
+	additions: EntityTable<QuestionAdditions, "id">
 }
 
 export const database = new Dexie("qnaplus", {
@@ -47,15 +51,13 @@ database.version(2).upgrade((tx) => {
 	tx.table("questions").clear();
 });
 
-database.version(3).upgrade((tx) => {
-	console.info("Upgrading database to version 3");
-
-	tx.table("questions")
-		.toCollection()
-		.modify((question) => {
-			question.bookmarked = false;
-		});
-});
+database.version(3)
+	.stores({
+		additions: "id"
+	})
+	.upgrade((tx) => {
+		console.info("Upgrading database to version 3");
+	});
 
 const updateAppData = async (db: QnaplusDatabase) => {
 	const questions = await db.questions.toArray();
@@ -98,11 +100,7 @@ const update = async (db: QnaplusDatabase) => {
 		return;
 	}
 	const { questions, version } = updateResponse;
-	const questionsWithBookmark: EnhancedQuestion[] = questions.map((q) => ({
-		...q,
-		bookmarked: false,
-	}));
-	await db.questions.bulkPut(questionsWithBookmark);
+	await db.questions.bulkPut(questions);
 	await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
 	await updateAppData(db);
 };
@@ -147,9 +145,9 @@ export const getQuestion = async (id: string) => {
 	return localQuestion;
 };
 
-export const bookmarkQuestion = async (question: EnhancedQuestion) => {
-	const response = await database.questions.update(question.id, { bookmarked: !question.bookmarked });
-    if (response === 0) {
-        console.warn("Question wasn't updated")
-    }
+export const bookmarkQuestion = async (question: Question, bookmarked: boolean) => {
+	const response = await database.additions.put({ id: question.id, bookmarked });
+	// if (response === 0) {
+	// 	console.warn("Question wasn't updated")
+	// }
 };

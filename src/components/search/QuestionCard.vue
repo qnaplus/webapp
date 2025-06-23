@@ -2,17 +2,25 @@
 import { renderQuestion } from "../../rendering";
 import QuestionDetails from "../shared/QuestionDetails.vue";
 import QuestionTags from "../shared/QuestionTags.vue";
-import { bookmarkQuestion, type EnhancedQuestion } from "../../database";
+import { bookmarkQuestion, QuestionAdditions } from "../../database";
+import { Question } from "@qnaplus/scraper";
 
-const { question } = defineProps<{
-    question: EnhancedQuestion;
+const { question, additions } = defineProps<{
+    question: Question;
+    additions: QuestionAdditions | undefined;
 }>();
 const { questionContent, answerContent } = renderQuestion(question, {
     limit: 75,
 });
 defineEmits<{
-	"read-more": [question: EnhancedQuestion];
+    "read-more": [question: Question];
 }>();
+
+const toggleBookmark = () => {
+    const bookmarked = additions?.bookmarked ?? false;
+    bookmarkQuestion(question, !bookmarked);
+}
+
 </script>
 
 <template>
@@ -48,8 +56,8 @@ defineEmits<{
             <Divider />
             <div class="flex flex-row justify-between">
                 <QuestionTags :tags="question.tags" :program="question.program" />
-                <Button class="card-btn" @click="bookmarkQuestion(question)" v-tooltip.left="'Bookmark Question'"
-                    :icon="question.bookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'" aria-label="Settings" text />
+                <Button class="card-btn" @click="toggleBookmark()" v-tooltip.left="'Bookmark Question'"
+                    :icon="additions?.bookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'" aria-label="Settings" text />
             </div>
         </template>
     </Card>

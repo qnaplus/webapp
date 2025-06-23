@@ -6,7 +6,6 @@ import {
 
 import Question from "./Question.vue";
 import Search from "./Search.vue";
-import Bookmarks from "./Bookmarks.vue";
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -17,11 +16,7 @@ const routes: RouteRecordRaw[] = [
 		path: "/:id",
 		component: Question,
 		props: true,
-	},
-    {
-        path: "/bookmarks",
-        component: Bookmarks
-    }
+	}
 ];
 
 export default createRouter({

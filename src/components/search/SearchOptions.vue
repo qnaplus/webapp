@@ -4,53 +4,52 @@ import { computed, ref, toRef } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import type { Option } from "../../composable/types";
 import {
-	getAuthorSuggestions,
-	getTagSuggestions,
+    getAuthorSuggestions,
+    getTagSuggestions,
 } from "../../composable/useSearch";
 import {
-	type SearchFilterOptions,
-	questionStateOptions,
+    type SearchFilterOptions,
+    questionStateOptions,
 } from "../../composable/useSearchFilter";
 import {
-	type SearchSortOptions,
-	type SortOptions,
-	sortOptionsList,
-	sortOrderList,
+    type SearchSortOptions,
+    type SortOptions,
+    sortOptionsList,
+    sortOrderList,
 } from "../../composable/useSort";
 
 const props = defineProps<{
-	filterOptions: SearchFilterOptions;
-	sortOptions: SearchSortOptions;
+    filterOptions: SearchFilterOptions;
+    sortOptions: SearchSortOptions;
 }>();
 
 const remainingAdvancedOptions = computed(() => {
-	return sortOptionsList.filter(
-		(sortOption) =>
-			!props.sortOptions.advanced.find(
-				(selectedSortOption) => sortOption.value === selectedSortOption.value,
-			),
-	);
+    return sortOptionsList.filter(
+        (sortOption) =>
+            !props.sortOptions.advanced.find(
+                (selectedSortOption) => sortOption.value === selectedSortOption.value,
+            ),
+    );
 });
 
 const updateSelectedAdvancedOption = (value: Option<SortOptions>) => {
-	props.sortOptions.advanced.push({ ...value, asc: sortOrderList[0] });
+    props.sortOptions.advanced.push({ ...value, asc: sortOrderList[0] });
 };
 
 const removeSelectedAdvancedOption = (index: number) => {
-	props.sortOptions.advanced.splice(index, 1);
+    props.sortOptions.advanced.splice(index, 1);
 };
 
 const authorSuggestions = ref<string[]>([]);
 const updateAuthorSuggestions = () => {
-	authorSuggestions.value = getAuthorSuggestions(
-		props.filterOptions.filters.author,
-	);
+    authorSuggestions.value = getAuthorSuggestions(
+        props.filterOptions.filters.author,
+    );
 };
 
 const tagSuggestions = ref<string[]>([]);
 const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
-	tagSuggestions.value = getTagSuggestions(e.query);
-	console.log(tagSuggestions);
+    tagSuggestions.value = getTagSuggestions(e.query);
 };
 </script>
 
@@ -151,8 +150,8 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                         </InputGroupAddon>
                                         <AutoComplete class="autocomplete-group" multiple input-id="tags"
                                             v-model="filterOptions.filters.tags" aria-label="Tags"
-                                            @value-change="(v) => console.log(v)" @complete="updateTagSuggestions"
-                                            :suggestions="tagSuggestions" placeholder="Tags" />
+                                            @complete="updateTagSuggestions" :suggestions="tagSuggestions"
+                                            placeholder="Tags" />
                                     </InputGroup>
                                 </div>
                                 <div>

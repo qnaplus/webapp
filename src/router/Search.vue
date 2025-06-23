@@ -9,7 +9,6 @@ const querier = () => database.questions.toArray();
 
 <template>
     <Root>
-        <h1 class="prose-invert prose-slate text-2xl px-4 font-bold">Search</h1>
         <SearchableQuestions :querier="querier" />
     </Root>
 </template>
