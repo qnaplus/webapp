@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Question } from "@qnaplus/scraper";
 import { WindowVirtualizer } from "virtua/vue";
 import type { UseSearchResult } from "../../composable/useSearch";
 import QuestionCard from "./QuestionCard.vue";
@@ -9,7 +10,7 @@ defineProps<{
     query: string;
 }>();
 defineEmits<{
-    "read-more": [question: EnhancedQuestion];
+	"read-more": [question: EnhancedQuestion];
 }>();
 </script>
 

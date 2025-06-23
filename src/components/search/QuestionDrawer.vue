@@ -5,12 +5,12 @@ import QuestionFooter from "../shared/QuestionFooter.vue";
 import type { EnhancedQuestion } from "../../database";
 
 const { question } = defineProps<{
-    question: EnhancedQuestion | undefined;
+	question: EnhancedQuestion | undefined;
 }>();
 
 const visible = ref(false);
 watchEffect(() => {
-    visible.value = question !== undefined
+	visible.value = question !== undefined;
 });
 
 const content = computed(() => renderQuestion(question));

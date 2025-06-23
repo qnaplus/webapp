@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Question } from '@qnaplus/scraper';
+import type { Question } from "@qnaplus/scraper";
 
 defineProps<{
-    question: Question;
+	question: Question;
 }>();
 </script>
 
