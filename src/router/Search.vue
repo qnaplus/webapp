@@ -13,30 +13,30 @@ import { useSearchFilter } from "../composable/useSearchFilter";
 import { useSort } from "../composable/useSort";
 import { type QnaplusAppData, database } from "../database";
 
+import NoResults from "../components/search/NoResults.vue";
+import QuestionDrawer from "../components/search/QuestionDrawer.vue";
+import LoadingQuestion from "../components/shared/LoadingQuestion.vue";
 import { useHints } from "../composable/useHints";
 import Root from "./Root.vue";
-import QuestionDrawer from "../components/search/QuestionDrawer.vue";
-import NoResults from "../components/search/NoResults.vue";
-import LoadingQuestion from "../components/shared/LoadingQuestion.vue";
 
 const query = ref("");
 const dbQuestions = useObservable<Question[]>(
-    from(liveQuery(() => database.questions.toArray())),
-    {
-        initialValue: undefined,
-    },
+	from(liveQuery(() => database.questions.toArray())),
+	{
+		initialValue: undefined,
+	},
 );
 const loading = ref(true);
 watch(dbQuestions, (q) => {
-    setTimeout(() => {
-        loading.value = q === undefined;
-    }, 500);
-})
+	setTimeout(() => {
+		loading.value = q === undefined;
+	}, 500);
+});
 const appData = inject<Ref<QnaplusAppData | undefined>>("appdata");
 const { questions } = useKeywordSearch(query, dbQuestions);
 const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
-    programs: appData?.value?.programs ?? [],
-    seasons: appData?.value?.seasons ?? [],
+	programs: appData?.value?.programs ?? [],
+	seasons: appData?.value?.seasons ?? [],
 });
 const { highlightedQuestions } = useHints(filteredQuestions);
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);

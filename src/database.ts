@@ -93,8 +93,14 @@ export const setupDatabase = async () => {
 	return new Promise<void>((resolve, reject) => {
 		database.open().catch((e) => reject(e));
 		database.on("ready", async (db) => {
-			await update(db as QnaplusDatabase);
-			resolve();
+			try {
+				await update(db as QnaplusDatabase);
+				resolve();
+				return;
+			} catch (e) {
+				reject();
+				return;
+			}
 		});
 	});
 };

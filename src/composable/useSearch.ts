@@ -108,7 +108,7 @@ export const getTagSuggestions = (
 		fields: ["tags"],
 		prefix: true,
 	}) as QuestionSearchResult[];
-    
+
 	const isMatchingTag = (result: QuestionSearchResult) =>
 		result.tags.filter((t) => result.terms.includes(t.toLowerCase()));
 

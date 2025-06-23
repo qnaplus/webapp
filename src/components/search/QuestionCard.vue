@@ -9,7 +9,7 @@ const { questionContent, answerContent } = renderQuestion(question, {
 	limit: 75,
 });
 defineEmits<{
-    "read-more": [question: Question];
+	"read-more": [question: Question];
 }>();
 </script>
 
