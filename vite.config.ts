@@ -63,7 +63,6 @@ export default defineConfig(({ mode }) => {
 					enabled: false,
 					navigateFallback: "index.html",
 					suppressWarnings: true,
-					type: "module",
 				},
 			}),
 			Components({
