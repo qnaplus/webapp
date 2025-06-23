@@ -49,7 +49,7 @@ const FILTER_MAP: FilterMap = {
 		return f.program.find((p) => p.value === q.program) !== undefined;
 	},
 	author(q, f) {
-		return q.author.includes(f.author ?? "")
+		return q.author.includes(f.author ?? "");
 	},
 	state(q, f) {
 		if (f.state.value === QuestionStateValue.All) {

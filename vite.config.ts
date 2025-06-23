@@ -1,9 +1,9 @@
+import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import Components from "unplugin-vue-components/vite";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
-import Components from 'unplugin-vue-components/vite';
-import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -67,9 +67,7 @@ export default defineConfig(({ mode }) => {
 			}),
 			Components({
 				dts: true,
-				resolvers: [
-					PrimeVueResolver()
-				]
+				resolvers: [PrimeVueResolver()],
 			}),
 		],
 		build: {
@@ -86,7 +84,7 @@ export default defineConfig(({ mode }) => {
 							const scopedPackageName = modulePath?.split("/")[1];
 							const chunkName =
 								scopedPackageName?.split("@")[
-								scopedPackageName.startsWith("@") ? 1 : 0
+									scopedPackageName.startsWith("@") ? 1 : 0
 								];
 
 							return chunkName;

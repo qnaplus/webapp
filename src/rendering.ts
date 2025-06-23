@@ -5,6 +5,7 @@ import {
 	isTag,
 	isText,
 } from "domhandler";
+import { parseDocument } from "htmlparser2";
 import sanitize from "sanitize-html";
 import Blockquote from "./components/question/Blockquote.vue";
 import Code from "./components/question/Code.vue";
@@ -20,7 +21,6 @@ import Pre from "./components/question/Pre.vue";
 import Strong from "./components/question/Strong.vue";
 import Text from "./components/question/Text.vue";
 import UnorderedList from "./components/question/UnorderedList.vue";
-import { parseDocument } from "htmlparser2";
 
 const HEADER_REGEX = /h[1-6]/;
 
@@ -170,12 +170,12 @@ export const renderQuestion = (
 	question: Question | undefined,
 	opts?: RenderQuestionOptions,
 ) => {
-    if (question === undefined) {
-        return {
-            questionContent: [],
-            answerContent: []
-        }
-    }
+	if (question === undefined) {
+		return {
+			questionContent: [],
+			answerContent: [],
+		};
+	}
 	const limit = opts?.limit ?? Number.POSITIVE_INFINITY;
 
 	const allowedAttributes = {

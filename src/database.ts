@@ -97,10 +97,10 @@ export const setupDatabase = async () => {
 				await update(db as QnaplusDatabase);
 				resolve();
 				return;
-			} catch(e) {
+			} catch (e) {
 				reject();
 				return;
-			} 
+			}
 		});
 	});
 };
