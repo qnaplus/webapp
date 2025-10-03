@@ -35,9 +35,9 @@ defineEmits(["hide-drawer"]);
                         v-for="component in content.questionContent" />
                 </div>
             </div>
-            <div v-if="question.answered" class="border border-green-700 rounded-md px-5">
+            <div v-if="question.answered" class="border bg-green-800/5 border-green-700/70 px-5">
                 <h3>Answer</h3>
-                <div>
+                <div class="text-surface-300">
                     <component :is="component.node" v-bind="component.props"
                         v-for="component in content.answerContent" />
                 </div>
