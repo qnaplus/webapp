@@ -1,7 +1,7 @@
 import {
 	type RouteRecordRaw,
 	createRouter,
-	createWebHashHistory,
+	createWebHistory
 } from "vue-router";
 
 import Question from "./Question.vue";
@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export default createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(),
 	routes,
 	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {

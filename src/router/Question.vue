@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import LoadingQuestion from "../components/shared/LoadingQuestion.vue";
-import QuestionDetails from "../components/shared/QuestionDetails.vue";
-import QuestionFooter from "../components/shared/QuestionFooter.vue";
-import { getQuestion } from "../database";
-import { renderQuestion } from "../rendering";
+import LoadingQuestion from "@/components/shared/LoadingQuestion.vue";
+import QuestionDetails from "@/components/shared/QuestionDetails.vue";
+import QuestionFooter from "@/components/shared/QuestionFooter.vue";
+import { getQuestion } from "@/database";
+import { renderQuestion } from "@/rendering";
 import Root from "./Root.vue";
 
 const props = defineProps<{
@@ -31,7 +31,7 @@ const { question, questionContent, answerContent } = await loadContent();
 <template>
   <Root>
     <Suspense suspensible>
-      <div class="prose prose-invert prose-slate break-words max-w-none p-4">
+      <div class="prose prose-invert prose-zinc wrap-break-word max-w-none p-4">
         <div class="flex flex-col items-center justify-center" v-if="!loading && question === null">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>

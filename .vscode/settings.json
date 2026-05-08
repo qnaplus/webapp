@@ -1,0 +1,9 @@
+{
+	"js/ts.preferences.importModuleSpecifier": "non-relative",
+	"files.associations": {
+		"*.css": "tailwindcss",
+	},
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.defaultFormatter": "oxc.oxc-vscode"
+}

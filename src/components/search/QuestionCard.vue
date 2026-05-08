@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import QuestionDetails from "@/components/shared/QuestionDetails.vue";
+import QuestionTags from "@/components/shared/QuestionTags.vue";
+import { renderQuestion } from "@/rendering";
 import type { Question } from "@qnaplus/scraper";
-import { renderQuestion } from "../../rendering";
-import QuestionDetails from "../shared/QuestionDetails.vue";
-import QuestionTags from "../shared/QuestionTags.vue";
 
 const question = defineProps<Question>();
 const { questionContent, answerContent } = renderQuestion(question, {
@@ -22,7 +22,7 @@ defineEmits<{
             class: 'max-h-48 overflow-hidden text-surface-300 break-words',
             style: '-webkit-mask-image: -webkit-gradient(linear, left 70%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))'
         }
-    }" class="prose prose-invert prose-slate max-w-none !bg-surface-900 border-1 border-surface-800 mb-3 !rounded-md">
+    }" class="prose prose-invert prose-zinc max-w-none bg-surface-900! border border-surface-800 mb-3 rounded-md!">
         <template #title>
             {{ title }}
         </template>

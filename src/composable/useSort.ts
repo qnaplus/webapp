@@ -6,7 +6,7 @@ import {
 	toValue,
 	watchEffect,
 } from "vue";
-import { type SortFunction, multisortrules } from "../util/sorting";
+import { type SortFunction, multisortrules } from "@/util/sorting";
 import type { Option } from "./types";
 import type { UseSearchResult } from "./useSearch";
 

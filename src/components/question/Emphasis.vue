@@ -3,7 +3,7 @@ import type { Node as ParserNode } from "domhandler";
 import {
 	resolveQuestionComponentNode,
 	resolveQuestionComponentProps,
-} from "../../rendering";
+} from "@/rendering";
 
 defineProps<{
 	children: ParserNode[];

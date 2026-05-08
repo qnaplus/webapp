@@ -1,38 +1,49 @@
 <script setup lang="ts">
-import Header from "../components/shared/HeaderBar.vue";
+import Header from "@/components/shared/HeaderBar.vue";
 </script>
 
 <template>
-    <div id="app-root">
-        <Header />
-        <div class="content">
-            <slot></slot>
-        </div>
-    </div>
+	<div class="app-root" id="app-root">
+		<Header />
+		<div class="content">
+			<slot></slot>
+		</div>
+	</div>
 </template>
 
 <style scoped>
+.app-root {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	min-height: 100dvh;
+}
+
+.content {
+	min-height: 0;
+	overflow: hidden;
+}
+
 @media screen and (min-width: 576px) {
-    .content {
-        padding: 0;
-    }
+	.content {
+		padding: 0;
+	}
 }
 
 @media screen and (min-width: 768px) {
-    .content {
-        padding: 0 2rem;
-    }
+	.content {
+		padding: 0 2rem;
+	}
 }
 
 @media screen and (min-width: 992px) {
-    .content {
-        padding: 0 5rem;
-    }
+	.content {
+		padding: 0 5rem;
+	}
 }
 
 @media screen and (min-width: 1200px) {
-    .content {
-        padding: 0 20%;
-    }
+	.content {
+		padding: 0 20%;
+	}
 }
 </style>

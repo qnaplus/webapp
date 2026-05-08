@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import QuestionFooter from "@/components/shared/QuestionFooter.vue";
+import { renderQuestion } from "@/rendering";
 import type { Question } from "@qnaplus/scraper";
 import { computed, ref, watchEffect } from "vue";
-import { renderQuestion } from "../../rendering";
-import QuestionFooter from "../shared/QuestionFooter.vue";
 
 const { question } = defineProps<{
 	question: Question | undefined;
@@ -20,8 +20,8 @@ defineEmits(["hide-drawer"]);
 
 <template>
     <Drawer class="w-full! md:w-80! lg:w-240!" @hide="$emit('hide-drawer')" v-model:visible="visible"
-        position="right">
-        <div class="prose prose-invert prose-slate wrap-break-word max-w-none p-4" v-if="question !== undefined">
+        position="right" :block-scroll="true">
+        <div class="prose prose-invert prose-zinc wrap-break-word max-w-none p-4" v-if="question !== undefined">
             <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
                 qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
             </Message>

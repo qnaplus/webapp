@@ -5,10 +5,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="flex justify-between py-3">
-        <div></div>
-        <div class="text-sm">{{ results }} results</div>
-    </div>
+	<div class="text-sm ml-auto">{{ results }} results</div>
 </template>
 
 <style scoped></style>
