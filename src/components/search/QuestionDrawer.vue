@@ -19,9 +19,9 @@ defineEmits(["hide-drawer"]);
 </script>
 
 <template>
-    <Drawer class="!w-full md:!w-80 lg:!w-[60rem]" @hide="$emit('hide-drawer')" v-model:visible="visible"
+    <Drawer class="w-full! md:w-80! lg:w-240!" @hide="$emit('hide-drawer')" v-model:visible="visible"
         position="right">
-        <div class="prose prose-invert prose-slate break-words max-w-none p-4" v-if="question !== undefined">
+        <div class="prose prose-invert prose-slate wrap-break-word max-w-none p-4" v-if="question !== undefined">
             <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
                 qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
             </Message>

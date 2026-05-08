@@ -20,11 +20,11 @@ const appname = import.meta.env.VITE_APP_NAME;
 </script>
 
 <template>
-    <div ref="filler" class="p-3 border-b-1 border-transparent hidden">
+    <div ref="filler" class="p-3 border-b border-transparent hidden">
         <div class="p-3"></div>
     </div>
     <div ref="header"
-        class="flex w-full z-10 items-center justify-between gap-5 p-3 duration-300 transition-colors border-b-1 border-transparent">
+        class="flex w-full z-10 items-center justify-between gap-5 p-3 duration-300 transition-colors border-b border-transparent">
         <a href="/" class="text-color ml-2 font-semibold">{{ appname }}</a>
         <div class="flex gap-2">
             <Button as="a" href="https://nexus.qnapl.us" target="_blank" class="header-btn"
