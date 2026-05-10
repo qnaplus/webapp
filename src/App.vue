@@ -41,7 +41,7 @@ startup();
 	</div>
 	<div v-else class="flex flex-column w-full h-screen p-component">
 		<Suspense>
-			<router-view class="w-full"></router-view>
+			<router-view :key="$route.path" class="w-full"></router-view>
 		</Suspense>
 	</div>
 </template>

@@ -4,8 +4,8 @@ import QuestionTags from "@/components/shared/QuestionTags.vue";
 import { renderQuestion } from "@/rendering";
 import type { Question } from "@qnaplus/scraper";
 
-const question = defineProps<Question>();
-const { questionContent, answerContent } = renderQuestion(question, {
+const props = defineProps<{ question: Question }>();
+const { questionContent, answerContent } = renderQuestion(props.question, {
 	limit: 75,
 });
 defineEmits<{
@@ -15,7 +15,7 @@ defineEmits<{
 
 <template>
     <!-- TODO:
-        make the webkit-mask work with light mode theming 
+        make the webkit-mask work with light mode theming
     -->
     <Card :pt="{
         content: {
@@ -24,7 +24,7 @@ defineEmits<{
         }
     }" class="prose prose-invert prose-zinc max-w-none bg-surface-900! border border-surface-800 mb-3 rounded-md!">
         <template #title>
-            {{ title }}
+            {{ question.title }}
         </template>
         <template #subtitle>
             <question-details :question="question" />
@@ -34,7 +34,7 @@ defineEmits<{
                 <div>
                     <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
                 </div>
-                <div v-if="answered">
+                <div v-if="question.answered">
                     <span class="font-bold">Answer</span>
                     <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />
                 </div>

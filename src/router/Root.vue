@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import Header from "@/components/shared/HeaderBar.vue";
+
+withDefaults(defineProps<{ showHeader?: boolean }>(), { showHeader: true });
 </script>
 
 <template>
 	<div class="app-root" id="app-root">
-		<Header />
+		<Header v-if="showHeader" />
 		<div class="content">
 			<slot></slot>
 		</div>
@@ -13,37 +15,14 @@ import Header from "@/components/shared/HeaderBar.vue";
 
 <style scoped>
 .app-root {
-	display: grid;
-	grid-template-rows: auto 1fr;
+	display: flex;
+	flex-direction: column;
 	min-height: 100dvh;
 }
 
 .content {
+	flex: 1;
 	min-height: 0;
 	overflow: hidden;
-}
-
-@media screen and (min-width: 576px) {
-	.content {
-		padding: 0;
-	}
-}
-
-@media screen and (min-width: 768px) {
-	.content {
-		padding: 0 2rem;
-	}
-}
-
-@media screen and (min-width: 992px) {
-	.content {
-		padding: 0 5rem;
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	.content {
-		padding: 0 20%;
-	}
 }
 </style>

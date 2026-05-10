@@ -117,6 +117,7 @@ export type SearchFilterOptions = Omit<
 export type FilterData = {
 	programs: string[];
 	seasons: string[];
+	initial?: Partial<SearchFilters>;
 };
 
 export const useSearchFilter = (
@@ -132,9 +133,9 @@ export const useSearchFilter = (
 		value: program,
 	}));
 
-	const getInitialFilterState = () => {
+	const getInitialFilterState = (): SearchFilters => {
 		return {
-			season: [seasons[0]],
+			season: [],
 			program: [],
 			author: null,
 			state: {
@@ -146,6 +147,7 @@ export const useSearchFilter = (
 			answeredBefore: null,
 			answeredAfter: null,
 			tags: [],
+			...filterData.initial,
 		};
 	};
 
