@@ -23,11 +23,11 @@ const startup = async () => {
 
 		const questions = await database.questions.toArray();
 		await loadMinisearch(questions);
-
-		loading.value = false;
 	} catch (e) {
 		console.error(e);
-	}
+	} finally {
+		loading.value = false;
+    }
 };
 
 startup();

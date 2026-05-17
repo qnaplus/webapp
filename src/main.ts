@@ -25,6 +25,27 @@ const preset = definePreset(Aura, {
 			900: `{${primary}.900}`,
 			950: `{${primary}.950}`,
 		},
+		borderRadius: {
+			xs: "0px",
+			sm: "0px",
+			md: "0px",
+			lg: "0px",
+			xl: "0px",
+		},
+		formField: {
+			paddingX: "0.625rem",
+			paddingY: "0.375rem",
+			sm: {
+				fontSize: "0.8125rem",
+				paddingX: "0.5rem",
+				paddingY: "0.25rem",
+			},
+			borderRadius: "{border.radius.md}",
+			transitionDuration: "150ms",
+		},
+		content: {
+			borderRadius: "{border.radius.lg}",
+		},
 		colorScheme: {
 			light: {
 				surface: {
@@ -41,10 +62,13 @@ const preset = definePreset(Aura, {
 					900: "{zinc.900}",
 					950: "{zinc.950}",
 				},
+				content: {
+					borderColor: "{zinc.200}",
+				},
 			},
 			dark: {
 				surface: {
-					0: "#ffffff",
+					0: "{zinc.0}",
 					50: "{zinc.50}",
 					100: "{zinc.100}",
 					200: "{zinc.200}",
@@ -56,6 +80,9 @@ const preset = definePreset(Aura, {
 					800: "{zinc.800}",
 					900: "{zinc.900}",
 					950: "{zinc.950}",
+				},
+				content: {
+					borderColor: "{zinc.800}",
 				},
 			},
 		},

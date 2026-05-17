@@ -9,7 +9,7 @@ const { author, askedTimestamp, answered, answeredTimestamp } = question;
 <template>
     <div class="flex details justify-between">
         <span><b>{{ author }}</b> on <b>{{ askedTimestamp }}</b></span>
-        <span v-if="answered" class="flex gap-2 items-center text-green-500">
+        <span v-if="answered" class="flex gap-2 items-center text-green-500 bg-green-500/10 px-1.5 py-0.5">
             <i class="pi pi-check " />
             <span v-if="!isEmpty(answeredTimestamp)">Answered on <b>{{ answeredTimestamp }}</b></span>
             <span v-else>Answered</span>

@@ -50,7 +50,6 @@ const updateAuthorSuggestions = () => {
 const tagSuggestions = ref<string[]>([]);
 const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
 	tagSuggestions.value = getTagSuggestions(e.query);
-	console.log(tagSuggestions);
 };
 </script>
 
@@ -70,29 +69,29 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                     <TabPanels>
                         <TabPanel value="0">
                             <div class="flex flex-col gap-3">
-                                <div class="flex flex-wrap gap-3">
+                                <div class="flex flex-wrap gap-2">
 
-                                    <div class="flex flex-wrap gap-3 flex-1">
+                                    <div class="flex flex-wrap gap-2 flex-1">
                                         <div class="m-0 dropdown-flex">
-                                            <label for="season">Season</label>
+                                            <label class="text-sm font-medium text-muted-color" for="season">Season</label>
                                             <MultiSelect class="w-full" input-id="season"
                                                 v-model="filterOptions.filters.season" placeholder="Season"
                                                 :options="filterOptions.seasons" option-label="name" />
                                         </div>
                                         <div class="m-0 dropdown-flex">
-                                            <label for="program">Program</label>
+                                            <label class="text-sm font-medium text-muted-color" for="program">Program</label>
                                             <MultiSelect class="w-full" input-id="program"
                                                 v-model="filterOptions.filters.program" placeholder="Program"
                                                 :options="filterOptions.programs" option-label="name" />
                                         </div>
                                     </div>
 
-                                    <div class="flex flex-1 flex-wrap gap-3">
+                                    <div class="flex flex-1 flex-wrap gap-2">
                                         <div class="m-0 input-flex">
-                                            <label for="author">Author</label>
+                                            <label class="text-sm font-medium text-muted-color" for="author">Author</label>
                                             <IconField>
                                                 <InputIcon class="pi pi-user" />
-                                                <AutoComplete id="author" class="w-full" input-class="w-full"
+                                                <AutoComplete input-id="author" class="w-full" input-class="w-full"
                                                     v-model="filterOptions.filters.author"
                                                     @complete="updateAuthorSuggestions" :suggestions="authorSuggestions"
                                                     placeholder="Author" />
@@ -100,7 +99,7 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                         </div>
 
                                         <div class="m-0 input-flex">
-                                            <label for="Question State">Question State</label>
+                                            <label class="text-sm font-medium text-muted-color" for="Question State">Question State</label>
                                             <SelectButton class="select-button-flex" :allow-empty="false"
                                                 v-model="filterOptions.filters.state" :options="questionStateOptions"
                                                 option-label="name" aria-labelledby="multiple" />
@@ -108,24 +107,24 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap gap-3 ">
-                                    <div class="flex flex-1 min-w-fit gap-3">
+                                <div class="flex flex-wrap gap-2">
+                                    <div class="flex flex-1 min-w-fit gap-2">
                                         <div class="m-0 flex-1">
-                                            <label for="askedBefore">Asked Before</label>
+                                            <label class="text-sm font-medium text-muted-color" for="askedBefore">Asked Before</label>
                                             <DatePicker class="w-full" input-id="askedBefore"
                                                 v-model="filterOptions.filters.askedBefore" placeholder="Asked Before"
                                                 show-icon show-button-bar icon-display="input" />
                                         </div>
                                         <div class="m-0 flex-1">
-                                            <label for="askedAfter">Asked After</label>
+                                            <label class="text-sm font-medium text-muted-color" for="askedAfter">Asked After</label>
                                             <DatePicker class="w-full" input-id="askedAfter"
                                                 v-model="filterOptions.filters.askedAfter" placeholder="Asked After"
                                                 show-icon show-button-bar icon-display="input" />
                                         </div>
                                     </div>
-                                    <div class="flex flex-1 min-w-fit gap-3">
+                                    <div class="flex flex-1 min-w-fit gap-2">
                                         <div class="m-0 flex-1">
-                                            <label for="answeredBefore" aria-label="Answered Before">Answered
+                                            <label class="text-sm font-medium text-muted-color" for="answeredBefore" aria-label="Answered Before">Answered
                                                 Before</label>
                                             <DatePicker class="w-full" input-id="answeredBefore"
                                                 v-model="filterOptions.filters.answeredBefore"
@@ -133,7 +132,7 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                                 icon-display="input" />
                                         </div>
                                         <div class="m-0 flex-1">
-                                            <label for="answeredAfter" aria-label="Answered After">Answered
+                                            <label class="text-sm font-medium text-muted-color" for="answeredAfter" aria-label="Answered After">Answered
                                                 After</label>
                                             <DatePicker class="w-full" input-id="answeredAfter"
                                                 v-model="filterOptions.filters.answeredAfter"
@@ -144,19 +143,19 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                 </div>
 
                                 <div class="m-0">
-                                    <label for="tags">Tags</label>
+                                    <label class="text-sm font-medium text-muted-color" for="tags">Tags</label>
                                     <InputGroup>
                                         <InputGroupAddon>
                                             <i class="pi pi-tags" aria-label="Tags" />
                                         </InputGroupAddon>
                                         <AutoComplete class="autocomplete-group" multiple input-id="tags"
                                             v-model="filterOptions.filters.tags" aria-label="Tags"
-                                            @value-change="(v) => console.log(v)" @complete="updateTagSuggestions"
+                                            @complete="updateTagSuggestions"
                                             :suggestions="tagSuggestions" placeholder="Tags" />
                                     </InputGroup>
                                 </div>
                                 <div>
-                                    <Button @click="filterOptions.clearFilters()"><b>Reset Filters</b></Button>
+                                    <Button label="Reset Filters" severity="secondary" variant="outlined" size="small" @click="filterOptions.clearFilters()" />
                                 </div>
                             </div>
                         </TabPanel>
@@ -166,21 +165,21 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                             </template>
                             <div class="flex flex-col gap-3">
                                 <div class="flex justify-end">
-                                    <div class="flex items-center gap-3">
-                                        <label for="advanced_toggle">Advanced Sorting</label>
+                                    <div class="flex items-center gap-2">
+                                        <label class="text-sm font-medium text-muted-color" for="advanced_toggle">Advanced Sorting</label>
                                         <ToggleSwitch v-model="sortOptions.advancedEnabled"
                                             input-id="advanced_toggle" />
                                     </div>
                                 </div>
-                                <div class="flex flex-wrap gap-3" v-if="!sortOptions.advancedEnabled">
+                                <div class="flex flex-wrap gap-2" v-if="!sortOptions.advancedEnabled">
                                     <div class="flex-1 m-0">
-                                        <label for="basic_sort_option">Sort By</label>
+                                        <label class="text-sm font-medium text-muted-color" for="basic_sort_option">Sort By</label>
                                         <Select class="w-full" input-id="basic_sort_option"
                                             v-model="sortOptions.basic.sort" :options="sortOptionsList"
                                             option-label="name" />
                                     </div>
                                     <div class="flex-1 m-0">
-                                        <label for="basic_sort_order">Order</label>
+                                        <label class="text-sm font-medium text-muted-color" for="basic_sort_order">Order</label>
                                         <Select class="w-full" input-id="basic_sort_order"
                                             v-model="sortOptions.basic.asc" :options="sortOrderList"
                                             option-label="name" />
@@ -188,7 +187,7 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                 </div>
                                 <div class="flex flex-col gap-3" v-else>
                                     <div class="flex-1">
-                                        <label for="sort_option">Sort Option</label>
+                                        <label class="text-sm font-medium text-muted-color" for="sort_option">Sort Option</label>
                                         <Select class="w-full" input-id="sort_option"
                                             :options="remainingAdvancedOptions" option-label="name"
                                             @update:model-value="updateSelectedAdvancedOption" />
@@ -196,20 +195,20 @@ const updateTagSuggestions = (e: AutoCompleteCompleteEvent) => {
                                     <VueDraggable ref="el" v-model="sortOptions.advanced" ghostClass="sort-ghost"
                                         dragClass="sort-drag" :animation="150" handle=".handle">
                                         <div v-for="(option, index) in sortOptions.advanced">
-                                            <div class="flex flex-wrap gap-3">
+                                            <div class="flex flex-wrap gap-2">
                                                 <div class="flex flex-1 items-center">
                                                     <div class="handle cursor-move p-2 pi pi-bars ml-2"></div>
                                                     <span class="">{{ option.name }}</span>
                                                 </div>
-                                                <div class="flex flex-1 items-center gap-3">
-                                                    <div class="flex flex-1 items-center gap-3 m-0">
-                                                        <label :for="'advanced_sort_order_' + option.name">Order</label>
+                                                <div class="flex flex-1 items-center gap-2">
+                                                    <div class="flex flex-1 items-center gap-2 m-0">
+                                                        <label class="text-sm font-medium text-muted-color" :for="'advanced_sort_order_' + option.name">Order</label>
                                                         <Select class="flex-1"
                                                             :input-id="'advanced_sort_order_' + option.name"
                                                             v-model="sortOptions.advanced[index].asc"
                                                             :options="sortOrderList" option-label="name" />
                                                     </div>
-                                                    <Button class="self-end" type="button" severity="secondary" rounded
+                                                    <Button class="self-end" type="button" severity="secondary"
                                                         outlined aria-label="Remove Sort" icon="pi pi-times"
                                                         @click="removeSelectedAdvancedOption(index)" />
                                                 </div>

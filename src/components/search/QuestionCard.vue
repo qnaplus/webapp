@@ -15,16 +15,16 @@ defineEmits<{
 
 <template>
     <!-- TODO:
-        make the webkit-mask work with light mode theming 
+        make the webkit-mask work with light mode theming
     -->
     <Card :pt="{
         content: {
-            class: 'max-h-48 overflow-hidden text-surface-300 break-words',
+            class: 'max-h-48 overflow-hidden text-muted-color break-words',
             style: '-webkit-mask-image: -webkit-gradient(linear, left 70%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))'
         }
-    }" class="prose prose-invert prose-slate max-w-none !bg-surface-900 border-1 border-surface-800 mb-3 !rounded-md">
+    }" class="prose prose-invert prose-zinc max-w-none border-1 border-[var(--p-content-border-color)] mb-3">
         <template #title>
-            {{ title }}
+            <span class="text-base font-medium">{{ title }}</span>
         </template>
         <template #subtitle>
             <question-details :question="question" />
@@ -35,21 +35,15 @@ defineEmits<{
                     <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />
                 </div>
                 <div v-if="answered">
-                    <span class="font-bold">Answer</span>
+                    <span class="font-medium">Answer</span>
                     <component :is="component.node" v-bind="component.props" v-for="component in answerContent" />
                 </div>
             </div>
         </template>
         <template #footer>
-            <Button @click="$emit('read-more', question)" label="Read More" severity="secondary" />
+            <Button @click="$emit('read-more', question)" label="Read More" severity="secondary" variant="outlined" size="small" />
             <Divider />
             <QuestionTags :tags="question.tags" :program="question.program" />
         </template>
     </Card>
 </template>
-
-<style>
-.border-1 {
-    border-width: 1px;
-}
-</style>
