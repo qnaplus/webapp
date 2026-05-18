@@ -7,7 +7,7 @@ const { author, askedTimestamp, answered, answeredTimestamp } = question;
 </script>
 
 <template>
-    <div class="flex details justify-between text-xs text-muted">
+    <div class="flex details justify-between text-sm text-muted">
         <span><b>{{ author }}</b> on <b>{{ askedTimestamp }}</b></span>
         <span v-if="answered" class="flex gap-2 items-center text-green-500 bg-green-500/10 px-1.5 py-0.5">
             <UIcon name="i-lucide-check" />

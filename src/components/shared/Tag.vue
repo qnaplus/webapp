@@ -29,7 +29,7 @@ const COLOR_CLASSES: Record<TagColor, string> = {
 
 <template>
     <span
-        class="inline-flex items-center text-xs font-medium px-2 py-0.5"
+        class="inline-flex items-center text-sm font-medium px-2 py-1"
         :class="COLOR_CLASSES[color]"
     >
         <slot>{{ label }}</slot>

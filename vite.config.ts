@@ -21,9 +21,10 @@ export default defineConfig(({ mode }) => {
                     },
                     card: {
                         slots: {
-                            header: "sm:px-2",
-                            body: "sm:px-2",
-                            footer: "sm:p-2",
+                            root: "p-5 divide-y-0",
+                            header: "p-0 sm:p-0",
+                            body: "p-0 sm:p-0",
+                            footer: "p-0 sm:p-0",
                         },
                     },
                     icons: {

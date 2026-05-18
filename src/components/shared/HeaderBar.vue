@@ -20,11 +20,11 @@ const details = import.meta.env.DEV ? " (dev)" : "";
 </script>
 
 <template>
-    <div ref="filler" class="p-3 border-b-1 border-transparent hidden">
+    <div ref="filler" class="p-3 border-b border-transparent hidden">
         <div class="p-3"></div>
     </div>
     <div ref="header"
-        class="flex w-full z-10 items-center justify-between gap-5 p-3 duration-300 transition-colors border-b-1 border-transparent">
+        class="flex w-full z-10 items-center justify-between gap-5 p-3 duration-300 transition-colors border-b border-transparent">
         <a href="/" class="text-default ml-2 font-bold">
             <span>qna</span>
             <span class="text-primary-500/80">plus</span>
@@ -52,9 +52,5 @@ const details = import.meta.env.DEV ? " (dev)" : "";
 .header-btn {
     width: 32px !important;
     height: 32px !important;
-}
-
-.border-b-1 {
-    border-bottom-width: 1px;
 }
 </style>

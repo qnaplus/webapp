@@ -31,17 +31,12 @@ const onKeydown = (e: KeyboardEvent) => {
         role="button"
         tabindex="0"
         :aria-label="`Read more: ${title}`"
-        class="max-w-none border-1 border-[var(--ui-border)] mb-3 cursor-pointer transition-colors hover:bg-muted/30 ring-0"
+        class="max-w-none border border-(--ui-border) mb-3 cursor-pointer transition-colors hover:bg-muted/30 ring-0"
         @click="onActivate"
         @keydown="onKeydown"
     >
-        <template #header>
-            <div class="flex flex-col gap-1">
-                <span class="text-base font-medium">{{ title }}</span>
-                <question-details :question="question" />
-            </div>
-        </template>
-        <div class="masked-content max-h-48 overflow-hidden text-muted break-words">
+        <question-details :question="question" />
+        <div class="masked-content max-h-48 overflow-hidden text-muted wrap-break-word">
             <div class="flex flex-col gap-2">
                 <div>
                     <component :is="component.node" v-bind="component.props" v-for="component in questionContent" />

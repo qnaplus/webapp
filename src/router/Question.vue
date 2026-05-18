@@ -30,7 +30,7 @@ const { question, questionContent, answerContent } = await loadContent();
 
 <template>
     <Suspense suspensible>
-      <div class="break-words max-w-none p-4">
+      <div class="wrap-break-words max-w-none p-4">
         <div class="flex flex-col items-center justify-center" v-if="!loading && question === null">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>
@@ -42,7 +42,7 @@ const { question, questionContent, answerContent } = await loadContent();
                 RobotEvents</a> to get the most up-to-date information.
             </template>
           </UAlert>
-          <h2 class="mb-1">{{ question.title }}</h2>
+          <prose-h2 class="mb-1">{{ question.title }}</prose-h2>
           <question-details :question="question" />
           <USeparator class="my-4" />
           <div class="px-5 pb-3">

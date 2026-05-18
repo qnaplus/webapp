@@ -55,10 +55,14 @@ const sidebarOpen = ref(true);
             <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-2">
                     <QuestionListHeader class="flex-1" :results="sortedQuestions.length" />
-                    <UButton icon="i-lucide-sliders-horizontal" color="neutral" variant="ghost"
-                        aria-label="Toggle search options" @click="sidebarOpen = !sidebarOpen" />
+               
                 </div>
-                <SearchInput class="flex-1" v-model="query" />
+                <div class="flex flex-row gap-2">
+                   <UButton icon="i-lucide-sliders-horizontal" color="neutral" variant="outline"
+                        aria-label="Toggle search options" @click="sidebarOpen = !sidebarOpen" />
+                    <SearchInput class="flex-1" v-model="query" />
+
+                </div>
             </div>
             <div class="h-full flex flex-col gap-3">
                 <LoadingQuestion v-if="loading" />
