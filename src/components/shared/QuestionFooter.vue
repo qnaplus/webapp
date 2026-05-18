@@ -7,11 +7,12 @@ defineProps<{
 </script>
 
 <template>
-    <Divider />
+    <USeparator class="my-4" />
     <div class="flex footer gap-3">
         <QuestionTags :tags="question.tags" :program="question.program" />
-        <a class="text-muted-color" :href="question.url" target="_blank">View on RobotEvents <i
-                class=" ml-1 pi pi-external-link"></i></a>
+        <a class="text-muted" :href="question.url" target="_blank">View on RobotEvents
+            <UIcon name="i-lucide-external-link" class="ml-1 inline-block align-text-bottom" />
+        </a>
     </div>
 </template>
 

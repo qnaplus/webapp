@@ -5,7 +5,7 @@ const { tags, program } = defineProps<Pick<Question, "tags" | "program">>();
 </script>
 
 <template>
-    <div class="flex gap-2">
+    <div class="flex gap-1">
         <ProgramTag :program="program" />
         <Tag v-for="tag in tags">{{ tag }}</Tag>
     </div>

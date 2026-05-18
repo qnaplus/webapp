@@ -11,10 +11,10 @@ defineProps<{
 </script>
 
 <template>
-    <code>
+    <prose-code>
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </code>
+    </prose-code>
 </template>
 
 <style scoped>

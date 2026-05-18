@@ -1,14 +1,10 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <Card class="prose text-center max-w-none p-3 !rounded-md">
+    <UCard variant="soft" class="text-center max-w-none p-3">
         <template #header>
-            <div class="text-7xl font-bold">{{ ":(" }}</div>
-        </template>
-        <template #content>
+            <div class="text-3xl font-bold">{{ ":(" }}</div>
             (no results)
         </template>
-    </Card>
+    </UCard>
 </template>

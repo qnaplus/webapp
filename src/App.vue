@@ -27,23 +27,24 @@ const startup = async () => {
 		console.error(e);
 	} finally {
 		loading.value = false;
-    }
+	}
 };
 
 startup();
 </script>
 
 <template>
-	<div v-if="loading" class="flex flex-row h-screen-mobile justify-center items-center gap-x-4">
-		<h1 class="text-xl font-semibold">{{ appname }}</h1>
-		<ProgressSpinner style="width: 40px; height: 40px; margin: 0;" strokeWidth="6" fill="transparent"
-			animationDuration="0.5s" />
-	</div>
-	<div v-else class="flex flex-column w-full h-screen p-component">
-		<Suspense>
-			<router-view class="w-full"></router-view>
-		</Suspense>
-	</div>
+	<UApp>
+		<div v-if="loading" class="flex flex-row h-screen-mobile justify-center items-center gap-x-4">
+			<h1 class="text-xl font-semibold">{{ appname }}</h1>
+			<UIcon name="i-lucide-loader-circle" class="size-10 animate-spin text-primary" />
+		</div>
+		<UMain v-else>
+			<Suspense>
+				<router-view class="w-full"></router-view>
+			</Suspense>
+		</UMain>
+	</UApp>
 </template>
 
 <style>

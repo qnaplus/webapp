@@ -3,12 +3,13 @@ const query = defineModel<string>();
 </script>
 
 <template>
-    <IconField iconPosition="left">
-        <InputIcon class="pi pi-search" />
-        <InputText type="search" class="w-full" v-model:model-value="query" placeholder="Search"
-            aria-label="Search Query" />
-    </IconField>
-
+    <UInput
+        v-model="query"
+        type="search"
+        class="w-full"
+        :ui="{ root: 'w-full' }"
+        icon="i-lucide-search"
+        placeholder="Search"
+        aria-label="Search Query"
+    />
 </template>
-
-<style scoped></style>

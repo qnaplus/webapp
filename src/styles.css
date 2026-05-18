@@ -1,13 +1,48 @@
-@import "primeicons/primeicons.css";
 @import "tailwindcss";
-@import "tailwindcss-primeui";
+@import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
+@theme {
+  --font-sans: 'Geist', sans-serif;
+}
+
+:root {
+    --ui-radius: 0rem;
+}
 
 html,
 body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
+}
+
+/* Scrollbars themed via Nuxt UI design tokens */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--ui-bg-accented) var(--ui-bg-muted);
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+	background: var(--ui-bg-muted);
+}
+
+*::-webkit-scrollbar-thumb {
+	background: var(--ui-bg-accented);
+	border: 2px solid var(--ui-bg-muted);
+	border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background: var(--ui-text-muted);
+}
+
+*::-webkit-scrollbar-corner {
+	background: var(--ui-bg-muted);
 }
 
 /* @layer base {
@@ -36,11 +71,7 @@ body {
 	height: 100svh;
 }
 
-.autocomplete-group ul {
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
 .border-1 {
 	border-width: 1px;
 }
+

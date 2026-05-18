@@ -11,8 +11,12 @@ defineProps<{
 </script>
 
 <template>
-    <p>
+    <prose-p class="mt-0">
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </p>
+    </prose-p>
 </template>
+
+<style lang="css" scoped>
+
+</style>

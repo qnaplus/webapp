@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Image from "primevue/image";
-
 defineProps<{
 	src: string;
 	height: number;
@@ -10,13 +8,6 @@ defineProps<{
 
 <template>
     <div>
-        <Image :src="src" :width="height" :preview="preview" />
+        <ProseImg :src="src" alt="" :width="height" :zoom="preview" />
     </div>
 </template>
-
-<style>
-.fit-image {
-    max-width: 100%;
-    object-fit: contain;
-}
-</style>

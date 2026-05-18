@@ -12,8 +12,8 @@ defineProps<{
 </script>
 
 <template>
-    <a :href="href">
+    <prose-a :href="href">
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </a>
+    </prose-a>
 </template>

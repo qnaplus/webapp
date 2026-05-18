@@ -11,10 +11,10 @@ defineProps<{
 </script>
 
 <template>
-    <blockquote class="p-3 border-l-2 bg-surface-900 border-l-surface-800 not-prose">
+    <prose-blockquote class="p-3 border-l-2 bg-surface-900 border-l-surface-800 not-prose">
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </blockquote>
+    </prose-blockquote>
 </template>
 
 <style scoped>

@@ -6,132 +6,132 @@ const DATA_PRIMARY_KEY = "0";
 const DEFAULT_VERSION = "_";
 
 export interface QnaplusAppData {
-    id: string;
-    seasons: string[];
-    programs: string[];
+	id: string;
+	seasons: string[];
+	programs: string[];
 }
 
 export interface QnaplusMetadata {
-    id: string;
-    version: string;
+	id: string;
+	version: string;
 }
 
 interface QnaplusDatabase extends Dexie {
-    questions: EntityTable<Question, "id">;
-    metadata: EntityTable<QnaplusMetadata, "id">;
-    appdata: EntityTable<QnaplusAppData, "id">;
+	questions: EntityTable<Question, "id">;
+	metadata: EntityTable<QnaplusMetadata, "id">;
+	appdata: EntityTable<QnaplusAppData, "id">;
 }
 
 export const database = new Dexie("qnaplus", {
-    autoOpen: true,
+	autoOpen: true,
 }) as QnaplusDatabase;
 
 database.version(1).stores({
-    questions: "id",
-    metadata: "id",
-    appdata: "id",
+	questions: "id",
+	metadata: "id",
+	appdata: "id",
 });
 
 database.version(2).upgrade((tx) => {
-    console.info("Upgrading database to version 2");
-    tx.table("metadata")
-        .toCollection()
-        .modify((metadata) => {
-            metadata.version = DEFAULT_VERSION;
-            // biome-ignore lint/performance/noDelete: it's literally just one row lol
-            delete metadata.lastUpdated;
-        });
-    tx.table("questions").clear();
+	console.info("Upgrading database to version 2");
+	tx.table("metadata")
+		.toCollection()
+		.modify((metadata) => {
+			metadata.version = DEFAULT_VERSION;
+			// biome-ignore lint/performance/noDelete: it's literally just one row lol
+			delete metadata.lastUpdated;
+		});
+	tx.table("questions").clear();
 });
 
 const updateAppData = async (db: QnaplusDatabase) => {
-    const questions = await db.questions.toArray();
-    const seasons = questions
-        .map((q) => q.season)
-        .sort(
-            (a, b) =>
-                Number.parseInt(b.split("-")[1]) - Number.parseInt(a.split("-")[1]),
-        )
-        .filter((season, index, array) => array.indexOf(season) === index);
-    const programs = questions
-        .map((q) => q.program)
-        .filter((program, index, array) => array.indexOf(program) === index);
-    await db.appdata.put({ id: DATA_PRIMARY_KEY, seasons, programs });
+	const questions = await db.questions.toArray();
+	const seasons = questions
+		.map((q) => q.season)
+		.sort(
+			(a, b) =>
+				Number.parseInt(b.split("-")[1]) - Number.parseInt(a.split("-")[1]),
+		)
+		.filter((season, index, array) => array.indexOf(season) === index);
+	const programs = questions
+		.map((q) => q.program)
+		.filter((program, index, array) => array.indexOf(program) === index);
+	await db.appdata.put({ id: DATA_PRIMARY_KEY, seasons, programs });
 };
 
 type UpdateResponseOutdated = {
-    outdated: true;
-    version: string;
-    questions: Question[];
+	outdated: true;
+	version: string;
+	questions: Question[];
 };
 
 type UpdateResponseUpToDate = {
-    outdated: false;
+	outdated: false;
 };
 
 type UpdateResponse = UpdateResponseOutdated | UpdateResponseUpToDate;
 
 const update = async (db: QnaplusDatabase) => {
-    const metadata = await getMetadata(db);
-    const [responseErr, response] = await trycatch(() =>
-        fetch(
-            `${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`,
-        )
-    );
-    if (responseErr) {
-        console.error(responseErr);
-        return;
-    }
-    if (response.status === 500) {
-        console.error(response.status, response.statusText);
-        return;
-    }
-    const updateResponse = (await response.json()) as UpdateResponse;
-    if (!updateResponse.outdated) {
-        return;
-    }
-    const { questions, version } = updateResponse;
-    await db.questions.bulkPut(questions);
-    await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
-    await updateAppData(db);
+	const metadata = await getMetadata(db);
+	const [responseErr, response] = await trycatch(() =>
+		fetch(
+			`${import.meta.env.VITE_QNAPLUS_API}/internal/update?version=${metadata.version}`,
+		),
+	);
+	if (responseErr) {
+		console.error(responseErr);
+		return;
+	}
+	if (response.status === 500) {
+		console.error(response.status, response.statusText);
+		return;
+	}
+	const updateResponse = (await response.json()) as UpdateResponse;
+	if (!updateResponse.outdated) {
+		return;
+	}
+	const { questions, version } = updateResponse;
+	await db.questions.bulkPut(questions);
+	await db.metadata.put({ id: DATA_PRIMARY_KEY, version });
+	await updateAppData(db);
 };
 
 export const setupDatabase = async () => {
-    return new Promise<void>((resolve, reject) => {
-        database.open().catch((e) => reject(e));
-        database.on("ready", async (db) => {
-            try {
-                await update(db as QnaplusDatabase);
-                resolve();
-                return;
-            } catch (e) {
-                reject();
-                return;
-            }
-        });
-    });
+	return new Promise<void>((resolve, reject) => {
+		database.open().catch((e) => reject(e));
+		database.on("ready", async (db) => {
+			try {
+				await update(db as QnaplusDatabase);
+				resolve();
+				return;
+			} catch (e) {
+				reject();
+				return;
+			}
+		});
+	});
 };
 
 export const getMetadata = async (
-    db: QnaplusDatabase,
+	db: QnaplusDatabase,
 ): Promise<QnaplusMetadata> => {
-    const metadata = await db.metadata.get(DATA_PRIMARY_KEY);
-    if (metadata !== undefined) {
-        return metadata;
-    }
-    return { id: DATA_PRIMARY_KEY, version: DEFAULT_VERSION };
+	const metadata = await db.metadata.get(DATA_PRIMARY_KEY);
+	if (metadata !== undefined) {
+		return metadata;
+	}
+	return { id: DATA_PRIMARY_KEY, version: DEFAULT_VERSION };
 };
 
 export const getAppData = async () => {
-    const data = await database.appdata.get(DATA_PRIMARY_KEY);
-    if (data === undefined) {
-        // TODO: replace with better logging
-        console.warn("warning, app data is undefined");
-    }
-    return data;
+	const data = await database.appdata.get(DATA_PRIMARY_KEY);
+	if (data === undefined) {
+		// TODO: replace with better logging
+		console.warn("warning, app data is undefined");
+	}
+	return data;
 };
 
 export const getQuestion = async (id: string) => {
-    const localQuestion = await database.questions.get(id);
-    return localQuestion;
+	const localQuestion = await database.questions.get(id);
+	return localQuestion;
 };

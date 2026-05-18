@@ -19,32 +19,41 @@ defineEmits(["hide-drawer"]);
 </script>
 
 <template>
-    <Drawer class="!w-full md:!w-80 lg:!w-[60rem]" @hide="$emit('hide-drawer')" v-model:visible="visible" :block-scroll="true"
-        position="right">
-        <div class="prose prose-invert prose-zinc break-words max-w-none p-4" v-if="question !== undefined">
-            <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
-                qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
-            </Message>
-            <h2 class="mb-1">{{ question.title }}</h2>
-            <question-details :question="question" />
-            <Divider />
-            <div class="px-5 pb-3">
-                <h3>Question</h3>
-                <div class="text-surface-300">
-                    <component :is="component.node" v-bind="component.props"
-                        v-for="component in content.questionContent" />
+    <UDrawer
+        v-model:open="visible"
+        direction="right"
+        :handle="false"
+        :ui="{ content: '!w-full md:!w-40 lg:!w-[40rem]' }"
+        @update:open="(o: boolean) => !o && $emit('hide-drawer')"
+    >
+        <template #body>
+            <div class="break-words max-w-none p-4" v-if="question !== undefined">
+                <UAlert color="neutral" variant="subtle" icon="i-lucide-info">
+                    <template #description>
+                        qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on RobotEvents</a> to get the most up-to-date information.
+                    </template>
+                </UAlert>
+                <h2 class="mb-1">{{ question.title }}</h2>
+                <question-details :question="question" />
+                <USeparator class="my-4" />
+                <div class="px-5 pb-3">
+                    <h3>Question</h3>
+                    <div class="text-surface-300">
+                        <component :is="component.node" v-bind="component.props"
+                            v-for="component in content.questionContent" />
+                    </div>
                 </div>
-            </div>
-            <div v-if="question.answered" class="border bg-green-800/5 border-green-700/70 px-5">
-                <h3>Answer</h3>
-                <div class="text-surface-300">
-                    <component :is="component.node" v-bind="component.props"
-                        v-for="component in content.answerContent" />
+                <div v-if="question.answered" class="border bg-green-800/5 border-green-700/70 px-5">
+                    <h3>Answer</h3>
+                    <div class="text-surface-300">
+                        <component :is="component.node" v-bind="component.props"
+                            v-for="component in content.answerContent" />
+                    </div>
                 </div>
+                <QuestionFooter :question="question" />
             </div>
-            <QuestionFooter :question="question" />
-        </div>
-    </Drawer>
+        </template>
+    </UDrawer>
 </template>
 
 <style></style>

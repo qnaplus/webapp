@@ -21,36 +21,44 @@ import Root from "./Root.vue";
 
 const query = ref("");
 const dbQuestions = useObservable<Question[]>(
-	from(liveQuery(() => database.questions.toArray())),
-	{
-		initialValue: undefined,
-	},
+    from(liveQuery(() => database.questions.toArray())),
+    {
+        initialValue: undefined,
+    },
 );
 const loading = ref(true);
 watch(dbQuestions, (q) => {
-	setTimeout(() => {
-		loading.value = q === undefined;
-	}, 500);
+    setTimeout(() => {
+        loading.value = q === undefined;
+    }, 500);
 });
 const appData = inject<Ref<QnaplusAppData | undefined>>("appdata");
 const { questions } = useKeywordSearch(query, dbQuestions);
 const { filteredQuestions, ...filterOptions } = useSearchFilter(questions, {
-	programs: appData?.value?.programs ?? [],
-	seasons: appData?.value?.seasons ?? [],
+    programs: appData?.value?.programs ?? [],
+    seasons: appData?.value?.seasons ?? [],
 });
 const { highlightedQuestions } = useHints(filteredQuestions);
 const { sortedQuestions, sortOptions } = useSort(highlightedQuestions);
 
 const selectedQuestion = ref<Question | undefined>(undefined);
+const sidebarOpen = ref(true);
 </script>
 
 <template>
-    <Root>
-        <div class="h-full flex flex-col gap-3 p-4">
+    <div class="flex flex-1 h-full">
+        <USidebar v-model:open="sidebarOpen" side="left"  title="Search Options"
+            :ui="{ body: 'p-3', container: 'h-full' }">
+            <SearchOptions :filter-options="filterOptions" :sort-options="sortOptions" />
+        </USidebar>
+        <div class="flex-1 min-w-0 flex flex-col gap-3 p-4">
             <div class="flex flex-col gap-3">
-                <QuestionListHeader :results="sortedQuestions.length" />
+                <div class="flex items-center gap-2">
+                    <QuestionListHeader class="flex-1" :results="sortedQuestions.length" />
+                    <UButton icon="i-lucide-sliders-horizontal" color="neutral" variant="ghost"
+                        aria-label="Toggle search options" @click="sidebarOpen = !sidebarOpen" />
+                </div>
                 <SearchInput class="flex-1" v-model="query" />
-                <SearchOptions :filter-options="filterOptions" :sort-options="sortOptions" />
             </div>
             <div class="h-full flex flex-col gap-3">
                 <LoadingQuestion v-if="loading" />
@@ -59,9 +67,9 @@ const selectedQuestion = ref<Question | undefined>(undefined);
                     :questions="sortedQuestions" />
             </div>
         </div>
-        <ScrollTop />
-        <QuestionDrawer @hide-drawer="() => selectedQuestion = undefined" :question="selectedQuestion" />
-    </Root>
+    </div>
+    <ScrollTop />
+    <QuestionDrawer @hide-drawer="() => selectedQuestion = undefined" :question="selectedQuestion" />
 </template>
 
 <style></style>

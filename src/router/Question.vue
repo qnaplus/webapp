@@ -29,21 +29,22 @@ const { question, questionContent, answerContent } = await loadContent();
 </script>
 
 <template>
-  <Root>
     <Suspense suspensible>
-      <div class="prose prose-invert prose-zinc break-words max-w-none p-4">
+      <div class="break-words max-w-none p-4">
         <div class="flex flex-col items-center justify-center" v-if="!loading && question === null">
           <h2>uhhhhhhhhhh...</h2>
           <h4>Couldn't find a question here.</h4>
         </div>
         <div v-if="!loading && question !== null">
-          <Message severity="secondary" size="small" icon="pi pi-info-circle" :closable="false">
-            qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on
-              RobotEvents</a> to get the most up-to-date information.
-          </Message>
+          <UAlert color="neutral" variant="subtle" icon="i-lucide-info">
+            <template #description>
+              qnaplus is an unofficial third-party application. <a :href="question.url" target="_blank">Visit the Q&A on
+                RobotEvents</a> to get the most up-to-date information.
+            </template>
+          </UAlert>
           <h2 class="mb-1">{{ question.title }}</h2>
           <question-details :question="question" />
-          <Divider />
+          <USeparator class="my-4" />
           <div class="px-5 pb-3">
             <h3>Question</h3>
             <div class="text-surface-300">
@@ -61,7 +62,6 @@ const { question, questionContent, answerContent } = await loadContent();
         <LoadingQuestion v-else />
       </div>
     </Suspense>
-  </Root>
 </template>
 
 <style scoped>

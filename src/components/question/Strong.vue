@@ -11,8 +11,8 @@ defineProps<{
 </script>
 
 <template>
-    <strong>
+    <prose-strong>
         <component :is="resolveQuestionComponentNode(child)" v-bind="resolveQuestionComponentProps(child)"
             v-for="child in children" />
-    </strong>
+    </prose-strong>
 </template>

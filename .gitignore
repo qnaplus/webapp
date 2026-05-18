@@ -47,3 +47,8 @@ dist
 .turbo
 
 out/
+
+# Nuxt UI auto-generated type declarations
+auto-imports.d.ts
+components.d.ts
+.nuxt-ui

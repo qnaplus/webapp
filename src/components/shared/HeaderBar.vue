@@ -16,7 +16,7 @@ const update = () => {
 };
 onMounted(() => update());
 useEventListener(document, "scroll", () => update());
-const appname = import.meta.env.VITE_APP_NAME;
+const details = import.meta.env.DEV ? " (dev)" : "";
 </script>
 
 <template>
@@ -25,12 +25,16 @@ const appname = import.meta.env.VITE_APP_NAME;
     </div>
     <div ref="header"
         class="flex w-full z-10 items-center justify-between gap-5 p-3 duration-300 transition-colors border-b-1 border-transparent">
-        <a href="/" class="text-color ml-2 font-medium">{{ appname }}</a>
+        <a href="/" class="text-default ml-2 font-bold">
+            <span>qna</span>
+            <span class="text-primary-500/80">plus</span>
+            <span>{{ details }}</span>
+        </a>
         <div class="flex gap-2">
-            <Button as="a" href="https://nexus.qnapl.us" target="_blank" class="header-btn"
-            icon="pi pi-discord" aria-label="Discord Server" text />
-            <Button as="a" href="https://github.com/qnaplus" target="_blank" class="header-btn"
-                icon="pi pi-github" aria-label="Github" text />
+            <UButton to="https://nexus.qnapl.us" target="_blank" class="header-btn"
+                icon="i-ic-baseline-discord" aria-label="Discord Server" color="neutral" variant="ghost" />
+            <UButton to="https://github.com/qnaplus" target="_blank" class="header-btn"
+                icon="i-tabler-brand-github" aria-label="Github" color="neutral" variant="ghost" />
         </div>
     </div>
 </template>
@@ -41,8 +45,8 @@ const appname = import.meta.env.VITE_APP_NAME;
 .header-sticky {
     position: fixed;
     top: 0;
-    border-color: var(--p-content-border-color);
-    @apply backdrop-blur-lg bg-surface-0/70;
+    border-color: var(--ui-border);
+    @apply backdrop-blur-lg bg-default/70;
 }
 
 .header-btn {
