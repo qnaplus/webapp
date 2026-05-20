@@ -7,15 +7,15 @@ export default function QuestionDrawer() {
 	const closeDrawer = useSearchStore((s) => s.closeDrawer);
 
 	return (
-		<Drawer.Root
+		<Drawer
 			isOpen={selectedQuestion !== undefined}
 			onOpenChange={(open) => {
 				if (!open) closeDrawer();
 			}}
 		>
 			<Drawer.Backdrop>
-				<Drawer.Content placement="right" className="md:w-240 w-full">
-					<Drawer.Dialog>
+				<Drawer.Content placement="right">
+					<Drawer.Dialog className="w-245">
 						<Drawer.Body>
 							{selectedQuestion !== undefined && (
 								<QuestionView question={selectedQuestion} />
@@ -24,6 +24,6 @@ export default function QuestionDrawer() {
 					</Drawer.Dialog>
 				</Drawer.Content>
 			</Drawer.Backdrop>
-		</Drawer.Root>
+		</Drawer>
 	);
 }

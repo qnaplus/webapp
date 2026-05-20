@@ -3,7 +3,6 @@ import {
 	Badge,
 	Button,
 	ComboBox,
-	DatePicker,
 	Input,
 	Label,
 	ListBox,
@@ -39,6 +38,7 @@ import {
 	useSortStore,
 } from "../../stores/sort";
 import AdvancedSortList from "./sort/AdvancedSortList";
+import DatePicker from "../lib/DatePicker";
 
 const toCalendarDate = (d: Date | null): CalendarDate | null => {
 	if (d === null) return null;
@@ -98,12 +98,12 @@ export default function SearchOptions() {
 
 	const onMultiSelectChange =
 		<T extends string>(field: "season" | "program") =>
-		(keys: Key[]) => {
-			setFilter(
-				field,
-				keys.map((k) => ({ name: String(k) as T, value: String(k) as T })),
-			);
-		};
+			(keys: Key[]) => {
+				setFilter(
+					field,
+					keys.map((k) => ({ name: String(k) as T, value: String(k) as T })),
+				);
+			};
 
 	const handleBasicSortChange = (key: Key | null) => {
 		if (key === null) return;
@@ -165,11 +165,18 @@ export default function SearchOptions() {
 				<Accordion.Panel>
 					<Accordion.Body>
 						<Tabs defaultSelectedKey="filter" variant="secondary">
-							<Tabs.List>
-								<Tabs.Tab id="filter">Filter</Tabs.Tab>
-								<Tabs.Tab id="sort">Sort</Tabs.Tab>
-							</Tabs.List>
-
+							<Tabs.ListContainer>
+								<Tabs.List>
+									<Tabs.Tab id="filter">
+										Filter
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									<Tabs.Tab id="sort">
+										Sort
+										<Tabs.Indicator />
+									</Tabs.Tab>
+								</Tabs.List>
+							</Tabs.ListContainer>
 							<Tabs.Panel id="filter">
 								<div className="flex flex-col gap-3 pt-2">
 									<div className="flex flex-wrap gap-2">
@@ -254,13 +261,14 @@ export default function SearchOptions() {
 
 										<LabeledField label="Question State" className="flex-1 min-w-42">
 											<ToggleButtonGroup
+												className="flex w-full"
 												selectionMode="single"
 												selectedKeys={new Set([String(filters.state.value)])}
 												onSelectionChange={handleQuestionStateChange}
 												isDetached={false}
 											>
 												{questionStateOptions.map((o) => (
-													<ToggleButton key={o.value} id={String(o.value)}>
+													<ToggleButton key={o.value} id={String(o.value)} className="flex-1">
 														{o.name}
 													</ToggleButton>
 												))}
@@ -340,7 +348,7 @@ export default function SearchOptions() {
 									</LabeledField>
 
 									<div>
-										<Button size="sm" variant="outline" onPress={clearFilters}>
+										<Button variant="outline" onPress={clearFilters}>
 											Reset Filters
 										</Button>
 									</div>

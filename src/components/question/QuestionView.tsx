@@ -15,13 +15,15 @@ export default function QuestionView({ question }: Props) {
 
 	return (
 		<div className="p-4">
-			<Alert status="default" className="mb-3">
+			<Alert status="accent" className="mb-3 bg-black/15">
 				<Alert.Indicator>
 					<IconInfoCircleFilled size={16} />
 				</Alert.Indicator>
 				<Alert.Content>
-					<Alert.Description>
+					<Alert.Title>
 						qnaplus is an unofficial third-party application.{" "}
+					</Alert.Title>
+					<Alert.Description>
 						<a
 							href={question.url}
 							target="_blank"
@@ -50,11 +52,7 @@ export default function QuestionView({ question }: Props) {
 
 			{question.answered && (
 				<div
-					className="px-5 py-1 border rounded-md"
-					style={{
-						backgroundColor: "color-mix(in srgb, #22c55e, transparent 80%)",
-						borderColor: "#34774d",
-					}}
+					className="p-5 border rounded-md border-green-500/40 bg-green-900/10"
 				>
 					<h3 className="text-xl font-semibold mb-2">Answer</h3>
 					<div
