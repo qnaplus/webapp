@@ -1,17 +1,14 @@
-import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import tailwindcss from "@tailwindcss/vite";
-import vue from "@vitejs/plugin-vue";
-import Components from "unplugin-vue-components/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
 	return {
 		base: "./",
 		publicDir: `public/${mode}`,
 		plugins: [
-			vue(),
+			react(),
 			tailwindcss(),
 			VitePWA({
 				registerType: "autoUpdate",
@@ -64,10 +61,6 @@ export default defineConfig(({ mode }) => {
 					navigateFallback: "index.html",
 					suppressWarnings: true,
 				},
-			}),
-			Components({
-				dts: true,
-				resolvers: [PrimeVueResolver()],
 			}),
 		],
 		build: {
