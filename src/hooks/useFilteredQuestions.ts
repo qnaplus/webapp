@@ -13,6 +13,7 @@ export const useFilteredQuestions = (): {
 	questions: UseSearchResult[];
 	loading: boolean;
 } => {
+    console.time("query")
 	const dbQuestions = useLiveQuery(() => database.questions.toArray(), []);
 	const query = useSearchStore((s) => s.query);
 	const filters = useFilterStore((s) => s.filters);
@@ -28,6 +29,7 @@ export const useFilteredQuestions = (): {
 	);
 	const highlighted = useMemo(() => applyHints(filtered), [filtered]);
 	const sorted = useMemo(() => applySort(highlighted, sort), [highlighted, sort]);
-
+    console.timeEnd("query")
+    console.log(sorted)
 	return { questions: sorted, loading: dbQuestions === undefined };
 };

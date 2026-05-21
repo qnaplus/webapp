@@ -2,6 +2,7 @@ import type { Question } from "@qnaplus/scraper";
 import MiniSearch, { type SearchResult } from "minisearch";
 import { stemmer } from "stemmer";
 import { isEmpty } from "../util/strings";
+import { cleanQuestionHtml } from "./sanitize";
 
 export type QuestionSearchResult = Question & SearchResult;
 
@@ -34,13 +35,21 @@ export const minisearch = new MiniSearch<Question>({
 });
 
 let loaded = false;
+let cleanedQuestions: Question[] = [];
+
+const cleanQuestion = (q: Question): Question => ({
+	...q,
+	questionRaw: cleanQuestionHtml(q.questionRaw),
+	answerRaw: q.answerRaw === null ? null : cleanQuestionHtml(q.answerRaw),
+});
 
 export const loadMinisearch = async (questions: Question[]): Promise<void> => {
 	if (loaded) {
 		return;
 	}
+	cleanedQuestions = questions.map(cleanQuestion);
 	try {
-		await minisearch.addAllAsync(questions, { chunkSize: 50 });
+		await minisearch.addAllAsync(cleanedQuestions, { chunkSize: 50 });
 		loaded = true;
 	} catch (e) {
 		console.error(e);
@@ -55,7 +64,7 @@ export const runMinisearch = (
 		return [];
 	}
 	if (isEmpty(query)) {
-		return dbQuestions;
+		return cleanedQuestions;
 	}
 	return minisearch.search(query, {
 		fields: ["title", "questionRaw", "answerRaw"],

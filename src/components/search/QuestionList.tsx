@@ -22,16 +22,16 @@ const Row = ({ index, style, questions }: RowComponentProps<RowProps>) => {
 };
 
 export default function QuestionList({ questions }: Props) {
-	const rowHeight = useDynamicRowHeight({ defaultRowHeight: 380 });
+    // TODO: retry virtua
 	return (
 		<div className="flex-1 min-h-0 w-full">
 			<List
 				rowComponent={Row}
 				rowCount={questions.length}
-				rowHeight={rowHeight}
+				rowHeight={172}
 				rowProps={{ questions }}
 				overscanCount={3}
-				style={{ height: "100%" }}
+				// style={{ height: "100%" }}
 			/>
 		</div>
 	);
