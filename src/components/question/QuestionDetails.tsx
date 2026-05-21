@@ -10,7 +10,7 @@ export default function QuestionDetails({ question }: Props) {
 	const answeredLabel = question.answered ? "Answered" : "Unanswered";
 	return (
 		<div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-2">
-			<div className="flex flex-wrap items-center gap-2 text-muted">
+			<div className="flex flex-wrap items-center gap-2 text-muted-foreground">
 				{!isEmpty(question.author) && <span>{question.author}</span>}
 				{!isEmpty(question.askedTimestamp) && (
 					<>
@@ -26,7 +26,7 @@ export default function QuestionDetails({ question }: Props) {
 						<span>{answeredLabel}</span>
 					</span>
 				) : (
-					<span className="text-sm text-muted">{answeredLabel}</span>
+					<span className="text-sm text-muted-foreground">{answeredLabel}</span>
 				)}
 			</div>
 		</div>

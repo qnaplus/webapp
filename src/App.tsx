@@ -1,4 +1,4 @@
-import { Spinner } from "@heroui/react";
+import { IconLoader2 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Route, Switch } from "wouter";
 import { database, getAppData, setupDatabase } from "./database";
@@ -37,7 +37,7 @@ export default function App() {
 		return (
 			<div className="h-screen-mobile flex items-center justify-center gap-4">
 				<h1 className="text-xl font-semibold">{appName}</h1>
-				<Spinner size="lg" />
+				<IconLoader2 size={32} className="animate-spin" />
 			</div>
 		);
 	}

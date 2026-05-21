@@ -1,6 +1,16 @@
-import { Button, ComboBox, Input, Label, ListBox } from "@heroui/react";
-import type { Key } from "react";
 import { useMemo, useState } from "react";
+import {
+	Combobox,
+	ComboboxChip,
+	ComboboxChips,
+	ComboboxChipsInput,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxItem,
+	ComboboxList,
+	ComboboxValue,
+} from "@/components/ui/combobox";
+import { Label } from "@/components/ui/label";
 import { getTagSuggestions } from "../../../lib/minisearch";
 import { useFilterStore } from "../../../stores/filters";
 
@@ -15,53 +25,44 @@ export default function TagsFilter() {
 		[tagInput],
 	);
 
-	const handleTagSelected = (key: Key | null) => {
-		if (key === null) return;
-		const v = String(key);
-		if (tags.includes(v)) return;
-		setFilter("tags", [...tags, v]);
+	const onChange = (next: string[]) => {
+		setFilter("tags", next);
 		setTagInput("");
 	};
 
-	const removeTag = (tag: string) =>
-		setFilter("tags", tags.filter((t) => t !== tag));
-
 	return (
 		<div className="flex flex-col gap-1">
-			<Label className="text-sm text-muted">Tags</Label>
-			<ComboBox
+			<Label className="text-sm text-muted-foreground">Tags</Label>
+			<Combobox<string, true>
+				multiple
+				items={tagSuggestions}
+				value={tags}
+				onValueChange={onChange}
 				inputValue={tagInput}
-				onInputChange={setTagInput}
-				onSelectionChange={handleTagSelected}
+				onInputValueChange={setTagInput}
+				filter={null}
 			>
-				<ComboBox.InputGroup>
-					<Input placeholder="Add a tag…" />
-					<ComboBox.Trigger />
-				</ComboBox.InputGroup>
-				<ComboBox.Popover>
-					<ListBox>
+				<ComboboxChips>
+					<ComboboxValue>
+						{(values: string[]) =>
+							values.map((v) => (
+								<ComboboxChip key={v}>{v}</ComboboxChip>
+							))
+						}
+					</ComboboxValue>
+					<ComboboxChipsInput placeholder="Add a tag…" />
+				</ComboboxChips>
+				<ComboboxContent>
+					<ComboboxEmpty>No matches</ComboboxEmpty>
+					<ComboboxList>
 						{tagSuggestions.map((t) => (
-							<ListBox.Item key={t} id={t}>
+							<ComboboxItem key={t} value={t}>
 								{t}
-							</ListBox.Item>
+							</ComboboxItem>
 						))}
-					</ListBox>
-				</ComboBox.Popover>
-			</ComboBox>
-			{tags.length > 0 && (
-				<div className="flex flex-wrap gap-2 mt-2">
-					{tags.map((tag) => (
-						<Button
-							key={tag}
-							size="sm"
-							variant="outline"
-							onPress={() => removeTag(tag)}
-						>
-							{tag} ✕
-						</Button>
-					))}
-				</div>
-			)}
+					</ComboboxList>
+				</ComboboxContent>
+			</Combobox>
 		</div>
 	);
 }

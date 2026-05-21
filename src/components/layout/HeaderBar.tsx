@@ -1,6 +1,6 @@
-import { Button } from "@heroui/react";
 import { IconBrandGithubFilled, IconMessage } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import ColorModeToggle from "./ColorModeToggle";
 
 const appName = import.meta.env.VITE_APP_NAME;
@@ -38,7 +38,7 @@ export default function HeaderBar() {
 						rel="noreferrer"
 						aria-label="Discord"
 					>
-						<Button isIconOnly variant="ghost" size="sm" aria-label="Discord">
+						<Button size="icon" variant="ghost" aria-label="Discord">
 							<IconMessage size={18} />
 						</Button>
 					</a>
@@ -48,7 +48,7 @@ export default function HeaderBar() {
 						rel="noreferrer"
 						aria-label="GitHub"
 					>
-						<Button isIconOnly variant="ghost" size="sm" aria-label="GitHub">
+						<Button size="icon" variant="ghost" aria-label="GitHub">
 							<IconBrandGithubFilled size={18} />
 						</Button>
 					</a>

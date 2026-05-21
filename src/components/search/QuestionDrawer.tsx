@@ -1,4 +1,9 @@
-import { Drawer } from "@heroui/react";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetTitle,
+} from "@/components/ui/sheet";
 import { useSearchStore } from "../../stores/search";
 import QuestionView from "../question/QuestionView";
 
@@ -7,23 +12,26 @@ export default function QuestionDrawer() {
 	const closeDrawer = useSearchStore((s) => s.closeDrawer);
 
 	return (
-		<Drawer
-			isOpen={selectedQuestion !== undefined}
+		<Sheet
+			open={selectedQuestion !== undefined}
 			onOpenChange={(open) => {
 				if (!open) closeDrawer();
 			}}
 		>
-			<Drawer.Backdrop>
-				<Drawer.Content placement="right">
-					<Drawer.Dialog className="w-245">
-						<Drawer.Body>
-							{selectedQuestion !== undefined && (
-								<QuestionView question={selectedQuestion} />
-							)}
-						</Drawer.Body>
-					</Drawer.Dialog>
-				</Drawer.Content>
-			</Drawer.Backdrop>
-		</Drawer>
+			<SheetContent
+				side="right"
+				className="w-245 sm:max-w-none overflow-y-auto"
+			>
+				<SheetTitle className="sr-only">
+					{selectedQuestion?.title ?? "Question details"}
+				</SheetTitle>
+				<SheetDescription className="sr-only">
+					Detailed view of the selected question
+				</SheetDescription>
+				{selectedQuestion !== undefined && (
+					<QuestionView question={selectedQuestion} />
+				)}
+			</SheetContent>
+		</Sheet>
 	);
 }

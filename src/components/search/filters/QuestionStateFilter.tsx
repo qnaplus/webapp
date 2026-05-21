@@ -1,7 +1,7 @@
-import { Label, ToggleButton, ToggleButtonGroup } from "@heroui/react";
-import type { Key } from "react";
+import { Label } from "@/components/ui/label";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
-	QuestionStateValue,
+	type QuestionStateValue,
 	questionStateOptions,
 	useFilterStore,
 } from "../../../stores/filters";
@@ -10,9 +10,8 @@ export default function QuestionStateFilter() {
 	const state = useFilterStore((s) => s.filters.state);
 	const setFilter = useFilterStore((s) => s.setFilter);
 
-	const handleChange = (keys: "all" | Set<Key>) => {
-		if (keys === "all") return;
-		const first = [...keys][0];
+	const handleChange = (next: string[]) => {
+		const first = next[0];
 		if (first === undefined) return;
 		const v = Number(first) as QuestionStateValue;
 		const opt = questionStateOptions.find((o) => o.value === v);
@@ -21,20 +20,24 @@ export default function QuestionStateFilter() {
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-42">
-			<Label className="text-sm text-muted">Question State</Label>
-			<ToggleButtonGroup
+			<Label className="text-sm text-muted-foreground">Question State</Label>
+			<ToggleGroup
+				variant="outline"
+				spacing={0}
 				className="flex w-full"
-				selectionMode="single"
-				selectedKeys={new Set([String(state.value)])}
-				onSelectionChange={handleChange}
-				isDetached={false}
+				value={[String(state.value)]}
+				onValueChange={handleChange}
 			>
 				{questionStateOptions.map((o) => (
-					<ToggleButton key={o.value} id={String(o.value)} className="flex-1">
+					<ToggleGroupItem
+						key={o.value}
+						value={String(o.value)}
+						className="flex-1"
+					>
 						{o.name}
-					</ToggleButton>
+					</ToggleGroupItem>
 				))}
-			</ToggleButtonGroup>
+			</ToggleGroup>
 		</div>
 	);
 }

@@ -14,7 +14,7 @@
 }
 
 .prose a {
-	color: var(--accent);
+	color: var(--primary);
 	text-decoration: underline;
 	text-underline-offset: 2px;
 }
@@ -37,14 +37,14 @@
 
 .prose code {
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	background-color: var(--surface-secondary);
+	background-color: var(--muted);
 	padding: 0.1em 0.35em;
 	border-radius: 4px;
 	font-size: 0.9em;
 }
 
 .prose pre {
-	background-color: var(--surface-secondary);
+	background-color: var(--muted);
 	border-radius: 6px;
 	padding: 0.9em 1.1em;
 	overflow-x: auto;
@@ -79,7 +79,7 @@
 
 .prose blockquote {
 	border-left: 3px solid var(--border);
-	background-color: var(--surface);
+	background-color: var(--card);
 	padding: 0.6em 1em;
 	margin: 1em 0;
 	font-style: italic;

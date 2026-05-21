@@ -1,5 +1,15 @@
-import { Label, ListBox, Select, SelectRoot } from "@heroui/react";
-import type { Key } from "react";
+import {
+	Combobox,
+	ComboboxChip,
+	ComboboxChips,
+	ComboboxChipsInput,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxItem,
+	ComboboxList,
+	ComboboxValue,
+} from "@/components/ui/combobox";
+import { Label } from "@/components/ui/label";
 import { useAppDataStore } from "../../../stores/appData";
 import { useFilterStore } from "../../../stores/filters";
 
@@ -8,39 +18,45 @@ export default function SeasonFilter() {
 	const seasonFilter = useFilterStore((s) => s.filters.season);
 	const setFilter = useFilterStore((s) => s.setFilter);
 
-	const onChange = (keys: Key[]) => {
+	const selected = seasonFilter.map((s) => s.value);
+
+	const onChange = (values: string[]) => {
 		setFilter(
 			"season",
-			keys.map((k) => ({ name: String(k), value: String(k) })),
+			values.map((v) => ({ name: v, value: v })),
 		);
 	};
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-50">
-			<Label className="text-sm text-muted">Season</Label>
-			<SelectRoot<object, "multiple">
-				selectionMode="multiple"
-				value={seasonFilter.map((s) => s.value)}
-				onChange={onChange}
+			<Label className="text-sm text-muted-foreground">Season</Label>
+			<Combobox<string, true>
+				multiple
+				items={seasons}
+				value={selected}
+				onValueChange={onChange}
 			>
-				<Select.Trigger>
-					<Select.Value>
-						{seasonFilter.length === 0
-							? "Season"
-							: seasonFilter.map((s) => s.value).join(", ")}
-					</Select.Value>
-					<Select.Indicator />
-				</Select.Trigger>
-				<Select.Popover>
-					<ListBox>
+				<ComboboxChips>
+					<ComboboxValue>
+						{(values: string[]) =>
+							values.map((v) => (
+								<ComboboxChip key={v}>{v}</ComboboxChip>
+							))
+						}
+					</ComboboxValue>
+					<ComboboxChipsInput placeholder="Season" />
+				</ComboboxChips>
+				<ComboboxContent>
+					<ComboboxEmpty>No seasons</ComboboxEmpty>
+					<ComboboxList>
 						{seasons.map((s) => (
-							<ListBox.Item key={s} id={s}>
+							<ComboboxItem key={s} value={s}>
 								{s}
-							</ListBox.Item>
+							</ComboboxItem>
 						))}
-					</ListBox>
-				</Select.Popover>
-			</SelectRoot>
+					</ComboboxList>
+				</ComboboxContent>
+			</Combobox>
 		</div>
 	);
 }

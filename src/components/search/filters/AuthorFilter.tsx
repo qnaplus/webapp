@@ -1,6 +1,13 @@
-import { ComboBox, Input, Label, ListBox } from "@heroui/react";
-import type { Key } from "react";
 import { useMemo, useState } from "react";
+import {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "@/components/ui/combobox";
+import { Label } from "@/components/ui/label";
 import { getAuthorSuggestions } from "../../../lib/minisearch";
 import { useFilterStore } from "../../../stores/filters";
 
@@ -15,37 +22,35 @@ export default function AuthorFilter() {
 		[authorInput],
 	);
 
-	const handleSelection = (key: Key | null) => {
-		const v = key === null ? null : String(key);
+	const handleValueChange = (value: string | null) => {
+		const v = value ?? null;
 		setFilter("author", v);
 		setAuthorInput(v ?? "");
 	};
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-42">
-			<Label className="text-sm text-muted">Author</Label>
-			<ComboBox
+			<Label className="text-sm text-muted-foreground">Author</Label>
+			<Combobox
+				items={authorSuggestions}
+				value={author ?? null}
+				onValueChange={handleValueChange}
 				inputValue={authorInput}
-				onInputChange={setAuthorInput}
-				onSelectionChange={handleSelection}
-				onBlur={() =>
-					setFilter("author", authorInput === "" ? null : authorInput)
-				}
+				onInputValueChange={setAuthorInput}
+				filter={null}
 			>
-				<ComboBox.InputGroup>
-					<Input placeholder="Author" />
-					<ComboBox.Trigger />
-				</ComboBox.InputGroup>
-				<ComboBox.Popover>
-					<ListBox>
+				<ComboboxInput placeholder="Author" />
+				<ComboboxContent>
+					<ComboboxEmpty>No matches</ComboboxEmpty>
+					<ComboboxList>
 						{authorSuggestions.map((a) => (
-							<ListBox.Item key={a} id={a}>
+							<ComboboxItem key={a} value={a}>
 								{a}
-							</ListBox.Item>
+							</ComboboxItem>
 						))}
-					</ListBox>
-				</ComboBox.Popover>
-			</ComboBox>
+					</ComboboxList>
+				</ComboboxContent>
+			</Combobox>
 		</div>
 	);
 }

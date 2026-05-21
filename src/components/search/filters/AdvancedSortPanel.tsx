@@ -1,6 +1,13 @@
-import { Label, ListBox, Select, Switch } from "@heroui/react";
-import type { Key } from "react";
 import { useMemo } from "react";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
 	type SortOptions,
 	sortOptionsList,
@@ -18,51 +25,42 @@ export default function AdvancedSortPanel() {
 		[sort.advanced],
 	);
 
-	const handleAddAdvanced = (key: Key | null) => {
-		if (key === null) return;
-		const v = Number(key) as SortOptions;
+	const handleAddAdvanced = (value: string | null) => {
+		if (value === null) return;
+		const v = Number(value) as SortOptions;
 		const next = sortOptionsList.find((o) => o.value === v);
 		if (next) addAdvanced(next);
 	};
 
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="flex justify-end">
+			<div className="flex items-center justify-end gap-2">
+				<Label htmlFor="advanced-sorting" className="text-sm text-muted-foreground">
+					Advanced Sorting
+				</Label>
 				<Switch
-					isSelected={sort.advancedEnabled}
-					onChange={toggleAdvanced}
-				>
-					<Switch.Control>
-						<Switch.Thumb />
-					</Switch.Control>
-					<Switch.Content className="text-sm text-muted">
-						Advanced Sorting
-					</Switch.Content>
-				</Switch>
+					id="advanced-sorting"
+					checked={sort.advancedEnabled}
+					onCheckedChange={toggleAdvanced}
+				/>
 			</div>
 
 			{sort.advancedEnabled && (
 				<>
 					<div className="flex flex-col gap-1">
-						<Label className="text-sm text-muted">Add Sort Option</Label>
-						<Select.Root
-							selectedKey={null}
-							onSelectionChange={handleAddAdvanced}
-						>
-							<Select.Trigger>
-								<Select.Value>Add…</Select.Value>
-								<Select.Indicator />
-							</Select.Trigger>
-							<Select.Popover>
-								<ListBox>
-									{remainingAdvanced.map((o) => (
-										<ListBox.Item key={o.value} id={String(o.value)}>
-											{o.name}
-										</ListBox.Item>
-									))}
-								</ListBox>
-							</Select.Popover>
-						</Select.Root>
+						<Label className="text-sm text-muted-foreground">Add Sort Option</Label>
+						<Select value={null} onValueChange={handleAddAdvanced}>
+							<SelectTrigger>
+								<SelectValue placeholder="Add…" />
+							</SelectTrigger>
+							<SelectContent>
+								{remainingAdvanced.map((o) => (
+									<SelectItem key={o.value} value={String(o.value)}>
+										{o.name}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
 					</div>
 					<AdvancedSortList />
 				</>

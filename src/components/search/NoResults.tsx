@@ -1,14 +1,14 @@
-import { Card } from "@heroui/react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function NoResults() {
 	return (
-		<Card.Root className="text-center p-3 max-w-none rounded-md">
-			<Card.Header>
+		<Card className="text-center p-3 max-w-none rounded-md">
+			<CardHeader>
 				<h2 className="text-5xl font-bold">:(</h2>
-			</Card.Header>
-			<Card.Content>
+			</CardHeader>
+			<CardContent>
 				<p>(no results)</p>
-			</Card.Content>
-		</Card.Root>
+			</CardContent>
+		</Card>
 	);
 }

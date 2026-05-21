@@ -1,13 +1,19 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button, ListBox, Select } from "@heroui/react";
 import { IconGripVertical, IconX } from "@tabler/icons-react";
-import type { Key } from "react";
+import { Button } from "@/components/ui/button";
 import {
-    type AdvancedSortOption,
-    SortOrder,
-    sortOrderList,
-    useSortStore,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
+	type AdvancedSortOption,
+	type SortOrder,
+	sortOrderList,
+	useSortStore,
 } from "../../../stores/sort";
 
 type Props = {
@@ -29,9 +35,9 @@ export default function AdvancedSortItem({ index, option }: Props) {
 		touchAction: "none",
 	};
 
-	const handleSelectionChange = (key: Key | null) => {
-		if (key === null) return;
-		const v = Number(key) as SortOrder;
+	const handleSelectionChange = (value: string | null) => {
+		if (value === null) return;
+		const v = Number(value) as SortOrder;
 		const next = sortOrderList.find((o) => o.value === v);
 		if (next) setAdvancedAsc(index, next);
 	};
@@ -49,32 +55,27 @@ export default function AdvancedSortItem({ index, option }: Props) {
 
 				<span className="flex-1">{option.name}</span>
 
-				<Select.Root
-					selectedKey={String(option.asc.value)}
-					onSelectionChange={handleSelectionChange}
-					className="min-w-35"
+				<Select
+					value={String(option.asc.value)}
+					onValueChange={handleSelectionChange}
 				>
-					<Select.Trigger>
-						<Select.Value />
-						<Select.Indicator />
-					</Select.Trigger>
-					<Select.Popover>
-						<ListBox>
-							{sortOrderList.map((o) => (
-								<ListBox.Item key={o.value} id={String(o.value)}>
-									{o.name}
-								</ListBox.Item>
-							))}
-						</ListBox>
-					</Select.Popover>
-				</Select.Root>
+					<SelectTrigger className="min-w-35">
+						<SelectValue>{option.asc.name}</SelectValue>
+					</SelectTrigger>
+					<SelectContent>
+						{sortOrderList.map((o) => (
+							<SelectItem key={o.value} value={String(o.value)}>
+								{o.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 
 				<Button
-					isIconOnly
-					size="sm"
+					size="icon"
 					variant="outline"
 					aria-label="Remove sort"
-					onPress={() => removeAdvanced(index)}
+					onClick={() => removeAdvanced(index)}
 				>
 					<IconX size={14} />
 				</Button>

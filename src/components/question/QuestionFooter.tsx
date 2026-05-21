@@ -14,7 +14,7 @@ export default function QuestionFooter({ question }: Props) {
 				href={question.url}
 				target="_blank"
 				rel="noreferrer"
-				className="inline-flex items-center gap-1 text-muted no-underline hover:underline"
+				className="inline-flex items-center gap-1 text-muted-foreground no-underline hover:underline"
 			>
 				<span>View on RobotEvents</span>
 				<IconExternalLink size={14} />

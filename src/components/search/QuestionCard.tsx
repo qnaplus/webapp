@@ -1,6 +1,7 @@
-import { Card, Separator } from "@heroui/react";
 import type { Question } from "@qnaplus/scraper";
 import { KeyboardEvent } from "react";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { useSearchStore } from "../../stores/search";
 import QuestionDetails from "../question/QuestionDetails";
 import QuestionTags from "../question/QuestionTags";
@@ -22,16 +23,16 @@ export default function QuestionCard({ question }: Props) {
         }
     };
     return (
-        <Card.Root
-            className="border flex flex-col cursor-pointer transition-colors hover:bg-surface-secondary focus-visible:outline-2 focus-visible:outline-accent mb-2"
+        <Card
+            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring mb-2"
             onClick={open}
             onKeyDown={onKeyDown}
         >
-            <Card.Header>
+            <CardHeader>
                 <div className="font-medium text-lg">{question.title}</div>
                 <QuestionDetails question={question} />
-            </Card.Header>
-            <Card.Content
+            </CardHeader>
+            <CardContent
                 className="prose prose-full min-h-40 max-h-40 overflow-hidden"
                 style={{
                     WebkitMaskImage: FADE_MASK,
@@ -42,11 +43,11 @@ export default function QuestionCard({ question }: Props) {
                     // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html during minisearch load
                     dangerouslySetInnerHTML={{ __html: question.questionRaw }}
                 />
-            </Card.Content>
-            <Card.Footer className="flex flex-col items-stretch gap-2">
+            </CardContent>
+            <CardFooter className="flex flex-col items-stretch gap-2">
                 <Separator />
                 <QuestionTags tags={question.tags} program={question.program} />
-            </Card.Footer>
-        </Card.Root>
+            </CardFooter>
+        </Card>
     );
 }

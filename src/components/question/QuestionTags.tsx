@@ -1,4 +1,4 @@
-import { Chip } from "@heroui/react";
+import { Badge } from "@/components/ui/badge";
 import ProgramTag from "./ProgramTag";
 
 type Props = {
@@ -11,9 +11,9 @@ export default function QuestionTags({ tags, program }: Props) {
 		<div className="flex flex-wrap gap-2">
 			<ProgramTag program={program} />
 			{tags.map((tag) => (
-				<Chip key={tag} size="md" variant="soft">
+				<Badge key={tag} variant="soft">
 					{tag}
-				</Chip>
+				</Badge>
 			))}
 		</div>
 	);

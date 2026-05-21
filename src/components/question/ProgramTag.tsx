@@ -1,4 +1,4 @@
-import { Chip } from "@heroui/react";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
 	program: string;
@@ -17,8 +17,7 @@ export default function ProgramTag({ program }: Props) {
 	const key = program.toLowerCase();
 	const color = COLOR_MAP[key] ?? "#9ca3af";
 	return (
-		<Chip
-			size="md"
+		<Badge
 			variant="soft"
 			style={{
 				backgroundColor: `color-mix(in srgb, ${color}, transparent 84%)`,
@@ -26,6 +25,6 @@ export default function ProgramTag({ program }: Props) {
 			}}
 		>
 			{capitalize(program)}
-		</Chip>
+		</Badge>
 	);
 }

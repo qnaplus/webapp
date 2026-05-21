@@ -1,7 +1,7 @@
-import { Button } from "@heroui/react";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ColorModeToggle() {
 	const { resolvedTheme, setTheme } = useTheme();
@@ -13,11 +13,10 @@ export default function ColorModeToggle() {
 
 	return (
 		<Button
-			isIconOnly
+			size="icon"
 			variant="ghost"
-			size="sm"
 			aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-			onPress={() => setTheme(isDark ? "light" : "dark")}
+			onClick={() => setTheme(isDark ? "light" : "dark")}
 		>
 			{isDark ? <IconMoon size={18} /> : <IconSun size={18} />}
 		</Button>

@@ -22,7 +22,7 @@ export default function AdvancedSortList() {
 
 	if (advanced.length === 0) {
 		return (
-			<p className="text-sm text-muted">No sort criteria selected.</p>
+			<p className="text-sm text-muted-foreground">No sort criteria selected.</p>
 		);
 	}
 

@@ -1,5 +1,11 @@
-import { Label, ListBox, Select } from "@heroui/react";
-import type { Key } from "react";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import {
 	type SortOptions,
 	sortOptionsList,
@@ -12,16 +18,16 @@ export default function BasicSort() {
 	const setBasicSort = useSortStore((s) => s.setBasicSort);
 	const setBasicAsc = useSortStore((s) => s.setBasicAsc);
 
-	const handleSortChange = (key: Key | null) => {
-		if (key === null) return;
-		const v = Number(key) as SortOptions;
+	const handleSortChange = (value: string | null) => {
+		if (value === null) return;
+		const v = Number(value) as SortOptions;
 		const next = sortOptionsList.find((o) => o.value === v);
 		if (next) setBasicSort(next);
 	};
 
-	const handleOrderChange = (key: Key | null) => {
-		if (key === null) return;
-		const v = Number(key);
+	const handleOrderChange = (value: string | null) => {
+		if (value === null) return;
+		const v = Number(value);
 		const next = sortOrderList.find((o) => o.value === v);
 		if (next) setBasicAsc(next);
 	};
@@ -29,46 +35,40 @@ export default function BasicSort() {
 	return (
 		<div className="flex flex-wrap gap-2">
 			<div className="flex flex-col gap-1 flex-1">
-				<Label className="text-sm text-muted">Sort By</Label>
-				<Select.Root
-					selectedKey={String(sort.sort.value)}
-					onSelectionChange={handleSortChange}
+				<Label className="text-sm text-muted-foreground">Sort By</Label>
+				<Select
+					value={String(sort.sort.value)}
+					onValueChange={handleSortChange}
 				>
-					<Select.Trigger>
-						<Select.Value>{sort.sort.name}</Select.Value>
-						<Select.Indicator />
-					</Select.Trigger>
-					<Select.Popover>
-						<ListBox>
-							{sortOptionsList.map((o) => (
-								<ListBox.Item key={o.value} id={String(o.value)}>
-									{o.name}
-								</ListBox.Item>
-							))}
-						</ListBox>
-					</Select.Popover>
-				</Select.Root>
+					<SelectTrigger>
+						<SelectValue>{sort.sort.name}</SelectValue>
+					</SelectTrigger>
+					<SelectContent>
+						{sortOptionsList.map((o) => (
+							<SelectItem key={o.value} value={String(o.value)}>
+								{o.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 			</div>
 			<div className="flex flex-col gap-1 flex-1">
-				<Label className="text-sm text-muted">Order</Label>
-				<Select.Root
-					selectedKey={String(sort.asc.value)}
-					onSelectionChange={handleOrderChange}
+				<Label className="text-sm text-muted-foreground">Order</Label>
+				<Select
+					value={String(sort.asc.value)}
+					onValueChange={handleOrderChange}
 				>
-					<Select.Trigger>
-						<Select.Value>{sort.asc.name}</Select.Value>
-						<Select.Indicator />
-					</Select.Trigger>
-					<Select.Popover>
-						<ListBox>
-							{sortOrderList.map((o) => (
-								<ListBox.Item key={o.value} id={String(o.value)}>
-									{o.name}
-								</ListBox.Item>
-							))}
-						</ListBox>
-					</Select.Popover>
-				</Select.Root>
+					<SelectTrigger>
+						<SelectValue>{sort.asc.name}</SelectValue>
+					</SelectTrigger>
+					<SelectContent>
+						{sortOrderList.map((o) => (
+							<SelectItem key={o.value} value={String(o.value)}>
+								{o.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 			</div>
 		</div>
 	);
