@@ -18,7 +18,6 @@ export default function ProgramTag({ program }: Props) {
 	const color = COLOR_MAP[key] ?? "#9ca3af";
 	return (
 		<Badge
-			variant="soft"
 			style={{
 				backgroundColor: `color-mix(in srgb, ${color}, transparent 84%)`,
 				color,
