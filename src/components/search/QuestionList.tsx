@@ -7,7 +7,6 @@ type Props = {
 };
 
 export default function QuestionList({ questions }: Props) {
-	// TODO: retry virtua
 	return (
 		<WindowVirtualizer data={questions}>
 			{(question) => {

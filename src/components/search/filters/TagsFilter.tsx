@@ -51,7 +51,7 @@ export default function TagsFilter() {
 							))
 						}
 					</ComboboxValue>
-					<ComboboxChipsInput id="tags-filter" placeholder="Add a tag…" />
+					<ComboboxChipsInput id="tags-filter" placeholder="Enter Tags…" />
 				</ComboboxChips>
 				<ComboboxContent anchor={anchor}>
 					<ComboboxEmpty>No matches</ComboboxEmpty>

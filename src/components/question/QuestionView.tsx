@@ -5,17 +5,19 @@ import { Separator } from "@/components/ui/separator";
 import { cleanQuestionHtml } from "../../lib/sanitize";
 import QuestionDetails from "./QuestionDetails";
 import QuestionFooter from "./QuestionFooter";
+import { cn } from "../../lib/utils";
 
 type Props = {
 	question: Question;
+	className?: string;
 };
 
-export default function QuestionView({ question }: Props) {
+export default function QuestionView({ question, className }: Props) {
 	const questionHtml = cleanQuestionHtml(question.questionRaw);
 	const answerHtml = cleanQuestionHtml(question.answerRaw);
 
 	return (
-		<div className="py-4 px-6">
+		<div className={cn("py-4 px-6", className)}>
 			<Alert className="mb-3 bg-black/15">
 				<IconInfoCircleFilled />
 				<AlertTitle>

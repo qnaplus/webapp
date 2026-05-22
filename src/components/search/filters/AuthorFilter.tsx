@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
 	Combobox,
 	ComboboxContent,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
 import { getAuthorSuggestions } from "@/lib/minisearch";
-import { useFilterStore } from "@/stores/filters";
+import { isEmptyFilterValue, useFilterStore } from "@/stores/filters";
 
 export default function AuthorFilter() {
 	const author = useFilterStore((s) => s.filters.author);
@@ -22,11 +22,11 @@ export default function AuthorFilter() {
 		[authorInput],
 	);
 
-	const handleValueChange = (value: string | null) => {
-		const v = value ?? null;
-		setFilter("author", v);
-		setAuthorInput(v ?? "");
-	};
+	useEffect(() => {
+		if (isEmptyFilterValue(author)) {
+			setAuthorInput("");
+		}
+	}, [author]);
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-42">
@@ -34,7 +34,11 @@ export default function AuthorFilter() {
 			<Combobox
 				items={authorSuggestions}
 				value={author ?? null}
-				onValueChange={handleValueChange}
+				onValueChange={(value) => {
+					const v = value ?? null;
+					setFilter("author", v);
+					setAuthorInput(v ?? "");
+				}}
 				inputValue={authorInput}
 				onInputValueChange={setAuthorInput}
 				filter={null}

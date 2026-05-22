@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function QuestionDetails({ question }: Props) {
-	const answeredLabel = question.answered ? "Answered" : "Unanswered";
+	const answeredLabel = question.answered ? `Answered ${question.answeredTimestamp ?? ""}` : "Unanswered";
 	return (
 		<div className="flex flex-col xl:flex-row items-start xl:items-center justify-between text-base">
 			<div className="flex flex-wrap items-center gap-2 text-muted-foreground">

@@ -17,10 +17,10 @@ export default function HeaderBar() {
 		<>
 			<header
 				className={
-					"fixed top-0 left-0 right-0 z-10 w-full p-3 flex items-center justify-between transition-all duration-300 border-b " +
+					"fixed h-15 top-0 left-0 right-0 z-10 p-3 flex items-center justify-between transition-all duration-300 border-b border-border " +
 					(stuck
-						? "border-border bg-[color-mix(in_oklab,var(--background)_70%,transparent)] backdrop-blur-md"
-						: "border-transparent bg-transparent")
+						? "bg-[color-mix(in_oklab,var(--background)_70%,transparent)] backdrop-blur-md"
+						: "bg-transparent")
 				}
 			>
 				<a
@@ -54,7 +54,6 @@ export default function HeaderBar() {
 					<ColorModeToggle />
 				</div>
 			</header>
-			<div className="p-3" />
 		</>
 	);
 }

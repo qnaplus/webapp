@@ -30,7 +30,7 @@ export default function QuestionDrawer() {
 					Detailed view of the selected question
 				</DrawerDescription>
 				{selectedQuestion !== undefined && (
-					<QuestionView question={selectedQuestion} />
+					<QuestionView className="mt-10" question={selectedQuestion} />
 				)}
 			</DrawerContent>
 		</Drawer>
