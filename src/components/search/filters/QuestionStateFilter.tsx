@@ -4,7 +4,7 @@ import {
 	type QuestionStateValue,
 	questionStateOptions,
 	useFilterStore,
-} from "../../../stores/filters";
+} from "@/stores/filters";
 
 export default function QuestionStateFilter() {
 	const state = useFilterStore((s) => s.filters.state);

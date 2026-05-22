@@ -14,7 +14,7 @@ import {
 	type SortOrder,
 	sortOrderList,
 	useSortStore,
-} from "../../../stores/sort";
+} from "@/stores/sort";
 
 type Props = {
 	index: number;

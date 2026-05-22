@@ -1,7 +1,7 @@
-import { IconMoon, IconSun } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import { IconMoonFilled, IconSunFilled } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 
 export default function ColorModeToggle() {
 	const { resolvedTheme, setTheme } = useTheme();
@@ -18,7 +18,7 @@ export default function ColorModeToggle() {
 			aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
 			onClick={() => setTheme(isDark ? "light" : "dark")}
 		>
-			{isDark ? <IconMoon size={18} /> : <IconSun size={18} />}
+			{isDark ? <IconMoonFilled size={18} /> : <IconSunFilled size={18} />}
 		</Button>
 	);
 }

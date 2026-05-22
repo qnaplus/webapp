@@ -1,10 +1,10 @@
 import type { Question } from "@qnaplus/scraper";
 import { useEffect, useState } from "react";
 import { useRoute } from "wouter";
-import Root from "../components/layout/Root";
-import LoadingQuestion from "../components/question/LoadingQuestion";
-import QuestionView from "../components/question/QuestionView";
-import { getQuestion } from "../database";
+import Root from "@/components/layout/Root";
+import LoadingQuestion from "@/components/question/LoadingQuestion";
+import QuestionView from "@/components/question/QuestionView";
+import { getQuestion } from "@/database";
 
 export default function QuestionPage() {
 	const [, params] = useRoute("/:id");

@@ -8,7 +8,7 @@ type Props = {
 export default function Root({ children }: Props) {
 	return (
 		<div className="min-h-svh flex flex-col">
-			{/* <HeaderBar /> */}
+			<HeaderBar />
 			<div className="flex-1 w-full px-0 md:px-8 lg:px-20 xl:px-[20%]">
 				{children}
 			</div>

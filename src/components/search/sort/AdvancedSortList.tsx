@@ -10,7 +10,7 @@ import {
 	SortableContext,
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useSortStore } from "../../../stores/sort";
+import { useSortStore } from "@/stores/sort";
 import AdvancedSortItem from "./AdvancedSortItem";
 
 export default function AdvancedSortList() {

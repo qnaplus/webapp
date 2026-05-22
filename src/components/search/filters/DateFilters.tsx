@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
-import { useFilterStore } from "../../../stores/filters";
-import DatePicker from "../../lib/DatePicker";
+import { useFilterStore } from "@/stores/filters";
+import DatePicker from "@/components/lib/DatePicker";
 
 export default function DateFilters() {
 	const filters = useFilterStore((s) => s.filters);

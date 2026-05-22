@@ -1,10 +1,11 @@
+import "./theme/globals.css";
+import "./theme/style.css";
+
 import { ThemeProvider } from "next-themes";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 import App from "./App.tsx";
-import "./theme/globals.css";
-import "./theme/prose.css";
 
 registerSW({ immediate: true });
 

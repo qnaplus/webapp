@@ -12,8 +12,8 @@ import {
 	type SortOptions,
 	sortOptionsList,
 	useSortStore,
-} from "../../../stores/sort";
-import AdvancedSortList from "../sort/AdvancedSortList";
+} from "@/stores/sort";
+import AdvancedSortList from "@/components/search/sort/AdvancedSortList";
 
 export default function AdvancedSortPanel() {
 	const sort = useSortStore((s) => s.sort);

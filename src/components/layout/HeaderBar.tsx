@@ -1,6 +1,6 @@
-import { IconBrandGithubFilled, IconMessage } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { IconBrandDiscordFilled, IconBrandGithubFilled } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import ColorModeToggle from "./ColorModeToggle";
 
 const appName = import.meta.env.VITE_APP_NAME;
@@ -39,7 +39,7 @@ export default function HeaderBar() {
 						aria-label="Discord"
 					>
 						<Button size="icon" variant="ghost" aria-label="Discord">
-							<IconMessage size={18} />
+							<IconBrandDiscordFilled size={18} />
 						</Button>
 					</a>
 					<a

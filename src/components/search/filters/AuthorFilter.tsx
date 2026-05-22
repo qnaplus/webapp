@@ -8,8 +8,8 @@ import {
 	ComboboxList,
 } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import { getAuthorSuggestions } from "../../../lib/minisearch";
-import { useFilterStore } from "../../../stores/filters";
+import { getAuthorSuggestions } from "@/lib/minisearch";
+import { useFilterStore } from "@/stores/filters";
 
 export default function AuthorFilter() {
 	const author = useFilterStore((s) => s.filters.author);
@@ -30,7 +30,7 @@ export default function AuthorFilter() {
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-42">
-			<Label className="text-sm text-muted-foreground">Author</Label>
+			<Label className="text-sm text-muted-foreground" htmlFor="author-filter">Author</Label>
 			<Combobox
 				items={authorSuggestions}
 				value={author ?? null}
@@ -39,7 +39,7 @@ export default function AuthorFilter() {
 				onInputValueChange={setAuthorInput}
 				filter={null}
 			>
-				<ComboboxInput placeholder="Author" />
+				<ComboboxInput id="author-filter" placeholder="Author" />
 				<ComboboxContent>
 					<ComboboxEmpty>No matches</ComboboxEmpty>
 					<ComboboxList>

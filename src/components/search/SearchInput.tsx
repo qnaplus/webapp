@@ -4,7 +4,7 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/ui/input-group";
-import { useSearchStore } from "../../stores/search";
+import { useSearchStore } from "@/stores/search";
 
 export default function SearchInput() {
 	const query = useSearchStore((s) => s.query);

@@ -15,11 +15,11 @@ export default function QuestionView({ question }: Props) {
 	const answerHtml = cleanQuestionHtml(question.answerRaw);
 
 	return (
-		<div className="p-4">
+		<div className="py-4 px-6">
 			<Alert className="mb-3 bg-black/15">
 				<IconInfoCircleFilled />
 				<AlertTitle>
-					qnaplus is an unofficial third-party application.{" "}
+					qnaplus is an unofficial third-party application
 				</AlertTitle>
 				<AlertDescription>
 					<a
@@ -38,20 +38,20 @@ export default function QuestionView({ question }: Props) {
 			<QuestionDetails question={question} />
 			<Separator className="my-3" />
 
-			<div className="px-5 pb-3">
+			<div className="px-0 pb-3">
 				<h3 className="text-xl font-semibold mb-2">Question</h3>
 				<div
-					className="prose prose-full text-muted-foreground wrap-break-word max-w-none"
+					className="prose prose-zinc dark:prose-invert wrap-break-word max-w-none"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html
 					dangerouslySetInnerHTML={{ __html: questionHtml }}
 				/>
 			</div>
 
 			{question.answered && (
-				<div className="p-5 border rounded-md border-green-500/40 bg-green-900/10">
+				<div className="p-5 border rounded-md border-green-500/40 dark:bg-green-900/10 bg-green-900/20 ">
 					<h3 className="text-xl font-semibold mb-2">Answer</h3>
 					<div
-						className="prose prose-full text-muted-foreground wrap-break-word max-w-none"
+						className="prose prose-zinc dark:prose-invert wrap-break-word max-w-none"
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html
 						dangerouslySetInnerHTML={{ __html: answerHtml }}
 					/>

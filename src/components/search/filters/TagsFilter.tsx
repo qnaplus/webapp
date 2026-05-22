@@ -9,10 +9,11 @@ import {
 	ComboboxItem,
 	ComboboxList,
 	ComboboxValue,
+	useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import { getTagSuggestions } from "../../../lib/minisearch";
-import { useFilterStore } from "../../../stores/filters";
+import { getTagSuggestions } from "@/lib/minisearch";
+import { useFilterStore } from "@/stores/filters";
 
 export default function TagsFilter() {
 	const tags = useFilterStore((s) => s.filters.tags);
@@ -25,24 +26,24 @@ export default function TagsFilter() {
 		[tagInput],
 	);
 
-	const onChange = (next: string[]) => {
-		setFilter("tags", next);
-		setTagInput("");
-	};
+	const anchor = useComboboxAnchor();
 
 	return (
 		<div className="flex flex-col gap-1">
-			<Label className="text-sm text-muted-foreground">Tags</Label>
+			<Label className="text-sm text-muted-foreground" htmlFor="tags-filter">Tags</Label>
 			<Combobox<string, true>
 				multiple
 				items={tagSuggestions}
 				value={tags}
-				onValueChange={onChange}
+				onValueChange={(tags) => {
+					setFilter("tags", tags);
+					setTagInput("");
+				}}
 				inputValue={tagInput}
 				onInputValueChange={setTagInput}
 				filter={null}
 			>
-				<ComboboxChips>
+				<ComboboxChips ref={anchor}>
 					<ComboboxValue>
 						{(values: string[]) =>
 							values.map((v) => (
@@ -50,9 +51,9 @@ export default function TagsFilter() {
 							))
 						}
 					</ComboboxValue>
-					<ComboboxChipsInput placeholder="Add a tag…" />
+					<ComboboxChipsInput id="tags-filter" placeholder="Add a tag…" />
 				</ComboboxChips>
-				<ComboboxContent>
+				<ComboboxContent anchor={anchor}>
 					<ComboboxEmpty>No matches</ComboboxEmpty>
 					<ComboboxList>
 						{tagSuggestions.map((t) => (

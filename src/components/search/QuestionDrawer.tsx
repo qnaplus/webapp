@@ -1,11 +1,11 @@
+import QuestionView from "@/components/question/QuestionView";
 import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
 	SheetTitle,
 } from "@/components/ui/sheet";
-import { useSearchStore } from "../../stores/search";
-import QuestionView from "../question/QuestionView";
+import { useSearchStore } from "@/stores/search";
 
 export default function QuestionDrawer() {
 	const selectedQuestion = useSearchStore((s) => s.selectedQuestion);
@@ -20,7 +20,8 @@ export default function QuestionDrawer() {
 		>
 			<SheetContent
 				side="right"
-				className="w-245 sm:max-w-none overflow-y-auto"
+				className="min-w-245 overflow-y-auto"
+				showCloseButton={false}
 			>
 				<SheetTitle className="sr-only">
 					{selectedQuestion?.title ?? "Question details"}

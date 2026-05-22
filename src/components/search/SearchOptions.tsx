@@ -10,8 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 	selectAppliedFilterCount,
 	useFilterStore,
-} from "../../stores/filters";
-import { useSortStore } from "../../stores/sort";
+} from "@/stores/filters";
+import { useSortStore } from "@/stores/sort";
 import AdvancedSortPanel from "./filters/AdvancedSortPanel";
 import AuthorFilter from "./filters/AuthorFilter";
 import BasicSort from "./filters/BasicSort";
@@ -28,17 +28,17 @@ export default function SearchOptions() {
 	const advancedEnabled = useSortStore((s) => s.sort.advancedEnabled);
 
 	return (
-		<Accordion>
+		<Accordion className={"p-1 border"}>
 			<AccordionItem value="search-options">
-				<AccordionTrigger>
-					<span className="flex-1 text-left font-medium">Search Options</span>
+				<AccordionTrigger className="px-3">
+					<span className="flex-1 text-left font-semibold text-base">Search Options</span>
 					{appliedFilterCount > 0 && (
 						<Badge className="ml-2">{appliedFilterCount}</Badge>
 					)}
 				</AccordionTrigger>
-				<AccordionContent>
-					<Tabs defaultValue="filter">
-						<TabsList>
+				<AccordionContent className="p-2">
+					<Tabs defaultValue="filter" >
+						<TabsList variant="line">
 							<TabsTrigger value="filter">Filter</TabsTrigger>
 							<TabsTrigger value="sort">Sort</TabsTrigger>
 						</TabsList>

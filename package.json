@@ -46,6 +46,7 @@
 	},
 	"devDependencies": {
 		"@qnaplus/scraper": "^3.1.4",
+		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.3.0",
 		"@types/react": "^19.2.15",
 		"@types/react-dom": "^19.2.3",

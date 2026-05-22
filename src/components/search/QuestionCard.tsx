@@ -1,10 +1,9 @@
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import type { Question } from "@qnaplus/scraper";
 import { KeyboardEvent } from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useSearchStore } from "../../stores/search";
-import QuestionDetails from "../question/QuestionDetails";
-import QuestionTags from "../question/QuestionTags";
+import { useSearchStore } from "@/stores/search";
+import QuestionDetails from "@/components/question/QuestionDetails";
+import QuestionTags from "@/components/question/QuestionTags";
 
 type Props = {
     question: Question;
@@ -24,7 +23,7 @@ export default function QuestionCard({ question }: Props) {
     };
     return (
         <Card
-            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring mb-2"
+            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted ring-0 focus-visible:outline-2 focus-visible:outline-ring mb-2 w-full"
             onClick={open}
             onKeyDown={onKeyDown}
         >
@@ -33,19 +32,18 @@ export default function QuestionCard({ question }: Props) {
                 <QuestionDetails question={question} />
             </CardHeader>
             <CardContent
-                className="prose prose-full min-h-40 max-h-40 overflow-hidden"
+                className="prose dark:prose-invert min-h-40 max-h-40 overflow-hidden w-full"
                 style={{
                     WebkitMaskImage: FADE_MASK,
                     maskImage: FADE_MASK,
                 }}
             >
-                <div
-                    // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html during minisearch load
-                    dangerouslySetInnerHTML={{ __html: question.questionRaw }}
-                />
+                    <div
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html during minisearch load
+                        dangerouslySetInnerHTML={{ __html: question.questionRaw }}
+                    />
             </CardContent>
             <CardFooter className="flex flex-col items-stretch gap-2">
-                <Separator />
                 <QuestionTags tags={question.tags} program={question.program} />
             </CardFooter>
         </Card>

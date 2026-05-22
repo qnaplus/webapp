@@ -1,7 +1,7 @@
 import type { Question } from "@qnaplus/scraper";
 import MiniSearch, { type SearchResult } from "minisearch";
 import { stemmer } from "stemmer";
-import { isEmpty } from "../util/strings";
+import { isEmpty } from "@/util/strings";
 import { cleanQuestionHtml } from "./sanitize";
 
 export type QuestionSearchResult = Question & SearchResult;

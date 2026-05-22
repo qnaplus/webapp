@@ -3,8 +3,8 @@ import {
 	type SearchSortOptions,
 	SortOptions,
 	SortOrder,
-} from "../stores/sort";
-import { type SortFunction, multisortrules } from "../util/sorting";
+} from "@/stores/sort";
+import { type SortFunction, multisortrules } from "@/util/sorting";
 import type { UseSearchResult } from "./minisearch";
 
 type SortMap<T> = {

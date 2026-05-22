@@ -8,10 +8,11 @@ import {
 	ComboboxItem,
 	ComboboxList,
 	ComboboxValue,
+	useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import { useAppDataStore } from "../../../stores/appData";
-import { useFilterStore } from "../../../stores/filters";
+import { useAppDataStore } from "@/stores/appData";
+import { useFilterStore } from "@/stores/filters";
 
 export default function SeasonFilter() {
 	const seasons = useAppDataStore((s) => s.seasons);
@@ -19,6 +20,8 @@ export default function SeasonFilter() {
 	const setFilter = useFilterStore((s) => s.setFilter);
 
 	const selected = seasonFilter.map((s) => s.value);
+
+	const anchor = useComboboxAnchor();
 
 	const onChange = (values: string[]) => {
 		setFilter(
@@ -29,14 +32,14 @@ export default function SeasonFilter() {
 
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-50">
-			<Label className="text-sm text-muted-foreground">Season</Label>
+			<Label className="text-sm text-muted-foreground" htmlFor="season-filter">Season</Label>
 			<Combobox<string, true>
 				multiple
 				items={seasons}
 				value={selected}
 				onValueChange={onChange}
 			>
-				<ComboboxChips>
+				<ComboboxChips ref={anchor}>
 					<ComboboxValue>
 						{(values: string[]) =>
 							values.map((v) => (
@@ -44,9 +47,9 @@ export default function SeasonFilter() {
 							))
 						}
 					</ComboboxValue>
-					<ComboboxChipsInput placeholder="Season" />
+					<ComboboxChipsInput id="season-filter" placeholder="Season" />
 				</ComboboxChips>
-				<ComboboxContent>
+				<ComboboxContent anchor={anchor}>
 					<ComboboxEmpty>No seasons</ComboboxEmpty>
 					<ComboboxList>
 						{seasons.map((s) => (

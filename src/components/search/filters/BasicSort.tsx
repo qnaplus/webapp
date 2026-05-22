@@ -11,7 +11,7 @@ import {
 	sortOptionsList,
 	sortOrderList,
 	useSortStore,
-} from "../../../stores/sort";
+} from "@/stores/sort";
 
 export default function BasicSort() {
 	const sort = useSortStore((s) => s.sort.basic);

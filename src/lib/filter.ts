@@ -3,7 +3,7 @@ import {
 	QuestionStateValue,
 	type SearchFilters,
 	isEmptyFilterValue,
-} from "../stores/filters";
+} from "@/stores/filters";
 import type { UseSearchResult } from "./minisearch";
 
 type FilterMap = {

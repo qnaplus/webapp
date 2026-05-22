@@ -18,7 +18,7 @@ type DatePickerProps = {
 export default function DatePicker({
 	value,
 	onChange,
-	placeholder = "Pick a date",
+	placeholder = "Enter Date...",
 }: DatePickerProps) {
 	return (
 		<Popover>

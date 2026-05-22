@@ -8,10 +8,12 @@ import {
 	ComboboxItem,
 	ComboboxList,
 	ComboboxValue,
+	useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import { useAppDataStore } from "../../../stores/appData";
-import { useFilterStore } from "../../../stores/filters";
+import React from "react";
+import { useAppDataStore } from "@/stores/appData";
+import { useFilterStore } from "@/stores/filters";
 
 export default function ProgramFilter() {
 	const programs = useAppDataStore((s) => s.programs);
@@ -27,26 +29,31 @@ export default function ProgramFilter() {
 		);
 	};
 
+	const anchor = useComboboxAnchor();
+
 	return (
 		<div className="flex flex-col gap-1 flex-1 min-w-50">
-			<Label className="text-sm text-muted-foreground">Program</Label>
+			<Label className="text-sm text-muted-foreground" htmlFor="program-filter">Program</Label>
 			<Combobox<string, true>
+				id="program-filter"
 				multiple
 				items={programs}
 				value={selected}
 				onValueChange={onChange}
 			>
-				<ComboboxChips>
+				<ComboboxChips ref={anchor}>
 					<ComboboxValue>
-						{(values: string[]) =>
-							values.map((v) => (
-								<ComboboxChip key={v}>{v}</ComboboxChip>
-							))
-						}
+						{(values: string[]) => (
+							<>
+								{values.map((v) => (
+									<ComboboxChip key={v}>{v}</ComboboxChip>
+								))}
+								<ComboboxChipsInput placeholder="Program" />
+							</>
+						)}
 					</ComboboxValue>
-					<ComboboxChipsInput placeholder="Program" />
 				</ComboboxChips>
-				<ComboboxContent>
+				<ComboboxContent anchor={anchor}>
 					<ComboboxEmpty>No programs</ComboboxEmpty>
 					<ComboboxList>
 						{programs.map((p) => (
