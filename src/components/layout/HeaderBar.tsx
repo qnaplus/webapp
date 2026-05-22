@@ -29,7 +29,8 @@ export default function HeaderBar() {
 					href="/"
 					className="ml-2 font-medium text-foreground no-underline"
 				>
-					<span className="text-xl font-semibold">{appName}</span>
+					<span className="text-xl font-semibold">qna</span>
+					<span className="text-xl font-semibold text-primary">plus</span>
 				</a>
 				<div className="flex items-center gap-2">
 					<a
