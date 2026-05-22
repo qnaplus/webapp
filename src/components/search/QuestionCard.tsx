@@ -1,9 +1,10 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import type { Question } from "@qnaplus/scraper";
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, useMemo } from "react";
 import { useSearchStore } from "@/stores/search";
 import QuestionDetails from "@/components/question/QuestionDetails";
 import QuestionTags from "@/components/question/QuestionTags";
+import { truncateHtml } from "@/lib/truncate";
 
 type Props = {
     question: Question;
@@ -15,6 +16,10 @@ const FADE_MASK =
 export default function QuestionCard({ question }: Props) {
     const openQuestion = useSearchStore((s) => s.openQuestion);
     const open = () => openQuestion(question);
+    const truncatedHtml = useMemo(
+        () => truncateHtml(question.questionRaw, 300),
+        [question.questionRaw],
+    );
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -32,7 +37,7 @@ export default function QuestionCard({ question }: Props) {
                 <QuestionDetails question={question} />
             </CardHeader>
             <CardContent
-                className="prose dark:prose-invert max-w-none min-h-40 max-h-40 overflow-hidden w-full"
+                className="prose dark:prose-invert max-w-none max-h-40 overflow-hidden w-full"
                 style={{
                     WebkitMaskImage: FADE_MASK,
                     maskImage: FADE_MASK,
@@ -40,7 +45,7 @@ export default function QuestionCard({ question }: Props) {
             >
                     <div
                         // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html during minisearch load
-                        dangerouslySetInnerHTML={{ __html: question.questionRaw }}
+                        dangerouslySetInnerHTML={{ __html: truncatedHtml }}
                     />
             </CardContent>
             <CardFooter className="flex flex-col items-stretch gap-2">

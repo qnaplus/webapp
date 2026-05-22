@@ -6,12 +6,14 @@ import { useMinisearchLoader } from "./hooks/useMinisearchLoader";
 import SearchPage from "./pages/SearchPage";
 import QuestionPage from "./pages/QuestionPage";
 import { useAppDataStore } from "./stores/appData";
+import { useFilterStore } from "./stores/filters";
 
 const appName = import.meta.env.VITE_APP_NAME;
 
 export default function App() {
 	const [loading, setLoading] = useState(true);
 	const setAppData = useAppDataStore((s) => s.setAppData);
+	const setFilter = useFilterStore((s) => s.setFilter)
 	const loadMinisearch = useMinisearchLoader();
 
 	useEffect(() => {
@@ -19,8 +21,11 @@ export default function App() {
 			try {
 				await setupDatabase();
 				const data = await getAppData();
+				console.log(data)
 				if (data !== undefined) {
 					setAppData({ seasons: data.seasons, programs: data.programs });
+					const [currentSeason] = data.seasons;
+					setFilter("season", [{ name: currentSeason, value: currentSeason }]);
 				}
 				const questions = await database.questions.toArray();
 				await loadMinisearch(questions);
@@ -31,7 +36,7 @@ export default function App() {
 			}
 		};
 		void startup();
-	}, [setAppData, loadMinisearch]);
+	}, [setAppData, loadMinisearch, setFilter]);
 
 	if (loading) {
 		return (
