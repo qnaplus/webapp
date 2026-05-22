@@ -6,6 +6,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 import App from "./App.tsx";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 registerSW({ immediate: true });
 
@@ -20,8 +21,10 @@ if (container === null) {
 
 createRoot(container).render(
 	<StrictMode>
-		<ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-			<App />
-		</ThemeProvider>
+		<TooltipProvider>
+			<ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+				<App />
+			</ThemeProvider>
+		</TooltipProvider>
 	</StrictMode>,
 );

@@ -21,12 +21,12 @@ export default function QuestionDetails({ question }: Props) {
 			</div>
 			<div className="flex items-center gap-1.5">
 				{question.answered ? (
-					<span className="inline-flex items-center gap-1 dark:text-green-400 dark:bg-green-500/10 bg-green-700/40 text-green-800 px-1.5 py-0.5 rounded-md">
+					<span className="inline-flex items-center gap-1 dark:text-green-400 dark:bg-green-500/10 bg-green-700/30 text-green-700 px-1.5 py-0.5 rounded-md">
 						<IconCheck size={14} />
 						<span>{answeredLabel}</span>
 					</span>
 				) : (
-					<span className="text-sm text-muted-foreground">{answeredLabel}</span>
+					<span className="text-muted-foreground">{answeredLabel}</span>
 				)}
 			</div>
 		</div>

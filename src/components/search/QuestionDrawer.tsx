@@ -1,10 +1,10 @@
 import QuestionView from "@/components/question/QuestionView";
 import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetTitle,
-} from "@/components/ui/sheet";
+	Drawer,
+	DrawerContent,
+	DrawerDescription,
+	DrawerTitle,
+} from "@/components/ui/drawer";
 import { useSearchStore } from "@/stores/search";
 
 export default function QuestionDrawer() {
@@ -12,27 +12,27 @@ export default function QuestionDrawer() {
 	const closeDrawer = useSearchStore((s) => s.closeDrawer);
 
 	return (
-		<Sheet
+		<Drawer
 			open={selectedQuestion !== undefined}
 			onOpenChange={(open) => {
 				if (!open) closeDrawer();
 			}}
+			swipeDirection="right"
 		>
-			<SheetContent
-				side="right"
-				className="min-w-245 overflow-y-auto"
-				showCloseButton={false}
+			<DrawerContent
+				swipeDirection="right"
+				// showCloseButton={false}
 			>
-				<SheetTitle className="sr-only">
+				<DrawerTitle className="sr-only">
 					{selectedQuestion?.title ?? "Question details"}
-				</SheetTitle>
-				<SheetDescription className="sr-only">
+				</DrawerTitle>
+				<DrawerDescription className="sr-only">
 					Detailed view of the selected question
-				</SheetDescription>
+				</DrawerDescription>
 				{selectedQuestion !== undefined && (
 					<QuestionView question={selectedQuestion} />
 				)}
-			</SheetContent>
-		</Sheet>
+			</DrawerContent>
+		</Drawer>
 	);
 }

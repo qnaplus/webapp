@@ -7,6 +7,8 @@ import QuestionList from "@/components/search/QuestionList";
 import QuestionListHeader from "@/components/search/QuestionListHeader";
 import SearchInput from "@/components/search/SearchInput";
 import SearchOptions from "@/components/search/SearchOptions";
+import BasicSort from "@/components/search/filters/BasicSort";
+import SortOrderToggle from "@/components/search/filters/SortOrderToggle";
 import { useFilteredQuestions } from "@/hooks/useFilteredQuestions";
 
 export default function SearchPage() {
@@ -17,7 +19,11 @@ export default function SearchPage() {
 			<div className="flex flex-col gap-3 p-4" style={{ height: "calc(100svh - 60px)" }}>
 				<div className="flex flex-col gap-3">
 					<QuestionListHeader results={questions.length} />
-					<SearchInput />
+					<div className="flex items-center gap-2">
+						<SearchInput />
+						<BasicSort />
+						<SortOrderToggle />
+					</div>
 					<SearchOptions />
 				</div>
 				{loading ? (

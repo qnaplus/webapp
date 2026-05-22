@@ -11,7 +11,7 @@ export default function QuestionTags({ tags, program }: Props) {
 		<div className="flex flex-wrap gap-2">
 			<ProgramTag program={program} />
 			{tags.map((tag) => (
-				<Badge key={tag} variant="soft">
+				<Badge key={tag} className="p-2" variant="outline">
 					{tag}
 				</Badge>
 			))}

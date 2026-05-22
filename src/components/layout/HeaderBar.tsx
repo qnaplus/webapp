@@ -3,8 +3,6 @@ import { IconBrandDiscordFilled, IconBrandGithubFilled } from "@tabler/icons-rea
 import { useEffect, useState } from "react";
 import ColorModeToggle from "./ColorModeToggle";
 
-const appName = import.meta.env.VITE_APP_NAME;
-
 export default function HeaderBar() {
 	const [stuck, setStuck] = useState(false);
 
