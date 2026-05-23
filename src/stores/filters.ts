@@ -40,15 +40,23 @@ const getInitialFilters = (): SearchFilters => ({
 
 type FilterStore = {
 	filters: SearchFilters;
+	defaultFilters: SearchFilters;
 	setFilter: <K extends keyof SearchFilters>(key: K, value: SearchFilters[K]) => void;
+	setDefaultFilters: (defaults: Partial<SearchFilters>) => void;
 	clearFilters: () => void;
 };
 
 export const useFilterStore = create<FilterStore>((set) => ({
 	filters: getInitialFilters(),
+	defaultFilters: getInitialFilters(),
 	setFilter: (key, value) =>
 		set((s) => ({ filters: { ...s.filters, [key]: value } })),
-	clearFilters: () => set({ filters: getInitialFilters() }),
+	setDefaultFilters: (defaults) =>
+		set(() => {
+			const defaultFilters = { ...getInitialFilters(), ...defaults };
+			return { defaultFilters, filters: defaultFilters };
+		}),
+	clearFilters: () => set((s) => ({ filters: s.defaultFilters })),
 }));
 
 export const isEmptyFilterValue = (
