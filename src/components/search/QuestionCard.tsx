@@ -28,7 +28,7 @@ export default function QuestionCard({ question }: Props) {
     };
     return (
         <Card
-            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted ring-0 focus-visible:outline-2 focus-visible:outline-ring mb-3 w-full"
+            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted ring-0 focus-visible:outline-2 focus-visible:outline-ring mb-2 w-full"
             onClick={open}
             onKeyDown={onKeyDown}
         >

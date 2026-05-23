@@ -5,12 +5,15 @@ import Root from "@/components/layout/Root";
 import LoadingQuestion from "@/components/question/LoadingQuestion";
 import QuestionView from "@/components/question/QuestionView";
 import { getQuestion } from "@/database";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function QuestionPage() {
 	const [, params] = useRoute("/:id");
 	const id = params?.id;
 
 	const [question, setQuestion] = useState<Question | null | undefined>(undefined);
+    const title = question?.title ?? id ?? "View Question";
+    usePageTitle(title);
 
 	useEffect(() => {
 		if (id === undefined) return;
