@@ -38,7 +38,6 @@ database.version(2).upgrade((tx) => {
         .toCollection()
         .modify((metadata) => {
             metadata.version = DEFAULT_VERSION;
-            // biome-ignore lint/performance/noDelete: it's literally just one row lol
             delete metadata.lastUpdated;
         });
     tx.table("questions").clear();

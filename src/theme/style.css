@@ -1,0 +1,17 @@
+
+.h-screen-mobile {
+    height: 100vh;
+    height: 100svh;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#root {
+    min-height: 100svh;
+}
