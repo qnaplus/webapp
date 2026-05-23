@@ -1,8 +1,4 @@
-import { useState } from "react";
-import type { Question } from "@qnaplus/scraper";
-import { IconFilter } from "@tabler/icons-react";
 import Root from "@/components/layout/Root";
-import LoadingQuestion from "@/components/question/LoadingQuestion";
 import FilterPanel from "@/components/search/FilterPanel";
 import NoResults from "@/components/search/NoResults";
 import QuestionDrawer from "@/components/search/QuestionDrawer";
@@ -15,6 +11,9 @@ import BasicSort from "@/components/search/filters/BasicSort";
 import SortOrderToggle from "@/components/search/filters/SortOrderToggle";
 import { Button } from "@/components/ui/button";
 import { useFilteredQuestions } from "@/hooks/useFilteredQuestions";
+import type { Question } from "@qnaplus/scraper";
+import { IconFilter } from "@tabler/icons-react";
+import { useState } from "react";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function SearchPage() {
@@ -34,9 +33,9 @@ export default function SearchPage() {
 					</div>
 				</aside>
 
-				<main className="flex flex-col gap-3 min-w-0">
+				<main className="flex flex-col gap-4 min-w-0">
 					<QuestionListHeader results={questions.length} />
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-2 bg-background">
 						<Button
 							variant="outline"
 							size="icon"
@@ -51,11 +50,15 @@ export default function SearchPage() {
 						<SortOrderToggle />
 					</div>
 					{loading ? (
-						<LoadingQuestion />
-					) : questions.length === 0 ? (
-						<NoResults />
+						<></>
 					) : (
-						<QuestionList questions={questions as Question[]} />
+						<div className="animate-in fade-in duration-500">
+                                {questions.length === 0 ? (
+								<NoResults />
+							) : (
+								<QuestionList questions={questions as Question[]} />
+							)}
+						</div>
 					)}
 				</main>
 

@@ -31,7 +31,7 @@ function DrawerBackdrop({
     <DrawerPrimitive.Backdrop
       data-slot="drawer-backdrop"
       className={cn(
-        "fixed inset-0 z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs",
+        "fixed inset-0 z-50 bg-black/50 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0",
         className
       )}
       {...props}
@@ -63,6 +63,7 @@ function DrawerContent({
   return (
     <DrawerPortal>
       <DrawerBackdrop />
+      <DrawerPrimitive.Viewport>
       <DrawerPrimitive.Popup
         data-slot="drawer-content"
         className={cn(
@@ -92,6 +93,7 @@ function DrawerContent({
           </DrawerPrimitive.Close>
         )}
       </DrawerPrimitive.Popup>
+      </DrawerPrimitive.Viewport>
     </DrawerPortal>
   )
 }

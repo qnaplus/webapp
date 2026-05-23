@@ -8,6 +8,7 @@
 	"ignorePatterns": ["dist", "node_modules", "public", "dev-dist"],
 	"rules": {
 		"no-console": "off",
-		"react/no-array-index-key": "warn"
+		"react/no-array-index-key": "warn",
+        "import/no-relative-parent-imports": "error"
 	}
 }

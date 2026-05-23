@@ -1,4 +1,5 @@
 import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer";
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import FilterPanel from "./FilterPanel";
 
@@ -8,6 +9,11 @@ type Props = {
 };
 
 export default function SearchOptions({ open, onOpenChange }: Props) {
+	useEffect(() => {
+		document.body.style.overflow = open ? "hidden" : "";
+		return () => { document.body.style.overflow = ""; };
+	}, [open]);
+
 	return (
 		<DrawerPrimitive.Root
 			open={open}

@@ -5,6 +5,8 @@ import { useSearchStore } from "@/stores/search";
 import QuestionDetails from "@/components/question/QuestionDetails";
 import QuestionTags from "@/components/question/QuestionTags";
 import { truncateHtml } from "@/lib/truncate";
+import parse, { Element } from "html-react-parser";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 type Props = {
     question: Question;
@@ -16,21 +18,34 @@ const FADE_MASK =
 export default function QuestionCard({ question }: Props) {
     const openQuestion = useSearchStore((s) => s.openQuestion);
     const open = () => openQuestion(question);
-    const truncatedHtml = useMemo(
-        () => truncateHtml(question.questionRaw, 300),
+    const content = useMemo(
+        () => {
+            const truncated = truncateHtml(question.questionRaw, 300);
+            return parse(truncated, {
+                replace(domNode) {
+                    const el = domNode as Element;
+                    if (el.tagName === "img") {
+                        return (
+                            <AspectRatio ratio={16 / 9} className="overflow-hidden rounded">
+                                <img src={el.attribs.src} className="w-full h-full object-cover" />
+                            </AspectRatio>
+                        );
+                    }
+                },
+            })
+        },
         [question.questionRaw],
     );
-    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            open();
-        }
-    };
     return (
         <Card
-            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted ring-0 focus-visible:outline-2 focus-visible:outline-ring mb-2 w-full"
+            className="border flex flex-col cursor-pointer transition-colors hover:bg-muted ring-0 focus-visible:outline-2 focus-visible:outline-ring mb-4 w-full"
             onClick={open}
-            onKeyDown={onKeyDown}
+            onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    open();
+                }
+            }}
         >
             <CardHeader>
                 <div className="font-medium text-lg">{question.title}</div>
@@ -43,10 +58,7 @@ export default function QuestionCard({ question }: Props) {
                     maskImage: FADE_MASK,
                 }}
             >
-                    <div
-                        // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized via sanitize-html during minisearch load
-                        dangerouslySetInnerHTML={{ __html: truncatedHtml }}
-                    />
+                {content}
             </CardContent>
             <CardFooter className="flex flex-col items-stretch gap-2">
                 <QuestionTags tags={question.tags} program={question.program} />
