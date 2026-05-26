@@ -21,7 +21,7 @@ export default function ScrollToTop() {
 	return (
 		<>
 			{/* Mobile: panel with fade at top */}
-			<div className="fixed bottom-0 inset-x-0 z-40 pointer-events-none sm:hidden">
+			<div className="fixed bottom-0 inset-x-0 z-900 pointer-events-none sm:hidden">
 				<div className="h-8 bg-linear-to-t from-background to-transparent" />
 				<div className="bg-background px-4 pb-4 pt-2 pointer-events-auto">
 					<Button
@@ -37,13 +37,12 @@ export default function ScrollToTop() {
 			</div>
 			{/* Desktop: icon button on the side */}
 			<Button
-				variant="outline"
-				size="icon"
+				variant="secondary"
 				onClick={scrollToTop}
-				aria-label="Scroll to top"
+				aria-label="Scroll to Top"
 				className="fixed bottom-6 right-6 z-40 shadow-md hidden sm:inline-flex"
 			>
-				<IconArrowUp size={18} />
+				<IconArrowUp size={18} /> Scroll to Top
 			</Button>
 		</>
 	);

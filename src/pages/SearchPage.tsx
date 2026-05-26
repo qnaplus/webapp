@@ -28,7 +28,7 @@ export default function SearchPage() {
 				style={{ minHeight: "calc(100svh - 60px)" }}
 			>
 				<aside className="hidden md:block">
-					<div className="sticky top-20 max-h-[calc(100svh-6rem)] overflow-hidden rounded-lg border bg-popover text-popover-foreground">
+					<div className="sticky top-20 max-h-[calc(100svh-6rem)] overflow-y-auto rounded-lg border bg-popover text-popover-foreground">
 						<FilterPanel />
 					</div>
 				</aside>

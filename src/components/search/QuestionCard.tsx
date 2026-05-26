@@ -52,7 +52,7 @@ export default function QuestionCard({ question }: Props) {
                 <QuestionDetails question={question} />
             </CardHeader>
             <CardContent
-                className="prose dark:prose-invert max-w-none max-h-40 overflow-hidden w-full"
+                className="prose prose-zinc dark:prose-invert max-w-none max-h-40 overflow-hidden w-full"
                 style={{
                     WebkitMaskImage: FADE_MASK,
                     maskImage: FADE_MASK,
